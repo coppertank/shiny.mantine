@@ -1,0 +1,51 @@
+{
+  "name": "shiny-mantine-js",
+  "version": "0.2.0",
+  "private": true,
+  "scripts": {
+    "build": "webpack",
+    "watch": "webpack --watch --mode development",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@hello-pangea/dnd": "^18.0.1",
+    "@mantine/carousel": "^9.4.2",
+    "@mantine/charts": "^9.4.2",
+    "@mantine/code-highlight": "^9.4.2",
+    "@mantine/core": "^9.4.0",
+    "@mantine/dates": "^9.4.2",
+    "@mantine/dropzone": "^9.4.2",
+    "@mantine/hooks": "^9.4.0",
+    "@mantine/modals": "^9.4.2",
+    "@mantine/notifications": "^9.4.2",
+    "@mantine/nprogress": "^9.4.2",
+    "@mantine/spotlight": "^9.4.2",
+    "@mantine/tiptap": "^9.4.2",
+    "@tabler/icons-react": "^3.45.0",
+    "@tiptap/extension-link": "^3.28.0",
+    "@tiptap/extension-placeholder": "^3.28.0",
+    "@tiptap/extension-text-align": "^3.28.0",
+    "@tiptap/extension-underline": "^3.28.0",
+    "@tiptap/pm": "^3.28.0",
+    "@tiptap/react": "^3.28.0",
+    "@tiptap/starter-kit": "^3.28.0",
+    "dayjs": "^1.11.21",
+    "embla-carousel": "^8.6.0",
+    "embla-carousel-react": "^8.6.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "recharts": "^3.10.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^8.0.1",
+    "@babel/preset-env": "^8.0.2",
+    "@babel/preset-react": "^8.0.1",
+    "babel-jest": "^30.4.1",
+    "babel-loader": "^10.1.1",
+    "css-loader": "^7.1.4",
+    "jest": "^30.4.2",
+    "style-loader": "^4.0.0",
+    "webpack": "^5.109.0",
+    "webpack-cli": "^7.2.1"
+  }
+}

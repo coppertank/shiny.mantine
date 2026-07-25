@@ -1,0 +1,11 @@
+^js$
+^\.Rproj\.user$
+^.*\.Rproj$
+^app\.R$
+^LICENSE\.md$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^\.claude$
+^CLAUDE\.md$
+^\.github$

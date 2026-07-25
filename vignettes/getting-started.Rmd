@@ -1,0 +1,162 @@
+---
+title: "Getting Started with shiny.mantine"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting Started with shiny.mantine}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE
+)
+```
+
+```{r setup}
+library(shiny)
+library(shiny.mantine)
+```
+
+## What is shiny.mantine?
+
+`shiny.mantine` brings [Mantine UI v9](https://mantine.dev) — a modern
+React component library covering inputs, layout, navigation, overlays,
+charts, and more — into Shiny apps. Every component is a plain R function
+that returns a `mantine_element`, composed the same way you'd nest
+`htmltools` tags, and every stateful component keeps `input[[inputId]]`
+in sync automatically.
+
+This vignette covers installation and your first app. For the concepts
+behind the package (how props are serialized, how updates flow from R
+back to already-mounted components, the reactive output system), see
+`vignette("architecture", package = "shiny.mantine")`. For the eight
+Mantine satellite packages (dates, notifications, modals, spotlight,
+charts, code-highlight, nprogress, tiptap), see
+`vignette("satellite-packages", package = "shiny.mantine")`. For a tour of
+every component family, see
+`vignette("component-gallery", package = "shiny.mantine")`.
+
+## Installing the package
+
+`shiny.mantine` ships with a *pre-built* JavaScript bundle
+(`inst/www/mantine.js`), so installing the R package from a release is
+enough to use it — no Node.js toolchain required at install time:
+
+```r
+# from a local checkout or a released source tarball
+devtools::install()
+```
+
+### Building the JS bundle from source
+
+If you're working from a development checkout where the bundle needs to
+be (re)built — e.g. after pulling changes to `js/src/index.js`, or after
+editing the component generator's manifest — you'll need Node.js and npm:
+
+```
+cd js
+npm install
+npm run build
+```
+
+This compiles `js/src/index.js` (which imports the whole Mantine core
+library plus all eight satellite packages, its own bundled copy of React
+19, and a handful of smaller integrations) into `inst/www/mantine.js` via
+webpack. The bundle is intentionally self-contained — see
+`vignette("architecture")` for why it bundles its own React copy instead
+of sharing one with `shiny.react`.
+
+After rebuilding the JS bundle, regenerate the R documentation and
+reinstall:
+
+```r
+devtools::document()
+devtools::install()
+```
+
+## Your first app
+
+Every `shiny.mantine` UI needs exactly one `MantineProvider()` wrapping
+everything — it supplies the theme and color-scheme context that every
+other component depends on:
+
+```r
+library(shiny)
+library(shiny.mantine)
+
+ui <- fluidPage(
+  MantineProvider(
+    Stack(
+      Title("Hello, Mantine"),
+      TextInput(inputId = "name", label = "Your name", placeholder = "Ada Lovelace"),
+      Button("Greet me", inputId = "greet_btn"),
+      Text(textOutput("greeting"))
+    )
+  )
+)
+
+server <- function(input, output, session) {
+  output$greeting <- renderText({
+    req(input$greet_btn > 0)
+    paste("Hello,", input$name %||% "stranger", "!")
+  })
+}
+
+shinyApp(ui, server)
+```
+
+A few things to notice:
+
+- **`TextInput(inputId = "name", ...)`** behaves exactly like
+  `shiny::textInput()`: `input$name` updates on every keystroke.
+- **`Button(..., inputId = "greet_btn")`** behaves like
+  `shiny::actionButton()`: `input$greet_btn` is a click counter.
+- Mixing a native Shiny output (`textOutput()`) *inside* a
+  `shiny.mantine` component (`Text()`) works fine — it's the reverse
+  (nesting a native Shiny binding as a **direct structural child of**
+  `MantineProvider()`'s own markup) that doesn't, since that content is
+  injected via `dangerouslySetInnerHTML` and Shiny won't re-scan it for
+  bindings. Keep native Shiny inputs/outputs either fully outside
+  `MantineProvider()`, or nested inside a `shiny.mantine` component like
+  `Text()`/`Card()` (as shown above), not as siblings passed directly to
+  `MantineProvider()`'s own `...`.
+
+Everything should render at its normal, intended size out of the box,
+regardless of whether your UI uses `fluidPage()` (which loads Shiny's
+bundled Bootstrap 3 CSS, setting the page's root font-size to 10px
+instead of the browser's 16px default) or a plain `tagList()` (which
+doesn't). `MantineProvider()` measures the real root font-size at mount
+time and compensates automatically either way — see "Font-size scaling
+under Shiny's Bootstrap CSS" in the README — but it's worth knowing about
+if you ever pass your own `theme` with an explicit `scale`, or set
+`fixShinyFontScale = FALSE`.
+
+## A fuller example: AppShell with page navigation
+
+The package ships a demo with a complete responsive layout — header,
+collapsible navbar, contextual aside, footer — and a client-side page
+router so navigating between "pages" needs no server round-trip:
+
+```r
+shiny::runApp(system.file("examples/appshell-app.R", package = "shiny.mantine"))
+```
+
+Every [ui.mantine.dev](https://ui.mantine.dev/) category also has its own
+runnable demo in `inst/examples/` — see the README's "Examples per
+category" table, or list them with:
+
+```r
+list.files(system.file("examples", package = "shiny.mantine"))
+```
+
+## Where to go next
+
+- `vignette("architecture")` — how the R-to-React serialization works,
+  the generic `updateMantineProps()` channel, and `mantineOutput()`/`renderMantine()`.
+- `vignette("satellite-packages")` — dates, notifications, modals,
+  spotlight, charts, code-highlight, nprogress, and the rich text editor.
+- `vignette("component-gallery")` — a categorized tour of every
+  component family, with a runnable snippet each.

@@ -1,0 +1,355 @@
+url: https://aldocaumo.github.io/shiny.mantine/
+
+template:
+  bootstrap: 5
+  bootswatch: flatly
+
+home:
+  title: "shiny.mantine — Mantine UI for Shiny"
+
+development:
+  mode: auto
+
+navbar:
+  structure:
+    left: [intro, reference, articles, news]
+    right: [search, github]
+  components:
+    articles:
+      text: Articles
+      menu:
+      - text: Getting Started
+        href: articles/getting-started.html
+      - text: Architecture
+        href: articles/architecture.html
+      - text: Satellite packages
+        href: articles/satellite-packages.html
+      - text: Component gallery
+        href: articles/component-gallery.html
+
+reference:
+- title: "Provider"
+  desc: >
+    The one component every UI must wrap everything in — supplies theme
+    and color-scheme context to every other component.
+  contents:
+  - MantineProvider
+
+- title: "Layout"
+  desc: "Structural/positioning components."
+  contents:
+  - AppShell
+  - AppShellHeader
+  - AppShellNavbar
+  - AppShellMain
+  - AppShellAside
+  - AppShellFooter
+  - AppShellSection
+  - Box
+  - Center
+  - Container
+  - SimpleGrid
+  - Grid
+  - GridCol
+  - Group
+  - Stack
+  - Flex
+  - Space
+  - Paper
+  - Card
+  - CardSection
+  - Divider
+  - ScrollArea
+  - ScrollAreaAutosize
+  - NativeScrollArea
+  - AspectRatio
+  - Affix
+  - Portal
+  - DirectionProvider
+
+- title: "Typography"
+  contents:
+  - Text
+  - Title
+  - Anchor
+  - Code
+  - Highlight
+  - Mark
+  - Blockquote
+  - List
+  - ListItem
+  - Kbd
+  - Typography
+  - VisuallyHidden
+
+- title: "Buttons & actions"
+  contents:
+  - Button
+  - ButtonGroup
+  - ActionIcon
+  - ActionIconGroup
+  - UnstyledButton
+  - CloseButton
+  - CopyButton
+  - SplitButton
+  - ButtonWithMenu
+  - SocialButton
+  - LoadingProgressButton
+  - ColorSchemeToggle
+
+- title: "Navigation"
+  contents:
+  - NavLink
+  - navLinkItem
+  - navbarBurger
+  - Burger
+  - Tabs
+  - TabsList
+  - TabsTab
+  - TabsPanel
+  - Breadcrumbs
+  - Pagination
+  - Stepper
+  - StepperStep
+  - StepperCompleted
+  - Accordion
+  - AccordionItem
+  - AccordionControl
+  - AccordionPanel
+  - Pages
+  - Page
+  - Menu
+  - MenuTarget
+  - MenuDropdown
+  - MenuLabel
+  - MenuDivider
+  - menuItem
+  - MenuSub
+  - MenuSubTarget
+  - MenuSubDropdown
+  - menuSubItem
+  - MenuCheckboxGroup
+  - MenuCheckboxItem
+  - MenuRadioGroup
+  - MenuRadioItem
+  - MenuSearch
+  - MenuContextMenu
+  - megaMenuItem
+  - Menubar
+  - MenubarMenu
+  - MenubarTarget
+  - MenubarDropdown
+  - Splitter
+  - SplitterPanel
+
+- title: "Inputs"
+  desc: >
+    Stateful, form-like components: `input[[inputId]]` stays in sync
+    automatically, and each has a matching `update*()` function to push a
+    new value from the server (see [updateMantineProps()] for updating any
+    other prop).
+  contents:
+  - TextInput
+  - Textarea
+  - PasswordInput
+  - NumberInput
+  - Autocomplete
+  - Select
+  - MultiSelect
+  - NativeSelect
+  - TagsInput
+  - JsonInput
+  - MaskInput
+  - PinInput
+  - Checkbox
+  - CheckboxGroup
+  - CheckboxGroupItem
+  - CheckboxCard
+  - Radio
+  - RadioGroup
+  - RadioCard
+  - Switch
+  - SwitchGroup
+  - SwitchGroupItem
+  - Chip
+  - ChipGroup
+  - Rating
+  - ColorInput
+  - ColorPicker
+  - FileInput
+  - FileButton
+  - Slider
+  - RangeSlider
+  - SegmentedControl
+  - Fieldset
+
+- title: "Dates & time (`@mantine/dates`)"
+  contents:
+  - DatesProvider
+  - DateInput
+  - DatePicker
+  - DatePickerInput
+  - DateTimePicker
+  - InlineDateTimePicker
+  - MonthPickerInput
+  - YearPickerInput
+  - TimeInput
+  - TimePicker
+  - TimeGrid
+  - MiniCalendar
+
+- title: "Overlays"
+  contents:
+  - Modal
+  - Drawer
+  - Dialog
+  - Popover
+  - PopoverTarget
+  - PopoverDropdown
+  - LoadingOverlay
+  - Collapse
+  - Transition
+  - Overlay
+
+- title: "Data display"
+  contents:
+  - Table
+  - TableThead
+  - TableTbody
+  - TableTfoot
+  - TableTr
+  - TableTh
+  - TableTd
+  - TableCaption
+  - TableScrollContainer
+  - DataTable
+  - Avatar
+  - AvatarGroup
+  - Badge
+  - ThemeIcon
+  - Indicator
+  - Image
+  - BackgroundImage
+  - RingProgress
+  - Progress
+  - ProgressRoot
+  - ProgressSection
+  - ProgressLabel
+  - Timeline
+  - TimelineItem
+  - DataList
+  - DataListItem
+  - DataListItemLabel
+  - DataListItemValue
+  - EmptyState
+  - EmptyStateActions
+  - EmptyStateDescription
+  - EmptyStateIndicator
+  - EmptyStateTitle
+  - Skeleton
+  - Loader
+  - ColorSwatch
+  - NumberFormatter
+  - Tree
+  - TreeSelect
+  - Pill
+  - PillGroup
+  - RollingNumber
+  - SemiCircleProgress
+
+- title: "Feedback"
+  contents:
+  - Alert
+  - Notification
+  - Tooltip
+  - TooltipFloating
+  - TooltipGroup
+  - HoverCard
+  - HoverCardTarget
+  - HoverCardDropdown
+  - HoverCardGroup
+  - Spoiler
+  - Marquee
+
+- title: "Charts (`@mantine/charts`)"
+  contents:
+  - AreaChart
+  - BarChart
+  - BubbleChart
+  - CompositeChart
+  - DonutChart
+  - FunnelChart
+  - Heatmap
+  - LineChart
+  - PieChart
+  - RadarChart
+  - RadialBarChart
+  - SankeyChart
+  - ScatterChart
+  - Sparkline
+  - Treemap
+
+- title: "Drag & drop, dropzone, carousel"
+  contents:
+  - SortableList
+  - SortableTable
+  - Dropzone
+  - DropzoneAccept
+  - DropzoneIdle
+  - DropzoneReject
+  - Carousel
+  - CarouselSlide
+
+- title: "Notifications (`@mantine/notifications`)"
+  contents:
+  - Notifications
+  - showMantineNotification
+  - hideMantineNotification
+
+- title: "Modals (`@mantine/modals`)"
+  contents:
+  - ModalsProvider
+  - openMantineModal
+  - openMantineConfirmModal
+  - closeMantineModal
+  - closeAllMantineModals
+
+- title: "Spotlight (`@mantine/spotlight`)"
+  contents:
+  - Spotlight
+
+- title: "Code highlight (`@mantine/code-highlight`)"
+  contents:
+  - CodeHighlight
+  - InlineCodeHighlight
+  - CodeHighlightTabs
+
+- title: "Navigation progress (`@mantine/nprogress`)"
+  contents:
+  - NavigationProgress
+  - startMantineProgress
+  - setMantineProgress
+  - incrementMantineProgress
+  - decrementMantineProgress
+  - completeMantineProgress
+  - resetMantineProgress
+
+- title: "Rich text editor (`@mantine/tiptap`)"
+  contents:
+  - RichTextEditor
+
+- title: "Reactive architecture"
+  desc: >
+    The two mechanisms that go beyond simple one-way rendering: a generic
+    prop-update channel and a `renderUI()`-equivalent reactive output. See
+    `vignette("architecture")`.
+  contents:
+  - updateMantineProps
+  - mantineOutput
+  - renderMantine
+  - mantineDependency
+
+- title: "Icons"
+  desc: "Re-exported `@tabler/icons-react` icons used by the example apps and available for your own UIs."
+  contents:
+  - starts_with("Icon")

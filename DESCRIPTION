@@ -1,0 +1,72 @@
+Package: shiny.mantine
+Type: Package
+Title: Mantine UI Components for Shiny
+Version: 0.2.0
+Author: Aldo Caumo
+Maintainer: Aldo Caumo <caumoaldo8@gmail.com>
+Description: A comprehensive R interface to the 'Mantine' UI React
+    component library (<https://mantine.dev>) for 'Shiny' applications.
+    Provides R wrappers for the full 'Mantine' core component set
+    (inputs, layout, navigation, overlays, feedback, data display) plus
+    all eight satellite packages ('dates', 'notifications', 'modals',
+    'spotlight', 'charts', 'code-highlight', 'nprogress', 'tiptap'), a
+    client-side page router, and an architecture that goes beyond simple
+    one-way rendering: a generic reactive-props update channel
+    (comparable to the update*() family in 'shiny' itself, but for any
+    component prop, not just input values) and a 'renderUI()'-equivalent
+    reactive output for 'Mantine' sub-trees. Architecturally inspired by
+    Appsilon's 'shiny.react' package (props serialized as JSON, updates
+    via custom messages, 'htmlDependency'-based asset loading), but with
+    its own independent JavaScript runtime and bundled copy of 'React',
+    required for compatibility with 'Mantine' v9 (which needs
+    'React' >= 19) alongside 'shiny.react''s shared React 18 runtime.
+License: MIT + file LICENSE
+Encoding: UTF-8
+URL: https://github.com/aldocaumo/shiny.mantine, https://aldocaumo.github.io/shiny.mantine/
+BugReports: https://github.com/aldocaumo/shiny.mantine/issues
+Depends:
+    R (>= 4.4.0)
+Imports:
+    shiny,
+    shiny.react,
+    htmltools,
+    jsonlite
+Config/roxygen2/version: 8.0.0
+Roxygen: list(markdown = TRUE)
+Collate:
+    'mantine-element.R'
+    'AdvancedComponents.R'
+    'Button.R'
+    'Buttons.R'
+    'Carousel.R'
+    'Charts.R'
+    'CodeHighlight.R'
+    'Dates.R'
+    'DragDrop.R'
+    'Dropzone.R'
+    'Inputs2.R'
+    'MantineOutput.R'
+    'MantineProvider.R'
+    'Modals.R'
+    'NProgress.R'
+    'Notifications.R'
+    'Overlays.R'
+    'Pages.R'
+    'ReactiveProps.R'
+    'RichTextEditor.R'
+    'Sliders.R'
+    'SpecialInputs.R'
+    'Spotlight.R'
+    'Switch.R'
+    'Table.R'
+    'TextInput.R'
+    'components.R'
+    'dependencies.R'
+    'generated-components.R'
+Suggests:
+    knitr,
+    pkgdown,
+    rmarkdown,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+VignetteBuilder: knitr

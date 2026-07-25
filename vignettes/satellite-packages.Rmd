@@ -1,0 +1,280 @@
+---
+title: "Satellite Packages"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Satellite Packages}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE
+)
+```
+
+```{r setup}
+library(shiny)
+library(shiny.mantine)
+```
+
+Beyond Mantine's core component library, `shiny.mantine` bundles all
+eight Mantine v9 satellite packages: dates, notifications, modals,
+spotlight, charts, code-highlight, nprogress, and a rich text editor
+(tiptap). This vignette walks through each with a runnable example.
+
+## `@mantine/dates`
+
+Dates travel between R and JS as plain `"YYYY-MM-DD"` strings — Mantine
+v9 itself represents dates this way (`DateStringValue = string`, not a JS
+`Date` object), which makes them trivially JSON-serializable. Every date
+input accepts either an R `Date`/`POSIXct` (converted automatically via
+the internal `toDateString()` helper) or an already-formatted string:
+
+```r
+ui <- fluidPage(
+  MantineProvider(
+    Stack(
+      DateInput("birth_date", label = "Date of birth", value = Sys.Date()),
+      DatePickerInput("appointment", label = "Appointment"),
+      TimeInput("meeting_time", label = "Meeting time"),
+      DateTimePicker("event_at", label = "Event date & time")
+    )
+  )
+)
+
+server <- function(input, output, session) {
+  observe(print(input$birth_date))  # a plain "YYYY-MM-DD" string
+}
+
+shinyApp(ui, server)
+```
+
+`DatesProvider()` sets locale/`firstDayOfWeek` for every date component
+nested inside it. Also available: `MonthPickerInput()`/`YearPickerInput()`
+(month/year-only selection), `TimePicker()`/`TimeGrid()` (dropdown/grid
+time pickers, distinct from the native `TimeInput()`), `MiniCalendar()`
+(compact single-week strip), and `InlineDateTimePicker()` (like
+`DateTimePicker()`, but always visible instead of behind a popover).
+
+## `@mantine/notifications`
+
+`Notifications()` (Mantine-styled toasts) needs to be mounted **once** in
+the page — typically as a sibling passed to `MantineProvider()` alongside
+your main content — then driven imperatively from the server:
+
+```r
+ui <- fluidPage(
+  MantineProvider(
+    Notifications(position = "top-right"),
+    Button("Save", inputId = "save_btn")
+  )
+)
+
+server <- function(input, output, session) {
+  observeEvent(input$save_btn, {
+    showMantineNotification(session, title = "Saved", message = "Your changes were saved.", color = "green")
+  })
+}
+
+shinyApp(ui, server)
+```
+
+Use `hideMantineNotification(session, id)` to dismiss a specific
+notification early (pass a matching `id = "..."` when showing it).
+
+## `@mantine/modals`
+
+`ModalsProvider()` enables an imperative confirm/generic modal API, useful
+when you don't want to pre-declare a `Modal()` in the UI:
+
+```r
+ui <- fluidPage(
+  MantineProvider(
+    ModalsProvider(
+      Button("Delete item", inputId = "delete_btn", color = "red")
+    )
+  )
+)
+
+server <- function(input, output, session) {
+  observeEvent(input$delete_btn, {
+    openMantineConfirmModal(
+      session, inputId = "confirm_delete",
+      title = "Confirm deletion",
+      children = "This action cannot be undone.",
+      labels = list(confirm = "Delete", cancel = "Cancel"),
+      confirmProps = list(color = "red")
+    )
+  })
+  observeEvent(input$confirm_delete, {
+    if (isTRUE(input$confirm_delete)) {
+      # ... actually delete the item ...
+    }
+  })
+}
+
+shinyApp(ui, server)
+```
+
+**Important**: if you use both `Notifications()`/`ModalsProvider()` and
+your own overlays, `MantineProvider()` must always be the *outermost*
+call — never nest it inside `ModalsProvider()`.
+
+## `@mantine/spotlight`
+
+A command palette (opened with Ctrl/Cmd+K by default). Each action
+reports its own `id` to `input[[inputId]]` when selected — the same
+pattern as `menuItem()`/`navLinkItem()`:
+
+```r
+ui <- fluidPage(
+  MantineProvider(
+    Spotlight(
+      inputId = "spotlight_action",
+      actions = list(
+        list(id = "home", label = "Go to Home", description = "Main page"),
+        list(id = "settings", label = "Go to Settings")
+      )
+    ),
+    Text("Press Ctrl/Cmd+K to open the command palette")
+  )
+)
+
+server <- function(input, output, session) {
+  observeEvent(input$spotlight_action, {
+    message("Navigating to: ", input$spotlight_action)
+  })
+}
+
+shinyApp(ui, server)
+```
+
+## `@mantine/charts`
+
+Chart components accept `data` as either a `data.frame` (one row per
+point/category — converted automatically into a list of rows) or an
+already-prepared list:
+
+```r
+sales <- data.frame(month = c("Jan", "Feb", "Mar", "Apr"), revenue = c(120, 150, 90, 200))
+
+ui <- fluidPage(
+  MantineProvider(
+    Stack(
+      LineChart(
+        data = sales, dataKey = "month",
+        series = list(list(name = "revenue", color = "blue.6"))
+      ),
+      PieChart(data = data.frame(
+        name = c("Desktop", "Mobile", "Tablet"),
+        value = c(55, 35, 10),
+        color = c("blue.6", "orange.6", "grape.6")
+      ))
+    )
+  )
+)
+
+shinyApp(ui, function(input, output, session) {})
+```
+
+`BarChart()`/`AreaChart()`/`RadarChart()`/`CompositeChart()` share
+`LineChart()`'s `data`/`series` shape; `DonutChart()`/`FunnelChart()` share
+`PieChart()`'s `name`/`value`/`color` shape. `RadialBarChart()`/
+`BubbleChart()` take `data`/`dataKey` without `series`. `Sparkline()` takes
+a plain numeric vector instead of a `data.frame`. `ScatterChart()`,
+`Treemap()`, `Heatmap()`, and `SankeyChart()` have their own nested `data`
+shapes (documented in each function's `?help` page) rather than one flat
+table, since their charts aren't naturally one-row-per-point.
+
+Charts with an unbounded container (e.g. a plain `Stack()` with no fixed
+height, as above) need an explicit `h` (height) — Recharts, which every
+Mantine chart is built on, silently renders nothing if it can't resolve a
+definite pixel height for itself. `LineChart()`/`BarChart()`/`PieChart()`/
+etc. happen to ship a sensible default; several of the newer chart types
+(`RadarChart()`, `RadialBarChart()`, `BubbleChart()`, `CompositeChart()`,
+`ScatterChart()`) do not, so pass `h = 250` (or similar) explicitly if one
+of these renders blank.
+
+## `@mantine/code-highlight`
+
+`CodeHighlight()`/`InlineCodeHighlight()` display code with a monospace
+font, line numbers, and a copy button, but **without syntax coloring** —
+they always use Mantine's `plainTextAdapter` rather than pulling in
+`highlight.js`/`shiki`, to keep the bundle from growing further.
+`CodeHighlightTabs(code = list(list(fileName = ..., language = ..., code =
+...), ...))` displays several snippets as a tabbed file browser, same
+adapter. If you
+need real syntax highlighting, you'd need to add such an adapter to
+`js/src/index.js` yourself.
+
+```r
+CodeHighlight(
+  code = "server <- function(input, output, session) {\n  # ...\n}",
+  language = "r"
+)
+```
+
+## `@mantine/nprogress`
+
+A slim progress bar pinned to the top of the page — the kind used for
+page-navigation loading indicators. Mount `NavigationProgress()` once,
+then drive it imperatively:
+
+```r
+ui <- fluidPage(
+  MantineProvider(
+    NavigationProgress(),
+    Button("Run task", inputId = "go_btn")
+  )
+)
+
+server <- function(input, output, session) {
+  observeEvent(input$go_btn, {
+    startMantineProgress(session)
+    setMantineProgress(30, session)
+    Sys.sleep(0.5)  # stand-in for real work
+    setMantineProgress(70, session)
+    Sys.sleep(0.5)
+    completeMantineProgress(session)
+  })
+}
+
+shinyApp(ui, server)
+```
+
+`resetMantineProgress()`/`incrementMantineProgress()`/`decrementMantineProgress()`
+round out the imperative API.
+
+## `@mantine/tiptap`
+
+`RichTextEditor()` is a rich text editor with **reduced scope** compared
+to a full Tiptap setup: bold/italic/underline/strikethrough, H1-H4
+headings, blockquotes, lists, links, alignment, and undo/redo — no
+tables, images, or collaborative editing.
+
+```r
+ui <- fluidPage(
+  MantineProvider(
+    RichTextEditor("bio", content = "<p>Write something...</p>", placeholder = "Your bio"),
+    Button("Reset", inputId = "reset_btn")
+  ),
+  verbatimTextOutput("html")
+)
+
+server <- function(input, output, session) {
+  observeEvent(input$reset_btn, {
+    updateMantineRichTextEditor(session, "bio", content = "<p></p>")
+  })
+  output$html <- renderPrint(input$bio)
+}
+
+shinyApp(ui, server)
+```
+
+`input[[inputId]]` receives the editor's content as HTML on every edit —
+treat it as untrusted user input if you ever render it back with
+`HTML()`/`dangerouslySetInnerHTML`-style trust, the same way you would any
+other free-text field.

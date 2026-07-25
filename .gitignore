@@ -1,0 +1,18 @@
+# R
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+inst/doc
+*.tar.gz
+/doc/
+/Meta/
+
+# pkgdown site (built + deployed by CI, not tracked on main)
+docs
+
+# Node / JS build tooling
+js/node_modules
+
+# macOS
+.DS_Store
