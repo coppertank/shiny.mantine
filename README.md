@@ -51,6 +51,10 @@ shinyApp(ui, server)
   mounted component from the server, not just an input's value.
 - **`mantineOutput()`/`renderMantine()`** — a reactive output for Mantine
   content, the `uiOutput()`/`renderUI()` equivalent.
+- **`ModalStack()`/`DrawerStack()`** — coordinated stacks of
+  [`Modal()`](https://mantine.dev/core/modal/#stacked-modals)/[`Drawer()`](https://mantine.dev/core/drawer/#stacked-drawers)s
+  (layered z-index, focus trapping, `closeAll()`), opened/closed with the
+  same `updateMantineProps()` calls as a standalone one.
 - **Extras beyond plain Mantine**: drag & drop reordering, a
   search/sort/select data table, and a demo app for every
   [ui.mantine.dev](https://ui.mantine.dev/) category.
@@ -127,9 +131,8 @@ development.
 - `CodeHighlight()` has no real syntax coloring (plain-text adapter only,
   to avoid bundling `highlight.js`/`shiki`); `RichTextEditor()` covers
   basic formatting only (no tables, images, or collaborative editing).
-- Stacked modals/drawers (multiple overlays open at once) aren't
-  supported. See `vignette("component-gallery")`'s "Intentionally out of
-  scope" section for this and other low-level primitives left unwrapped.
+- See `vignette("component-gallery")`'s "Intentionally out of scope"
+  section for the low-level primitives left unwrapped.
 
 ## License
 

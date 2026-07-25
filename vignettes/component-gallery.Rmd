@@ -170,6 +170,35 @@ observeEvent(input$open_btn, {
 })
 ```
 
+More than one `Modal()`/`Drawer()` open at the same time needs
+`ModalStack()`/`DrawerStack()` instead of standalone ones — each manages
+its own `opened` boolean independently and doesn't coordinate z-index or
+focus trapping with the others, so two open together would render with
+mismatched layering. Wrapping the same `Modal()`s in `ModalStack()`
+delegates that coordination to Mantine; every child keeps opening and
+closing exactly as above, and the whole stack can be closed at once with
+`updateMantineProps(session, stackId, closeAll = TRUE)`:
+
+```r
+ModalStack(
+  mantineId = "delete_stack",
+  Modal("delete_page", inputId = "delete_page_state", title = "Delete this page?",
+    Button("Continue", inputId = "go_to_confirm")
+  ),
+  Modal("confirm_delete", title = "Are you really sure?",
+    Button("Yes, delete", inputId = "confirm_delete_btn", color = "red")
+  )
+)
+
+# server:
+observeEvent(input$go_to_confirm, {
+  updateMantineProps(session, "confirm_delete", opened = TRUE)
+})
+observeEvent(input$confirm_delete_btn, {
+  updateMantineProps(session, "delete_stack", closeAll = TRUE)
+})
+```
+
 ## Data display
 
 `Table()` family (compose by hand for full control), `DataTable()`
@@ -281,10 +310,8 @@ a scope decision, not an oversight:
 - **Compound/composable forms** of `Modal`/`Drawer`/`Pagination`
   (`ModalRoot`/`ModalBody`/..., `DrawerRoot`/..., `PaginationRoot`/...) —
   `Modal()`/`Drawer()`/`Pagination()` already cover the common all-in-one
-  usage. **Stacked modals/drawers** (`useModalsStack()`, `Modal.Stack`,
-  `Drawer.Stack` — multiple overlays open at once, layered) are a real,
-  acknowledged gap: our `Modal()`/`Drawer()` each manage one `opened`
-  boolean and don't coordinate a stack.
+  usage (stacking multiple `Modal()`/`Drawer()`s together is covered, see
+  `ModalStack()`/`DrawerStack()` above).
 - **`Combobox` internals** (`ComboboxDropdown`, `ComboboxOption`, ...) and
   the `Input`/`InputBase`/`InputWrapper` primitives — internal building
   blocks `Select`/`MultiSelect`/`Autocomplete`/`TagsInput`/every stateful

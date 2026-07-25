@@ -89,6 +89,8 @@ import {
   Portal,
   ScrollAreaAutosize,
   NativeScrollArea,
+  useModalsStack,
+  useDrawersStack,
 } from '@mantine/core';
 import { Dropzone as MantineDropzone } from '@mantine/dropzone';
 import {
@@ -1040,6 +1042,135 @@ function withControlledOpen(Component) {
 }
 
 // ---------------------------------------------------------------------------
+// ModalStack()/DrawerStack(): a standalone Modal()/Drawer() (above) only
+// ever manages its own `opened` boolean, so more than one open at once
+// doesn't layer/animate correctly - each mounts an independent overlay and
+// focus trap, competing rather than coordinating. Mantine's own fix for
+// this is useModalsStack()/useDrawersStack() + <Modal.Stack>/<Drawer.Stack>:
+// one shared controller (state/open/close/closeAll/register), with
+// register(id) returning the {opened, onClose, stackId} props a stacked
+// Modal/Drawer needs.
+//
+// ModalStackContext/DrawerStackContext hands that controller down to any
+// Modal()/Drawer() mounted underneath; withStackableOpen (replacing
+// withControlledOpen for just these two) picks it up when present. The R
+// API is unchanged either way: updateMantineProps(session, mantineId,
+// opened = TRUE/FALSE) keeps working, just translated into
+// stack.open(mantineId)/stack.close(mantineId) instead of purely local
+// state when the modal/drawer is inside a stack - so a Modal()/Drawer()
+// doesn't need to "know" whether it's stacked.
+// ---------------------------------------------------------------------------
+const ModalStackContext = React.createContext(null);
+const DrawerStackContext = React.createContext(null);
+
+function stackIdsFromChildren(children) {
+  return React.Children.toArray(children)
+    .map((child) => child && child.props && child.props.mantineId)
+    .filter(Boolean);
+}
+
+function withStackableOpen(Component, StackContext) {
+  return function Wrapped({
+    inputId, mantineId, opened: initialOpened, onClose, ...props
+  }) {
+    // Replaces the withReactiveProps(withControlledOpen(...)) composition
+    // used for every other overlay: withReactiveProps() consumes
+    // `mantineId` to key its patch subscription but does not forward it
+    // down to the wrapped component, so a Modal/Drawer nested behind it
+    // would never learn its own `mantineId` - needed here for stack
+    // registration. Rather than change withReactiveProps() (used by ~100
+    // other, non-stack-aware components, where forwarding `mantineId`
+    // would leak it as an unrecognized DOM attribute), this HOC
+    // duplicates its small patch-subscription mechanism directly.
+    const [patch, setPatch] = useState({});
+    useEffect(() => {
+      if (!mantineId) return undefined;
+      propUpdateHandlers[mantineId] = (newProps) => setPatch((prev) => ({ ...prev, ...newProps }));
+      return () => { delete propUpdateHandlers[mantineId]; };
+    }, [mantineId]);
+
+    const opened = patch.opened !== undefined ? patch.opened : initialOpened;
+    const otherPatch = { ...patch };
+    delete otherPatch.opened;
+
+    const stack = useContext(StackContext);
+    const inStack = Boolean(stack && mantineId && stack.state[mantineId] !== undefined);
+
+    const [localOpened, setLocalOpened] = useState(Boolean(opened));
+    useEffect(() => { setLocalOpened(Boolean(opened)); }, [opened]);
+
+    // Translate opened prop transitions (own local state above, whether
+    // from the initial prop or an updateMantineProps() patch) into
+    // stack.open()/stack.close() calls, so R's existing API keeps working
+    // unchanged for a stacked modal/drawer too.
+    const prevOpened = useRef(Boolean(opened));
+    useEffect(() => {
+      if (!inStack) return;
+      if (opened && !prevOpened.current) stack.open(mantineId);
+      if (!opened && prevOpened.current) stack.close(mantineId);
+      prevOpened.current = Boolean(opened);
+    }, [inStack, opened, mantineId, stack]);
+
+    if (inStack) {
+      const registered = stack.register(mantineId);
+      return React.createElement(Component, {
+        ...props,
+        ...otherPatch,
+        ...registered,
+        onClose: () => {
+          registered.onClose();
+          setShinyValue(inputId, false, { priority: 'event' });
+          if (onClose) onClose();
+        },
+      });
+    }
+
+    return React.createElement(Component, {
+      ...props,
+      ...otherPatch,
+      opened: localOpened,
+      onClose: () => {
+        setLocalOpened(false);
+        setShinyValue(inputId, false, { priority: 'event' });
+        if (onClose) onClose();
+      },
+    });
+  };
+}
+
+function ShinyModalStack({ closeAll, children }) {
+  const ids = useMemo(() => stackIdsFromChildren(children), [children]);
+  const stack = useModalsStack(ids);
+  const prevCloseAll = useRef(false);
+  useEffect(() => {
+    if (closeAll && !prevCloseAll.current) stack.closeAll();
+    prevCloseAll.current = Boolean(closeAll);
+  }, [closeAll, stack]);
+
+  return React.createElement(
+    ModalStackContext.Provider,
+    { value: stack },
+    React.createElement(Modal.Stack, {}, children),
+  );
+}
+
+function ShinyDrawerStack({ closeAll, children }) {
+  const ids = useMemo(() => stackIdsFromChildren(children), [children]);
+  const stack = useDrawersStack(ids);
+  const prevCloseAll = useRef(false);
+  useEffect(() => {
+    if (closeAll && !prevCloseAll.current) stack.closeAll();
+    prevCloseAll.current = Boolean(closeAll);
+  }, [closeAll, stack]);
+
+  return React.createElement(
+    DrawerStackContext.Provider,
+    { value: stack },
+    React.createElement(Drawer.Stack, {}, children),
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Drag'n'drop: reorderable list and table. Receives `items` (plain data,
 // not nested React elements: [{value, label}, ...] for the list, [{value,
 // cells:[...]}, ...] + `columns` for the table) and reports the new order
@@ -1398,8 +1529,10 @@ const components = {
   SwitchGroupItem: Switch,
   CheckboxCard: withReactiveProps(CheckboxCard),
   RadioCard: withReactiveProps(RadioCard),
-  Modal: withReactiveProps(withControlledOpen(Modal)),
-  Drawer: withReactiveProps(withControlledOpen(Drawer)),
+  Modal: withStackableOpen(Modal, ModalStackContext),
+  ModalStack: withReactiveProps(ShinyModalStack),
+  Drawer: withStackableOpen(Drawer, DrawerStackContext),
+  DrawerStack: withReactiveProps(ShinyDrawerStack),
   Dialog: withReactiveProps(withControlledOpen(Dialog)),
   Popover: withReactiveProps(withControlledOpen(Popover)),
   'Popover.Target': Popover.Target,
