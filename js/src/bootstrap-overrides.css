@@ -1,0 +1,23 @@
+/*
+ * Shiny's bundled Bootstrap 3 CSS (loaded by fluidPage()/bootstrapPage(),
+ * not by a plain tagList() UI) sets a global
+ *   input[type="checkbox"], input[type="radio"] { margin: 4px 0 0; }
+ * rule. Mantine's Checkbox/Radio/Switch/Chip/CheckboxCard/RadioCard/group
+ * items all render a real native <input type="checkbox"|"radio"> as the
+ * visible, CSS-only-styled box, with the checkmark/dot icon positioned
+ * independently on top of it - so Bootstrap's margin (which Mantine's own
+ * CSS already resets to 0) pushes the colored box down a few pixels
+ * relative to the icon overlaid on it, visibly misaligning the two.
+ *
+ * This wins back Mantine's own intended `margin: 0` with higher
+ * specificity than Bootstrap's rule, scoped to the containers we mount
+ * content into (see renderMantineRoot()/mantineOutput() in R), so plain
+ * native Shiny checkbox/radio inputs elsewhere on the page keep
+ * Bootstrap's own look untouched.
+ */
+.shiny-mantine-container input[type='checkbox'],
+.shiny-mantine-container input[type='radio'],
+.shiny-mantine-output input[type='checkbox'],
+.shiny-mantine-output input[type='radio'] {
+  margin: 0;
+}

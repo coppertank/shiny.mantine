@@ -191,6 +191,7 @@ import {
 import '@mantine/core/styles.css';
 import '@mantine/dropzone/styles.css';
 import '@mantine/carousel/styles.css';
+import './bootstrap-overrides.css';
 
 // ---------------------------------------------------------------------------
 // Shiny <-> React bridge
