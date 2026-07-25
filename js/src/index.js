@@ -213,16 +213,37 @@ function setShinyValue(inputId, value, opts) {
   if (window.Shiny && inputId) window.Shiny.setInputValue(inputId, value, opts);
 }
 
+// All three HOCs below share one rule, matching plain Shiny's own
+// update*Input() convention: a server-pushed value (arriving through
+// inputUpdateHandlers[inputId], i.e. updateMantineXxx()) must only update
+// what's on screen — it must never itself look like a fresh user edit and
+// echo straight back out through setShinyValue(). Without that guard, two
+// inputs kept in sync via a pair of observeEvent()s that each call the
+// other's update*() function (a common, otherwise-legitimate pattern —
+// e.g. NumberInput + Slider mirroring one value) ping-pong: every real
+// user-driven change bounces an "echo" off the other input and back,
+// doubling every round-trip, and on a fast-firing gesture like a slider
+// drag the echoes race the live drag position and arrive out of order,
+// which is what actually produces the erratic/"jumping" behavior. A
+// per-instance ref flags the very next value-effect run as
+// server-originated so it updates local state without re-reporting it,
+// while the initial mount (flag unset) still reports the starting value
+// as before.
+
 // A component whose value changes via a native DOM `onChange` event (e.g.
 // TextInput): the new value is `event.currentTarget.value`.
 function withShinyEventInput(Component) {
   return function Wrapped({ inputId, value: initialValue, onChange, ...props }) {
     const [value, setValue] = useState(initialValue ?? '');
-
-    useEffect(() => { setShinyValue(inputId, value); }, [inputId, value]);
+    const skipEcho = useRef(false);
 
     useEffect(() => {
-      inputUpdateHandlers[inputId] = setValue;
+      if (skipEcho.current) { skipEcho.current = false; return; }
+      setShinyValue(inputId, value);
+    }, [inputId, value]);
+
+    useEffect(() => {
+      inputUpdateHandlers[inputId] = (v) => { skipEcho.current = true; setValue(v); };
       return () => { delete inputUpdateHandlers[inputId]; };
     }, [inputId]);
 
@@ -242,11 +263,15 @@ function withShinyEventInput(Component) {
 function withShinyValueInput(Component) {
   return function Wrapped({ inputId, value: initialValue, onChange, ...props }) {
     const [value, setValue] = useState(initialValue ?? null);
-
-    useEffect(() => { setShinyValue(inputId, value); }, [inputId, value]);
+    const skipEcho = useRef(false);
 
     useEffect(() => {
-      inputUpdateHandlers[inputId] = setValue;
+      if (skipEcho.current) { skipEcho.current = false; return; }
+      setShinyValue(inputId, value);
+    }, [inputId, value]);
+
+    useEffect(() => {
+      inputUpdateHandlers[inputId] = (v) => { skipEcho.current = true; setValue(v); };
       return () => { delete inputUpdateHandlers[inputId]; };
     }, [inputId]);
 
@@ -267,11 +292,15 @@ function withShinyValueInput(Component) {
 function withShinyCheckedInput(Component) {
   return function Wrapped({ inputId, value: initialValue, onChange, ...props }) {
     const [checked, setChecked] = useState(Boolean(initialValue));
-
-    useEffect(() => { setShinyValue(inputId, checked); }, [inputId, checked]);
+    const skipEcho = useRef(false);
 
     useEffect(() => {
-      inputUpdateHandlers[inputId] = (v) => setChecked(Boolean(v));
+      if (skipEcho.current) { skipEcho.current = false; return; }
+      setShinyValue(inputId, checked);
+    }, [inputId, checked]);
+
+    useEffect(() => {
+      inputUpdateHandlers[inputId] = (v) => { skipEcho.current = true; setChecked(Boolean(v)); };
       return () => { delete inputUpdateHandlers[inputId]; };
     }, [inputId]);
 
