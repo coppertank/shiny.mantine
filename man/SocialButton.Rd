@@ -5,14 +5,15 @@
 \title{Social buttons}
 \usage{
 SocialButton(
-  provider = c("google", "facebook", "github", "discord"),
+  provider = c("google", "twitter", "facebook", "github", "discord"),
   label = NULL,
   inputId = NULL,
   ...
 )
 }
 \arguments{
-\item{provider}{One of \code{"google"}, \code{"facebook"}, \code{"github"}, \code{"discord"}.}
+\item{provider}{One of \code{"google"}, \code{"twitter"}, \code{"facebook"}, \code{"github"},
+\code{"discord"}.}
 
 \item{label}{Label; if omitted, uses a default text for the provider.}
 

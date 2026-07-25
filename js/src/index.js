@@ -658,16 +658,34 @@ function ButtonWithMenuComponent({
 // Primary action (button, reports clicks to Shiny) + a separate small
 // arrow that opens a menu of alternative actions (R-side MenuItem()s as
 // `children`).
+//
+// Deliberately NOT `Button.Group`: that component only flattens the shared
+// inner border-radius between adjacent `Button` elements (it targets
+// `.mantine-Button-root` siblings), and the second half here is an
+// `ActionIcon` nested inside a `Menu`/`Menu.Target`, not a direct `Button`
+// sibling — so `Button.Group` never squares off the ActionIcon's left
+// corners, leaving it fully rounded next to the button's squared-off right
+// corners (a visibly mismatched seam). This mirrors Mantine's own "Split
+// button" recipe: a plain zero-gap `Group`, with each half's *inner*
+// corners explicitly zeroed via inline style (highest specificity, so it
+// wins regardless of the theme's/`radius` prop's rounding) while its outer
+// corners keep the normal (possibly caller-provided) `radius`.
 function SplitButtonComponent({
-  inputId, label, color = 'blue', children, onClick, ...props
+  inputId, label, color = 'blue', children, onClick, radius, ...props
 }) {
   const clicks = useRef(0);
   return React.createElement(
-    Button.Group,
-    {},
+    Group,
+    { wrap: 'nowrap', gap: 0 },
     React.createElement(Button, {
       color,
+      radius,
       ...props,
+      style: {
+        borderTopRightRadius: 0,
+        borderBottomRightRadius: 0,
+        ...(props.style || {}),
+      },
       onClick: (event) => {
         clicks.current += 1;
         setShinyValue(inputId, clicks.current, { priority: 'event' });
@@ -681,7 +699,8 @@ function SplitButtonComponent({
         Menu.Target,
         {},
         React.createElement(ActionIcon, {
-          color, variant: 'filled', size: 36, 'aria-label': 'More actions',
+          color, variant: 'filled', size: 36, radius, 'aria-label': 'More actions',
+          style: { borderTopLeftRadius: 0, borderBottomLeftRadius: 0 },
         }, React.createElement(IconChevronDown, { size: 16 })),
       ),
       React.createElement(Menu.Dropdown, {}, children),

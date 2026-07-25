@@ -39,7 +39,10 @@ ui <- fluidPage(
           inputId = "slider_icon_thumb",
           value = 50,
           color = "grape",
-          thumbChildren = IconHeart(size = 12)
+          label = NULL,
+          thumbSize = 26,
+          styles = list(thumb = list(borderWidth = 2, padding = 3)),
+          thumbChildren = IconHeart(size = 16)
         )
       ),
 

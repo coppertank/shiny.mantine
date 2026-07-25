@@ -182,19 +182,24 @@ LoadingProgressButton <- function(label, inputId = NULL, loadingLabel = "Loading
 #' code on top of [Button()] — copy and adapt it if you need a provider
 #' other than the ones included.
 #'
-#' @param provider One of `"google"`, `"facebook"`, `"github"`, `"discord"`.
+#' @param provider One of `"google"`, `"twitter"`, `"facebook"`, `"github"`,
+#'   `"discord"`.
 #' @param label Label; if omitted, uses a default text for the provider.
 #' @param inputId If provided, clicks increment `input[[inputId]]` like
 #'   [Button()].
 #' @param ... Other props forwarded to [Button()] (`variant`, `size`, ...).
 #' @export
-SocialButton <- function(provider = c("google", "facebook", "github", "discord"),
+SocialButton <- function(provider = c("google", "twitter", "facebook", "github", "discord"),
                           label = NULL, inputId = NULL, ...) {
   provider <- match.arg(provider)
   preset <- switch(provider,
     google = list(
       icon = IconBrandGoogle(size = 18), color = "red", variant = "default",
       defaultLabel = "Continue with Google"
+    ),
+    twitter = list(
+      icon = IconBrandTwitter(size = 18), color = "cyan", variant = "filled",
+      defaultLabel = "Follow on Twitter"
     ),
     facebook = list(
       icon = IconBrandFacebook(size = 18), color = "blue", variant = "filled",
