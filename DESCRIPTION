@@ -60,7 +60,6 @@ Collate:
     'Switch.R'
     'Table.R'
     'TextInput.R'
-    '_disable_autoload.R'
     'components.R'
     'dependencies.R'
     'generated-components.R'

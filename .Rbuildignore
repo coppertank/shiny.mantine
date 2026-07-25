@@ -2,6 +2,7 @@
 ^\.Rproj\.user$
 ^.*\.Rproj$
 ^app\.R$
+^\.Rprofile$
 ^LICENSE\.md$
 ^_pkgdown\.yml$
 ^docs$
