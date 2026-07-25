@@ -22,8 +22,8 @@ Description: A comprehensive R interface to the 'Mantine' UI React
     'React' >= 19) alongside 'shiny.react''s shared React 18 runtime.
 License: MIT + file LICENSE
 Encoding: UTF-8
-URL: https://github.com/aldocaumo/shiny.mantine, https://aldocaumo.github.io/shiny.mantine/
-BugReports: https://github.com/aldocaumo/shiny.mantine/issues
+URL: https://github.com/coppertank/shiny.mantine, https://coppertank.github.io/shiny.mantine/
+BugReports: https://github.com/coppertank/shiny.mantine/issues
 Depends:
     R (>= 4.4.0)
 Imports:

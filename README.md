@@ -1,8 +1,8 @@
 # shiny.mantine
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/aldocaumo/shiny.mantine/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/aldocaumo/shiny.mantine/actions/workflows/R-CMD-check.yaml)
-[![pkgdown](https://github.com/aldocaumo/shiny.mantine/actions/workflows/pkgdown.yaml/badge.svg)](https://aldocaumo.github.io/shiny.mantine/)
+[![R-CMD-check](https://github.com/coppertank/shiny.mantine/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/coppertank/shiny.mantine/actions/workflows/R-CMD-check.yaml)
+[![pkgdown](https://github.com/coppertank/shiny.mantine/actions/workflows/pkgdown.yaml/badge.svg)](https://coppertank.github.io/shiny.mantine/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE.md)
 <!-- badges: end -->
 
