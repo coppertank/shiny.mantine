@@ -42,13 +42,31 @@ ui <- fluidPage(
         "Button with menu",
         ButtonWithMenu(
           "Create new",
-          menuItem("create_new_action", "project", "New project", leftSection = IconPlus(size = 16)),
-          menuItem("create_new_action", "document", "New document", leftSection = IconFileText(size = 16)),
-          menuItem("create_new_action", "import", "Import", leftSection = IconUpload(size = 16)),
+          menuItem(
+            "create_new_action",
+            "project",
+            "New project",
+            leftSection = IconPlus(size = 16)
+          ),
+          menuItem(
+            "create_new_action",
+            "document",
+            "New document",
+            leftSection = IconFileText(size = 16)
+          ),
+          menuItem(
+            "create_new_action",
+            "import",
+            "Import",
+            leftSection = IconUpload(size = 16)
+          ),
           MenuDivider(),
           menuItem(
-            "create_new_action", "delete", "Delete workspace",
-            leftSection = IconTrash(size = 16), color = "red"
+            "create_new_action",
+            "delete",
+            "Delete workspace",
+            leftSection = IconTrash(size = 16),
+            color = "red"
           )
         )
       ),

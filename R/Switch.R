@@ -14,9 +14,17 @@ Switch <- function(inputId, label = NULL, value = FALSE, ...) {
 #' @rdname Switch
 #' @param session Session object passed to the Shiny server function.
 #' @export
-updateMantineSwitch <- function(session = shiny::getDefaultReactiveDomain(), inputId, value = NULL, ...) {
-  session$sendCustomMessage("shinyMantineUpdateInput", list(
-    inputId = session$ns(inputId),
-    value = value
-  ))
+updateMantineSwitch <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  inputId,
+  value = NULL,
+  ...
+) {
+  session$sendCustomMessage(
+    "shinyMantineUpdateInput",
+    list(
+      inputId = session$ns(inputId),
+      value = value
+    )
+  )
 }

@@ -44,7 +44,11 @@ toMantineData <- function(x) {
   if (inherits(x, "mantine_element")) {
     return(unclass(x))
   }
-  if (inherits(x, "shiny.tag") || inherits(x, "shiny.tag.list") || inherits(x, "html")) {
+  if (
+    inherits(x, "shiny.tag") ||
+      inherits(x, "shiny.tag.list") ||
+      inherits(x, "html")
+  ) {
     return(list(type = "html", value = as.character(x)))
   }
   if (is.null(x)) {
@@ -62,9 +66,11 @@ toMantineData <- function(x) {
 
 #' @keywords internal
 renderMantineRoot <- function(el, containerId = NULL) {
-  containerId <- containerId %||% paste0(
-    "shiny-mantine-", paste(sample(c(letters, 0:9), 12, replace = TRUE), collapse = "")
-  )
+  containerId <- containerId %||%
+    paste0(
+      "shiny-mantine-",
+      paste(sample(c(letters, 0:9), 12, replace = TRUE), collapse = "")
+    )
   json <- jsonlite::toJSON(unclass(el), auto_unbox = TRUE, null = "null")
   tag <- htmltools::tagList(
     mantineDependency(),
@@ -78,7 +84,10 @@ renderMantineRoot <- function(el, containerId = NULL) {
       )
     ),
     htmltools::tags$script(
-      htmltools::HTML(sprintf("window.jsmodule['@/shiny.mantine'].mount('%s');", containerId))
+      htmltools::HTML(sprintf(
+        "window.jsmodule['@/shiny.mantine'].mount('%s');",
+        containerId
+      ))
     )
   )
   # Lets renderMantine() recognize when the expression called

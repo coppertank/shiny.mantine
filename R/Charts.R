@@ -4,7 +4,9 @@ NULL
 #' @keywords internal
 chartData <- function(data) {
   if (is.data.frame(data)) {
-    return(lapply(seq_len(nrow(data)), function(i) as.list(data[i, , drop = FALSE])))
+    return(lapply(seq_len(nrow(data)), function(i) {
+      as.list(data[i, , drop = FALSE])
+    }))
   }
   data
 }
@@ -93,7 +95,13 @@ DonutChart <- function(data, ...) {
 #'   <https://mantine.dev/charts/composite-chart/>.
 #' @export
 RadarChart <- function(data, series, dataKey, ...) {
-  mantineElement("RadarChart", data = chartData(data), series = series, dataKey = dataKey, ...)
+  mantineElement(
+    "RadarChart",
+    data = chartData(data),
+    series = series,
+    dataKey = dataKey,
+    ...
+  )
 }
 
 #' @rdname RadarChart
@@ -118,7 +126,12 @@ CompositeChart <- function(data, series, ...) {
 #'   / <https://mantine.dev/charts/bubble-chart/>.
 #' @export
 RadialBarChart <- function(data, dataKey, ...) {
-  mantineElement("RadialBarChart", data = chartData(data), dataKey = dataKey, ...)
+  mantineElement(
+    "RadialBarChart",
+    data = chartData(data),
+    dataKey = dataKey,
+    ...
+  )
 }
 
 #' @rdname RadialBarChart
@@ -212,8 +225,11 @@ Treemap <- function(data, ...) {
 #' }
 Heatmap <- function(data, startDate = NULL, endDate = NULL, ...) {
   mantineElement(
-    "Heatmap", data = data,
-    startDate = toDateString(startDate), endDate = toDateString(endDate), ...
+    "Heatmap",
+    data = data,
+    startDate = toDateString(startDate),
+    endDate = toDateString(endDate),
+    ...
   )
 }
 

@@ -18,14 +18,28 @@ NULL
 #' @param ... Other props.
 #' @export
 RadioGroup <- function(inputId, ..., value = NULL, label = NULL) {
-  mantineElement("RadioGroup", inputId = inputId, value = value, label = label, ...)
+  mantineElement(
+    "RadioGroup",
+    inputId = inputId,
+    value = value,
+    label = label,
+    ...
+  )
 }
 
 #' @rdname RadioGroup
 #' @param session Session object passed to the Shiny server function.
 #' @export
-updateMantineRadioGroup <- function(session = shiny::getDefaultReactiveDomain(), inputId, value = NULL, ...) {
-  session$sendCustomMessage("shinyMantineUpdateInput", list(inputId = session$ns(inputId), value = value))
+updateMantineRadioGroup <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  inputId,
+  value = NULL,
+  ...
+) {
+  session$sendCustomMessage(
+    "shinyMantineUpdateInput",
+    list(inputId = session$ns(inputId), value = value)
+  )
 }
 
 #' @rdname RadioGroup
@@ -52,14 +66,28 @@ Radio <- function(value, label = NULL, ...) {
 #' @param ... Other props.
 #' @export
 ChipGroup <- function(inputId, ..., value = NULL, multiple = FALSE) {
-  mantineElement("ChipGroup", inputId = inputId, value = value, multiple = multiple, ...)
+  mantineElement(
+    "ChipGroup",
+    inputId = inputId,
+    value = value,
+    multiple = multiple,
+    ...
+  )
 }
 
 #' @rdname ChipGroup
 #' @param session Session object passed to the Shiny server function.
 #' @export
-updateMantineChipGroup <- function(session = shiny::getDefaultReactiveDomain(), inputId, value = NULL, ...) {
-  session$sendCustomMessage("shinyMantineUpdateInput", list(inputId = session$ns(inputId), value = value))
+updateMantineChipGroup <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  inputId,
+  value = NULL,
+  ...
+) {
+  session$sendCustomMessage(
+    "shinyMantineUpdateInput",
+    list(inputId = session$ns(inputId), value = value)
+  )
 }
 
 #' @rdname ChipGroup
@@ -83,14 +111,28 @@ Chip <- function(value, label = NULL, ...) {
 #'   <https://mantine.dev/core/multi-select/>.
 #' @export
 MultiSelect <- function(inputId, label = NULL, value = list(), ...) {
-  mantineElement("MultiSelect", inputId = inputId, label = label, value = value, ...)
+  mantineElement(
+    "MultiSelect",
+    inputId = inputId,
+    label = label,
+    value = value,
+    ...
+  )
 }
 
 #' @rdname MultiSelect
 #' @param session Session object passed to the Shiny server function.
 #' @export
-updateMantineMultiSelect <- function(session = shiny::getDefaultReactiveDomain(), inputId, value = NULL, ...) {
-  session$sendCustomMessage("shinyMantineUpdateInput", list(inputId = session$ns(inputId), value = value))
+updateMantineMultiSelect <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  inputId,
+  value = NULL,
+  ...
+) {
+  session$sendCustomMessage(
+    "shinyMantineUpdateInput",
+    list(inputId = session$ns(inputId), value = value)
+  )
 }
 
 #' Mantine TagsInput (Shiny stateful input, free-form tags)
@@ -104,14 +146,28 @@ updateMantineMultiSelect <- function(session = shiny::getDefaultReactiveDomain()
 #'   <https://mantine.dev/core/tags-input/>.
 #' @export
 TagsInput <- function(inputId, label = NULL, value = list(), ...) {
-  mantineElement("TagsInput", inputId = inputId, label = label, value = value, ...)
+  mantineElement(
+    "TagsInput",
+    inputId = inputId,
+    label = label,
+    value = value,
+    ...
+  )
 }
 
 #' @rdname TagsInput
 #' @param session Session object passed to the Shiny server function.
 #' @export
-updateMantineTagsInput <- function(session = shiny::getDefaultReactiveDomain(), inputId, value = NULL, ...) {
-  session$sendCustomMessage("shinyMantineUpdateInput", list(inputId = session$ns(inputId), value = value))
+updateMantineTagsInput <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  inputId,
+  value = NULL,
+  ...
+) {
+  session$sendCustomMessage(
+    "shinyMantineUpdateInput",
+    list(inputId = session$ns(inputId), value = value)
+  )
 }
 
 # Other stateful inputs -------------------------------------------------------
@@ -130,8 +186,16 @@ Rating <- function(inputId, value = 0, ...) {
 #' @rdname Rating
 #' @param session Session object passed to the Shiny server function.
 #' @export
-updateMantineRating <- function(session = shiny::getDefaultReactiveDomain(), inputId, value = NULL, ...) {
-  session$sendCustomMessage("shinyMantineUpdateInput", list(inputId = session$ns(inputId), value = value))
+updateMantineRating <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  inputId,
+  value = NULL,
+  ...
+) {
+  session$sendCustomMessage(
+    "shinyMantineUpdateInput",
+    list(inputId = session$ns(inputId), value = value)
+  )
 }
 
 #' Mantine PinInput (Shiny stateful input, e.g. an OTP code)
@@ -148,8 +212,16 @@ PinInput <- function(inputId, value = "", ...) {
 #' @rdname PinInput
 #' @param session Session object passed to the Shiny server function.
 #' @export
-updateMantinePinInput <- function(session = shiny::getDefaultReactiveDomain(), inputId, value = NULL, ...) {
-  session$sendCustomMessage("shinyMantineUpdateInput", list(inputId = session$ns(inputId), value = value))
+updateMantinePinInput <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  inputId,
+  value = NULL,
+  ...
+) {
+  session$sendCustomMessage(
+    "shinyMantineUpdateInput",
+    list(inputId = session$ns(inputId), value = value)
+  )
 }
 
 #' Mantine JsonInput (Shiny stateful input, with JSON validation)
@@ -161,14 +233,28 @@ updateMantinePinInput <- function(session = shiny::getDefaultReactiveDomain(), i
 #'   <https://mantine.dev/core/json-input/>.
 #' @export
 JsonInput <- function(inputId, label = NULL, value = "", ...) {
-  mantineElement("JsonInput", inputId = inputId, label = label, value = value, ...)
+  mantineElement(
+    "JsonInput",
+    inputId = inputId,
+    label = label,
+    value = value,
+    ...
+  )
 }
 
 #' @rdname JsonInput
 #' @param session Session object passed to the Shiny server function.
 #' @export
-updateMantineJsonInput <- function(session = shiny::getDefaultReactiveDomain(), inputId, value = NULL, ...) {
-  session$sendCustomMessage("shinyMantineUpdateInput", list(inputId = session$ns(inputId), value = value))
+updateMantineJsonInput <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  inputId,
+  value = NULL,
+  ...
+) {
+  session$sendCustomMessage(
+    "shinyMantineUpdateInput",
+    list(inputId = session$ns(inputId), value = value)
+  )
 }
 
 #' Mantine ColorInput (Shiny stateful input)
@@ -180,14 +266,28 @@ updateMantineJsonInput <- function(session = shiny::getDefaultReactiveDomain(), 
 #'   <https://mantine.dev/core/color-input/>.
 #' @export
 ColorInput <- function(inputId, label = NULL, value = "#000000", ...) {
-  mantineElement("ColorInput", inputId = inputId, label = label, value = value, ...)
+  mantineElement(
+    "ColorInput",
+    inputId = inputId,
+    label = label,
+    value = value,
+    ...
+  )
 }
 
 #' @rdname ColorInput
 #' @param session Session object passed to the Shiny server function.
 #' @export
-updateMantineColorInput <- function(session = shiny::getDefaultReactiveDomain(), inputId, value = NULL, ...) {
-  session$sendCustomMessage("shinyMantineUpdateInput", list(inputId = session$ns(inputId), value = value))
+updateMantineColorInput <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  inputId,
+  value = NULL,
+  ...
+) {
+  session$sendCustomMessage(
+    "shinyMantineUpdateInput",
+    list(inputId = session$ns(inputId), value = value)
+  )
 }
 
 #' Mantine ColorPicker (Shiny stateful input, inline picker)
@@ -204,8 +304,16 @@ ColorPicker <- function(inputId, value = "#000000", ...) {
 #' @rdname ColorPicker
 #' @param session Session object passed to the Shiny server function.
 #' @export
-updateMantineColorPicker <- function(session = shiny::getDefaultReactiveDomain(), inputId, value = NULL, ...) {
-  session$sendCustomMessage("shinyMantineUpdateInput", list(inputId = session$ns(inputId), value = value))
+updateMantineColorPicker <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  inputId,
+  value = NULL,
+  ...
+) {
+  session$sendCustomMessage(
+    "shinyMantineUpdateInput",
+    list(inputId = session$ns(inputId), value = value)
+  )
 }
 
 #' Mantine FileInput (file selection, metadata only)
@@ -232,14 +340,28 @@ FileInput <- function(inputId, label = NULL, ...) {
 #'   <https://mantine.dev/core/native-select/>.
 #' @export
 NativeSelect <- function(inputId, label = NULL, value = NULL, ...) {
-  mantineElement("NativeSelect", inputId = inputId, label = label, value = value, ...)
+  mantineElement(
+    "NativeSelect",
+    inputId = inputId,
+    label = label,
+    value = value,
+    ...
+  )
 }
 
 #' @rdname NativeSelect
 #' @param session Session object passed to the Shiny server function.
 #' @export
-updateMantineNativeSelect <- function(session = shiny::getDefaultReactiveDomain(), inputId, value = NULL, ...) {
-  session$sendCustomMessage("shinyMantineUpdateInput", list(inputId = session$ns(inputId), value = value))
+updateMantineNativeSelect <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  inputId,
+  value = NULL,
+  ...
+) {
+  session$sendCustomMessage(
+    "shinyMantineUpdateInput",
+    list(inputId = session$ns(inputId), value = value)
+  )
 }
 
 #' Mantine Textarea (Shiny stateful input, multi-line)
@@ -251,7 +373,13 @@ updateMantineNativeSelect <- function(session = shiny::getDefaultReactiveDomain(
 #'   <https://mantine.dev/core/textarea/>.
 #' @export
 Textarea <- function(inputId, label = NULL, value = "", ...) {
-  mantineElement("Textarea", inputId = inputId, label = label, value = value, ...)
+  mantineElement(
+    "Textarea",
+    inputId = inputId,
+    label = label,
+    value = value,
+    ...
+  )
 }
 
 #' Mantine Pagination (Shiny stateful input)
@@ -263,14 +391,28 @@ Textarea <- function(inputId, label = NULL, value = "", ...) {
 #'   <https://mantine.dev/core/pagination/>.
 #' @export
 Pagination <- function(inputId, total, value = 1, ...) {
-  mantineElement("Pagination", inputId = inputId, total = total, value = value, ...)
+  mantineElement(
+    "Pagination",
+    inputId = inputId,
+    total = total,
+    value = value,
+    ...
+  )
 }
 
 #' @rdname Pagination
 #' @param session Session object passed to the Shiny server function.
 #' @export
-updateMantinePagination <- function(session = shiny::getDefaultReactiveDomain(), inputId, value = NULL, ...) {
-  session$sendCustomMessage("shinyMantineUpdateInput", list(inputId = session$ns(inputId), value = value))
+updateMantinePagination <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  inputId,
+  value = NULL,
+  ...
+) {
+  session$sendCustomMessage(
+    "shinyMantineUpdateInput",
+    list(inputId = session$ns(inputId), value = value)
+  )
 }
 
 # Accordion -------------------------------------------------------------------
@@ -290,14 +432,28 @@ updateMantinePagination <- function(session = shiny::getDefaultReactiveDomain(),
 #' @param ... Other props/children.
 #' @export
 Accordion <- function(inputId, ..., value = NULL, multiple = FALSE) {
-  mantineElement("Accordion", inputId = inputId, value = value, multiple = multiple, ...)
+  mantineElement(
+    "Accordion",
+    inputId = inputId,
+    value = value,
+    multiple = multiple,
+    ...
+  )
 }
 
 #' @rdname Accordion
 #' @param session Session object passed to the Shiny server function.
 #' @export
-updateMantineAccordion <- function(session = shiny::getDefaultReactiveDomain(), inputId, value = NULL, ...) {
-  session$sendCustomMessage("shinyMantineUpdateInput", list(inputId = session$ns(inputId), value = value))
+updateMantineAccordion <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  inputId,
+  value = NULL,
+  ...
+) {
+  session$sendCustomMessage(
+    "shinyMantineUpdateInput",
+    list(inputId = session$ns(inputId), value = value)
+  )
 }
 
 #' @rdname Accordion

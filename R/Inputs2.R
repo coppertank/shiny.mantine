@@ -12,14 +12,28 @@ NULL
 #'   <https://mantine.dev/core/checkbox/>.
 #' @export
 Checkbox <- function(inputId, label = NULL, value = FALSE, ...) {
-  mantineElement("Checkbox", inputId = inputId, label = label, value = value, ...)
+  mantineElement(
+    "Checkbox",
+    inputId = inputId,
+    label = label,
+    value = value,
+    ...
+  )
 }
 
 #' @rdname Checkbox
 #' @param session Session object passed to the Shiny server function.
 #' @export
-updateMantineCheckbox <- function(session = shiny::getDefaultReactiveDomain(), inputId, value = NULL, ...) {
-  session$sendCustomMessage("shinyMantineUpdateInput", list(inputId = session$ns(inputId), value = value))
+updateMantineCheckbox <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  inputId,
+  value = NULL,
+  ...
+) {
+  session$sendCustomMessage(
+    "shinyMantineUpdateInput",
+    list(inputId = session$ns(inputId), value = value)
+  )
 }
 
 #' Mantine Autocomplete (Shiny stateful input)
@@ -31,14 +45,28 @@ updateMantineCheckbox <- function(session = shiny::getDefaultReactiveDomain(), i
 #'   <https://mantine.dev/core/autocomplete/>.
 #' @export
 Autocomplete <- function(inputId, label = NULL, value = "", ...) {
-  mantineElement("Autocomplete", inputId = inputId, label = label, value = value, ...)
+  mantineElement(
+    "Autocomplete",
+    inputId = inputId,
+    label = label,
+    value = value,
+    ...
+  )
 }
 
 #' @rdname Autocomplete
 #' @param session Session object passed to the Shiny server function.
 #' @export
-updateMantineAutocomplete <- function(session = shiny::getDefaultReactiveDomain(), inputId, value = NULL, ...) {
-  session$sendCustomMessage("shinyMantineUpdateInput", list(inputId = session$ns(inputId), value = value))
+updateMantineAutocomplete <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  inputId,
+  value = NULL,
+  ...
+) {
+  session$sendCustomMessage(
+    "shinyMantineUpdateInput",
+    list(inputId = session$ns(inputId), value = value)
+  )
 }
 
 #' Mantine NumberInput (Shiny stateful input)
@@ -50,14 +78,28 @@ updateMantineAutocomplete <- function(session = shiny::getDefaultReactiveDomain(
 #'   See <https://mantine.dev/core/number-input/>.
 #' @export
 NumberInput <- function(inputId, label = NULL, value = NULL, ...) {
-  mantineElement("NumberInput", inputId = inputId, label = label, value = value, ...)
+  mantineElement(
+    "NumberInput",
+    inputId = inputId,
+    label = label,
+    value = value,
+    ...
+  )
 }
 
 #' @rdname NumberInput
 #' @param session Session object passed to the Shiny server function.
 #' @export
-updateMantineNumberInput <- function(session = shiny::getDefaultReactiveDomain(), inputId, value = NULL, ...) {
-  session$sendCustomMessage("shinyMantineUpdateInput", list(inputId = session$ns(inputId), value = value))
+updateMantineNumberInput <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  inputId,
+  value = NULL,
+  ...
+) {
+  session$sendCustomMessage(
+    "shinyMantineUpdateInput",
+    list(inputId = session$ns(inputId), value = value)
+  )
 }
 
 #' Mantine PasswordInput (Shiny stateful input)
@@ -69,14 +111,28 @@ updateMantineNumberInput <- function(session = shiny::getDefaultReactiveDomain()
 #'   <https://mantine.dev/core/password-input/>.
 #' @export
 PasswordInput <- function(inputId, label = NULL, value = "", ...) {
-  mantineElement("PasswordInput", inputId = inputId, label = label, value = value, ...)
+  mantineElement(
+    "PasswordInput",
+    inputId = inputId,
+    label = label,
+    value = value,
+    ...
+  )
 }
 
 #' @rdname PasswordInput
 #' @param session Session object passed to the Shiny server function.
 #' @export
-updateMantinePasswordInput <- function(session = shiny::getDefaultReactiveDomain(), inputId, value = NULL, ...) {
-  session$sendCustomMessage("shinyMantineUpdateInput", list(inputId = session$ns(inputId), value = value))
+updateMantinePasswordInput <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  inputId,
+  value = NULL,
+  ...
+) {
+  session$sendCustomMessage(
+    "shinyMantineUpdateInput",
+    list(inputId = session$ns(inputId), value = value)
+  )
 }
 
 #' Mantine SegmentedControl (Shiny stateful input)
@@ -88,14 +144,28 @@ updateMantinePasswordInput <- function(session = shiny::getDefaultReactiveDomain
 #' @param ... Other props (`color`, `fullWidth`, ...).
 #' @export
 SegmentedControl <- function(inputId, data, value = NULL, ...) {
-  mantineElement("SegmentedControl", inputId = inputId, data = data, value = value, ...)
+  mantineElement(
+    "SegmentedControl",
+    inputId = inputId,
+    data = data,
+    value = value,
+    ...
+  )
 }
 
 #' @rdname SegmentedControl
 #' @param session Session object passed to the Shiny server function.
 #' @export
-updateMantineSegmentedControl <- function(session = shiny::getDefaultReactiveDomain(), inputId, value = NULL, ...) {
-  session$sendCustomMessage("shinyMantineUpdateInput", list(inputId = session$ns(inputId), value = value))
+updateMantineSegmentedControl <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  inputId,
+  value = NULL,
+  ...
+) {
+  session$sendCustomMessage(
+    "shinyMantineUpdateInput",
+    list(inputId = session$ns(inputId), value = value)
+  )
 }
 
 # Display-only components ------------------------------------------------

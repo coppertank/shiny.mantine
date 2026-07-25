@@ -24,14 +24,14 @@ content (like \code{MantineProvider()}).
 \examples{
 \dontrun{
 # ui:
-ModalsProvider(MantineProvider(...))
+MantineProvider(ModalsProvider(...))
 
 # server:
 observeEvent(input$delete_btn, {
   openMantineConfirmModal(
     session, inputId = "confirm_delete",
     title = "Confirm deletion",
-    message = "This action cannot be undone. Continue?",
+    children = "This action cannot be undone. Continue?",
     labels = list(confirm = "Delete", cancel = "Cancel"),
     confirmProps = list(color = "red")
   )

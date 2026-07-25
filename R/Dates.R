@@ -8,8 +8,12 @@ NULL
 
 #' @keywords internal
 toDateString <- function(x) {
-  if (is.null(x)) return(NULL)
-  if (is.character(x)) return(x)
+  if (is.null(x)) {
+    return(NULL)
+  }
+  if (is.character(x)) {
+    return(x)
+  }
   format(x, "%Y-%m-%d")
 }
 
@@ -23,14 +27,28 @@ toDateString <- function(x) {
 #'   <https://mantine.dev/dates/date-input/>.
 #' @export
 DateInput <- function(inputId, label = NULL, value = NULL, ...) {
-  mantineElement("DateInput", inputId = inputId, label = label, value = toDateString(value), ...)
+  mantineElement(
+    "DateInput",
+    inputId = inputId,
+    label = label,
+    value = toDateString(value),
+    ...
+  )
 }
 
 #' @rdname DateInput
 #' @param session Session object passed to the Shiny server function.
 #' @export
-updateMantineDateInput <- function(session = shiny::getDefaultReactiveDomain(), inputId, value = NULL, ...) {
-  session$sendCustomMessage("shinyMantineUpdateInput", list(inputId = session$ns(inputId), value = toDateString(value)))
+updateMantineDateInput <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  inputId,
+  value = NULL,
+  ...
+) {
+  session$sendCustomMessage(
+    "shinyMantineUpdateInput",
+    list(inputId = session$ns(inputId), value = toDateString(value))
+  )
 }
 
 #' Mantine DatePickerInput (Shiny stateful input, dropdown calendar)
@@ -44,14 +62,28 @@ updateMantineDateInput <- function(session = shiny::getDefaultReactiveDomain(), 
 #'   <https://mantine.dev/dates/date-picker-input/>.
 #' @export
 DatePickerInput <- function(inputId, label = NULL, value = NULL, ...) {
-  mantineElement("DatePickerInput", inputId = inputId, label = label, value = toDateString(value), ...)
+  mantineElement(
+    "DatePickerInput",
+    inputId = inputId,
+    label = label,
+    value = toDateString(value),
+    ...
+  )
 }
 
 #' @rdname DatePickerInput
 #' @param session Session object passed to the Shiny server function.
 #' @export
-updateMantineDatePickerInput <- function(session = shiny::getDefaultReactiveDomain(), inputId, value = NULL, ...) {
-  session$sendCustomMessage("shinyMantineUpdateInput", list(inputId = session$ns(inputId), value = toDateString(value)))
+updateMantineDatePickerInput <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  inputId,
+  value = NULL,
+  ...
+) {
+  session$sendCustomMessage(
+    "shinyMantineUpdateInput",
+    list(inputId = session$ns(inputId), value = toDateString(value))
+  )
 }
 
 #' Mantine DatePicker (always-visible inline calendar)
@@ -62,14 +94,27 @@ updateMantineDatePickerInput <- function(session = shiny::getDefaultReactiveDoma
 #'   <https://mantine.dev/dates/date-picker/>.
 #' @export
 DatePicker <- function(inputId, value = NULL, ...) {
-  mantineElement("DatePicker", inputId = inputId, value = toDateString(value), ...)
+  mantineElement(
+    "DatePicker",
+    inputId = inputId,
+    value = toDateString(value),
+    ...
+  )
 }
 
 #' @rdname DatePicker
 #' @param session Session object passed to the Shiny server function.
 #' @export
-updateMantineDatePicker <- function(session = shiny::getDefaultReactiveDomain(), inputId, value = NULL, ...) {
-  session$sendCustomMessage("shinyMantineUpdateInput", list(inputId = session$ns(inputId), value = toDateString(value)))
+updateMantineDatePicker <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  inputId,
+  value = NULL,
+  ...
+) {
+  session$sendCustomMessage(
+    "shinyMantineUpdateInput",
+    list(inputId = session$ns(inputId), value = toDateString(value))
+  )
 }
 
 #' Mantine TimeInput (Shiny stateful input, native time field)
@@ -81,7 +126,13 @@ updateMantineDatePicker <- function(session = shiny::getDefaultReactiveDomain(),
 #'   <https://mantine.dev/dates/time-input/>.
 #' @export
 TimeInput <- function(inputId, label = NULL, value = "", ...) {
-  mantineElement("TimeInput", inputId = inputId, label = label, value = value, ...)
+  mantineElement(
+    "TimeInput",
+    inputId = inputId,
+    label = label,
+    value = value,
+    ...
+  )
 }
 
 #' Mantine MonthPickerInput (Shiny stateful input, month/year selection)
@@ -92,14 +143,28 @@ TimeInput <- function(inputId, label = NULL, value = "", ...) {
 #' @param ... Other props. See <https://mantine.dev/dates/month-picker-input/>.
 #' @export
 MonthPickerInput <- function(inputId, label = NULL, value = NULL, ...) {
-  mantineElement("MonthPickerInput", inputId = inputId, label = label, value = toDateString(value), ...)
+  mantineElement(
+    "MonthPickerInput",
+    inputId = inputId,
+    label = label,
+    value = toDateString(value),
+    ...
+  )
 }
 
 #' @rdname MonthPickerInput
 #' @param session Session object passed to the Shiny server function.
 #' @export
-updateMantineMonthPickerInput <- function(session = shiny::getDefaultReactiveDomain(), inputId, value = NULL, ...) {
-  session$sendCustomMessage("shinyMantineUpdateInput", list(inputId = session$ns(inputId), value = toDateString(value)))
+updateMantineMonthPickerInput <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  inputId,
+  value = NULL,
+  ...
+) {
+  session$sendCustomMessage(
+    "shinyMantineUpdateInput",
+    list(inputId = session$ns(inputId), value = toDateString(value))
+  )
 }
 
 #' Mantine YearPickerInput (Shiny stateful input, year selection)
@@ -110,14 +175,28 @@ updateMantineMonthPickerInput <- function(session = shiny::getDefaultReactiveDom
 #' @param ... Other props. See <https://mantine.dev/dates/year-picker-input/>.
 #' @export
 YearPickerInput <- function(inputId, label = NULL, value = NULL, ...) {
-  mantineElement("YearPickerInput", inputId = inputId, label = label, value = toDateString(value), ...)
+  mantineElement(
+    "YearPickerInput",
+    inputId = inputId,
+    label = label,
+    value = toDateString(value),
+    ...
+  )
 }
 
 #' @rdname YearPickerInput
 #' @param session Session object passed to the Shiny server function.
 #' @export
-updateMantineYearPickerInput <- function(session = shiny::getDefaultReactiveDomain(), inputId, value = NULL, ...) {
-  session$sendCustomMessage("shinyMantineUpdateInput", list(inputId = session$ns(inputId), value = toDateString(value)))
+updateMantineYearPickerInput <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  inputId,
+  value = NULL,
+  ...
+) {
+  session$sendCustomMessage(
+    "shinyMantineUpdateInput",
+    list(inputId = session$ns(inputId), value = toDateString(value))
+  )
 }
 
 #' Mantine DateTimePicker (Shiny stateful input, date + time)
@@ -128,14 +207,28 @@ updateMantineYearPickerInput <- function(session = shiny::getDefaultReactiveDoma
 #' @param ... Other props. See <https://mantine.dev/dates/date-time-picker/>.
 #' @export
 DateTimePicker <- function(inputId, label = NULL, value = NULL, ...) {
-  mantineElement("DateTimePicker", inputId = inputId, label = label, value = value, ...)
+  mantineElement(
+    "DateTimePicker",
+    inputId = inputId,
+    label = label,
+    value = value,
+    ...
+  )
 }
 
 #' @rdname DateTimePicker
 #' @param session Session object passed to the Shiny server function.
 #' @export
-updateMantineDateTimePicker <- function(session = shiny::getDefaultReactiveDomain(), inputId, value = NULL, ...) {
-  session$sendCustomMessage("shinyMantineUpdateInput", list(inputId = session$ns(inputId), value = value))
+updateMantineDateTimePicker <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  inputId,
+  value = NULL,
+  ...
+) {
+  session$sendCustomMessage(
+    "shinyMantineUpdateInput",
+    list(inputId = session$ns(inputId), value = value)
+  )
 }
 
 #' Mantine DatesProvider (locale/date format for its children)
@@ -156,14 +249,28 @@ DatesProvider <- displayComponent("DatesProvider")
 #'   <https://mantine.dev/dates/time-picker/>.
 #' @export
 TimePicker <- function(inputId, label = NULL, value = "", ...) {
-  mantineElement("TimePicker", inputId = inputId, label = label, value = value, ...)
+  mantineElement(
+    "TimePicker",
+    inputId = inputId,
+    label = label,
+    value = value,
+    ...
+  )
 }
 
 #' @rdname TimePicker
 #' @param session Session object passed to the Shiny server function.
 #' @export
-updateMantineTimePicker <- function(session = shiny::getDefaultReactiveDomain(), inputId, value = NULL, ...) {
-  session$sendCustomMessage("shinyMantineUpdateInput", list(inputId = session$ns(inputId), value = value))
+updateMantineTimePicker <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  inputId,
+  value = NULL,
+  ...
+) {
+  session$sendCustomMessage(
+    "shinyMantineUpdateInput",
+    list(inputId = session$ns(inputId), value = value)
+  )
 }
 
 #' Mantine TimeGrid (Shiny stateful input, grid of selectable time slots)
@@ -182,8 +289,16 @@ TimeGrid <- function(inputId, data, value = NULL, ...) {
 #' @rdname TimeGrid
 #' @param session Session object passed to the Shiny server function.
 #' @export
-updateMantineTimeGrid <- function(session = shiny::getDefaultReactiveDomain(), inputId, value = NULL, ...) {
-  session$sendCustomMessage("shinyMantineUpdateInput", list(inputId = session$ns(inputId), value = value))
+updateMantineTimeGrid <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  inputId,
+  value = NULL,
+  ...
+) {
+  session$sendCustomMessage(
+    "shinyMantineUpdateInput",
+    list(inputId = session$ns(inputId), value = value)
+  )
 }
 
 #' Mantine MiniCalendar (compact single-week calendar strip)
@@ -193,14 +308,27 @@ updateMantineTimeGrid <- function(session = shiny::getDefaultReactiveDomain(), i
 #' @param ... Other props. See <https://mantine.dev/dates/mini-calendar/>.
 #' @export
 MiniCalendar <- function(inputId, value = NULL, ...) {
-  mantineElement("MiniCalendar", inputId = inputId, value = toDateString(value), ...)
+  mantineElement(
+    "MiniCalendar",
+    inputId = inputId,
+    value = toDateString(value),
+    ...
+  )
 }
 
 #' @rdname MiniCalendar
 #' @param session Session object passed to the Shiny server function.
 #' @export
-updateMantineMiniCalendar <- function(session = shiny::getDefaultReactiveDomain(), inputId, value = NULL, ...) {
-  session$sendCustomMessage("shinyMantineUpdateInput", list(inputId = session$ns(inputId), value = toDateString(value)))
+updateMantineMiniCalendar <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  inputId,
+  value = NULL,
+  ...
+) {
+  session$sendCustomMessage(
+    "shinyMantineUpdateInput",
+    list(inputId = session$ns(inputId), value = toDateString(value))
+  )
 }
 
 #' Mantine InlineDateTimePicker (date + time picker, always visible)
@@ -221,6 +349,14 @@ InlineDateTimePicker <- function(inputId, value = NULL, ...) {
 #' @rdname InlineDateTimePicker
 #' @param session Session object passed to the Shiny server function.
 #' @export
-updateMantineInlineDateTimePicker <- function(session = shiny::getDefaultReactiveDomain(), inputId, value = NULL, ...) {
-  session$sendCustomMessage("shinyMantineUpdateInput", list(inputId = session$ns(inputId), value = value))
+updateMantineInlineDateTimePicker <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  inputId,
+  value = NULL,
+  ...
+) {
+  session$sendCustomMessage(
+    "shinyMantineUpdateInput",
+    list(inputId = session$ns(inputId), value = value)
+  )
 }

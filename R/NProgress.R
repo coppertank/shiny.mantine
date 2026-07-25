@@ -32,7 +32,10 @@ NavigationProgress <- function(...) {
 
 #' @keywords internal
 sendMantineProgress <- function(session, action, value = NULL) {
-  session$sendCustomMessage("shinyMantineProgress", list(action = action, value = value))
+  session$sendCustomMessage(
+    "shinyMantineProgress",
+    list(action = action, value = value)
+  )
 }
 
 #' @rdname NavigationProgress
@@ -45,25 +48,36 @@ startMantineProgress <- function(session = shiny::getDefaultReactiveDomain()) {
 #' @rdname NavigationProgress
 #' @param value Percentage value (0-100).
 #' @export
-setMantineProgress <- function(value, session = shiny::getDefaultReactiveDomain()) {
+setMantineProgress <- function(
+  value,
+  session = shiny::getDefaultReactiveDomain()
+) {
   sendMantineProgress(session, "set", value)
 }
 
 #' @rdname NavigationProgress
 #' @export
-incrementMantineProgress <- function(value = NULL, session = shiny::getDefaultReactiveDomain()) {
+incrementMantineProgress <- function(
+  value = NULL,
+  session = shiny::getDefaultReactiveDomain()
+) {
   sendMantineProgress(session, "increment", value)
 }
 
 #' @rdname NavigationProgress
 #' @export
-decrementMantineProgress <- function(value = NULL, session = shiny::getDefaultReactiveDomain()) {
+decrementMantineProgress <- function(
+  value = NULL,
+  session = shiny::getDefaultReactiveDomain()
+) {
   sendMantineProgress(session, "decrement", value)
 }
 
 #' @rdname NavigationProgress
 #' @export
-completeMantineProgress <- function(session = shiny::getDefaultReactiveDomain()) {
+completeMantineProgress <- function(
+  session = shiny::getDefaultReactiveDomain()
+) {
   sendMantineProgress(session, "complete")
 }
 

@@ -70,14 +70,28 @@ menuSubItem <- function(inputId, value, label, ...) {
 #' @param ... Other props.
 #' @export
 MenuCheckboxItem <- function(inputId, label = NULL, value = FALSE, ...) {
-  mantineElement("Menu.CheckboxItem", inputId = inputId, label = label, value = value, ...)
+  mantineElement(
+    "Menu.CheckboxItem",
+    inputId = inputId,
+    label = label,
+    value = value,
+    ...
+  )
 }
 
 #' @rdname MenuCheckboxItem
 #' @param session Session object passed to the Shiny server function.
 #' @export
-updateMantineMenuCheckboxItem <- function(session = shiny::getDefaultReactiveDomain(), inputId, value = NULL, ...) {
-  session$sendCustomMessage("shinyMantineUpdateInput", list(inputId = session$ns(inputId), value = value))
+updateMantineMenuCheckboxItem <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  inputId,
+  value = NULL,
+  ...
+) {
+  session$sendCustomMessage(
+    "shinyMantineUpdateInput",
+    list(inputId = session$ns(inputId), value = value)
+  )
 }
 
 #' @rdname MenuCheckboxItem
@@ -87,13 +101,27 @@ MenuCheckboxGroup <- displayComponent("Menu.CheckboxGroup")
 #' @rdname MenuCheckboxItem
 #' @export
 MenuRadioGroup <- function(inputId, ..., value = NULL, label = NULL) {
-  mantineElement("Menu.RadioGroup", inputId = inputId, value = value, label = label, ...)
+  mantineElement(
+    "Menu.RadioGroup",
+    inputId = inputId,
+    value = value,
+    label = label,
+    ...
+  )
 }
 
 #' @rdname MenuCheckboxItem
 #' @export
-updateMantineMenuRadioGroup <- function(session = shiny::getDefaultReactiveDomain(), inputId, value = NULL, ...) {
-  session$sendCustomMessage("shinyMantineUpdateInput", list(inputId = session$ns(inputId), value = value))
+updateMantineMenuRadioGroup <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  inputId,
+  value = NULL,
+  ...
+) {
+  session$sendCustomMessage(
+    "shinyMantineUpdateInput",
+    list(inputId = session$ns(inputId), value = value)
+  )
 }
 
 #' @rdname MenuCheckboxItem
@@ -185,7 +213,13 @@ SplitterPanel <- displayComponent("Splitter.Panel")
 #' )
 #' }
 Stepper <- function(mantineId = NULL, inputId = NULL, active = 0, ...) {
-  mantineElement("Stepper", mantineId = mantineId, inputId = inputId, active = active, ...)
+  mantineElement(
+    "Stepper",
+    mantineId = mantineId,
+    inputId = inputId,
+    active = active,
+    ...
+  )
 }
 
 #' @rdname Stepper
@@ -239,14 +273,28 @@ Tree <- function(inputId = NULL, data, ...) {
 #'   <https://mantine.dev/core/tree-select/>.
 #' @export
 TreeSelect <- function(inputId, data, value = NULL, ...) {
-  mantineElement("TreeSelect", inputId = inputId, data = data, value = value, ...)
+  mantineElement(
+    "TreeSelect",
+    inputId = inputId,
+    data = data,
+    value = value,
+    ...
+  )
 }
 
 #' @rdname TreeSelect
 #' @param session Session object passed to the Shiny server function.
 #' @export
-updateMantineTreeSelect <- function(session = shiny::getDefaultReactiveDomain(), inputId, value = NULL, ...) {
-  session$sendCustomMessage("shinyMantineUpdateInput", list(inputId = session$ns(inputId), value = value))
+updateMantineTreeSelect <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  inputId,
+  value = NULL,
+  ...
+) {
+  session$sendCustomMessage(
+    "shinyMantineUpdateInput",
+    list(inputId = session$ns(inputId), value = value)
+  )
 }
 
 # Collapse -------------------------------------------------------------
@@ -295,14 +343,28 @@ Collapse <- function(mantineId = NULL, opened = FALSE, ...) {
 #' @param ... [CheckboxGroupItem()] children and other props.
 #' @export
 CheckboxGroup <- function(inputId, ..., value = list(), label = NULL) {
-  mantineElement("CheckboxGroup", inputId = inputId, value = value, label = label, ...)
+  mantineElement(
+    "CheckboxGroup",
+    inputId = inputId,
+    value = value,
+    label = label,
+    ...
+  )
 }
 
 #' @rdname CheckboxGroup
 #' @param session Session object passed to the Shiny server function.
 #' @export
-updateMantineCheckboxGroup <- function(session = shiny::getDefaultReactiveDomain(), inputId, value = NULL, ...) {
-  session$sendCustomMessage("shinyMantineUpdateInput", list(inputId = session$ns(inputId), value = value))
+updateMantineCheckboxGroup <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  inputId,
+  value = NULL,
+  ...
+) {
+  session$sendCustomMessage(
+    "shinyMantineUpdateInput",
+    list(inputId = session$ns(inputId), value = value)
+  )
 }
 
 #' @rdname CheckboxGroup
@@ -326,14 +388,28 @@ CheckboxGroupItem <- function(value, label = NULL, ...) {
 #' @param ... [SwitchGroupItem()] children and other props.
 #' @export
 SwitchGroup <- function(inputId, ..., value = list(), label = NULL) {
-  mantineElement("SwitchGroup", inputId = inputId, value = value, label = label, ...)
+  mantineElement(
+    "SwitchGroup",
+    inputId = inputId,
+    value = value,
+    label = label,
+    ...
+  )
 }
 
 #' @rdname SwitchGroup
 #' @param session Session object passed to the Shiny server function.
 #' @export
-updateMantineSwitchGroup <- function(session = shiny::getDefaultReactiveDomain(), inputId, value = NULL, ...) {
-  session$sendCustomMessage("shinyMantineUpdateInput", list(inputId = session$ns(inputId), value = value))
+updateMantineSwitchGroup <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  inputId,
+  value = NULL,
+  ...
+) {
+  session$sendCustomMessage(
+    "shinyMantineUpdateInput",
+    list(inputId = session$ns(inputId), value = value)
+  )
 }
 
 #' @rdname SwitchGroup
@@ -376,8 +452,21 @@ RadioCard <- displayComponent("RadioCard")
 #' @param ... Other props forwarded to the underlying button (`color`,
 #'   `variant`, ...). See <https://mantine.dev/core/file-button/>.
 #' @export
-FileButton <- function(inputId, label = "Upload file", accept = NULL, multiple = FALSE, ...) {
-  mantineElement("FileButton", inputId = inputId, label = label, accept = accept, multiple = multiple, ...)
+FileButton <- function(
+  inputId,
+  label = "Upload file",
+  accept = NULL,
+  multiple = FALSE,
+  ...
+) {
+  mantineElement(
+    "FileButton",
+    inputId = inputId,
+    label = label,
+    accept = accept,
+    multiple = multiple,
+    ...
+  )
 }
 
 #' Mantine MaskInput (masked text input, e.g. phone numbers)
@@ -392,14 +481,29 @@ FileButton <- function(inputId, label = "Upload file", accept = NULL, multiple =
 #' @param ... Other props (`placeholder`, `description`, ...).
 #' @export
 MaskInput <- function(inputId, mask, label = NULL, value = "", ...) {
-  mantineElement("MaskInput", inputId = inputId, mask = mask, label = label, value = value, ...)
+  mantineElement(
+    "MaskInput",
+    inputId = inputId,
+    mask = mask,
+    label = label,
+    value = value,
+    ...
+  )
 }
 
 #' @rdname MaskInput
 #' @param session Session object passed to the Shiny server function.
 #' @export
-updateMantineMaskInput <- function(session = shiny::getDefaultReactiveDomain(), inputId, value = NULL, ...) {
-  session$sendCustomMessage("shinyMantineUpdateInput", list(inputId = session$ns(inputId), value = value))
+updateMantineMaskInput <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  inputId,
+  value = NULL,
+  ...
+) {
+  session$sendCustomMessage(
+    "shinyMantineUpdateInput",
+    list(inputId = session$ns(inputId), value = value)
+  )
 }
 
 #' Mantine DirectionProvider (RTL/LTR text direction)

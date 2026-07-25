@@ -42,12 +42,17 @@
 #'   to take over the calculation yourself (either disables auto-detection).
 #' @return A `shiny.tag.list` to insert into a Shiny app's UI.
 #' @export
-MantineProvider <- function(..., defaultColorScheme = c("light", "dark", "auto"),
-                             theme = NULL, containerId = NULL,
-                             fixShinyFontScale = TRUE) {
+MantineProvider <- function(
+  ...,
+  defaultColorScheme = c("light", "dark", "auto"),
+  theme = NULL,
+  containerId = NULL,
+  fixShinyFontScale = TRUE
+) {
   defaultColorScheme <- match.arg(defaultColorScheme)
   root <- mantineElement(
-    "MantineProvider", ...,
+    "MantineProvider",
+    ...,
     defaultColorScheme = defaultColorScheme,
     theme = theme,
     fixShinyFontScale = fixShinyFontScale

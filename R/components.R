@@ -107,7 +107,13 @@ Burger <- function(...) mantineElement("Burger", ...)
 #'   different from `value` (default: uses `value`).
 #' @export
 navLinkItem <- function(inputId, value, label, ..., pageValue = NULL) {
-  NavLink(label = label, inputId = inputId, value = value, pageValue = pageValue, ...)
+  NavLink(
+    label = label,
+    inputId = inputId,
+    value = value,
+    pageValue = pageValue,
+    ...
+  )
 }
 
 #' Burger wired to a boolean toggle Shiny input
@@ -141,11 +147,19 @@ Select <- function(inputId, label = NULL, value = NULL, ...) {
 #' @rdname Select
 #' @param session Session object passed to the Shiny server function.
 #' @export
-updateMantineSelect <- function(session = shiny::getDefaultReactiveDomain(), inputId, value = NULL, ...) {
-  session$sendCustomMessage("shinyMantineUpdateInput", list(
-    inputId = session$ns(inputId),
-    value = value
-  ))
+updateMantineSelect <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  inputId,
+  value = NULL,
+  ...
+) {
+  session$sendCustomMessage(
+    "shinyMantineUpdateInput",
+    list(
+      inputId = session$ns(inputId),
+      value = value
+    )
+  )
 }
 
 # Additional layout and decorative components ----------------------------------

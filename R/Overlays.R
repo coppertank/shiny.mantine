@@ -41,7 +41,13 @@ NULL
 #' })
 #' }
 Modal <- function(mantineId, ..., inputId = NULL, opened = FALSE) {
-  mantineElement("Modal", mantineId = mantineId, inputId = inputId, opened = opened, ...)
+  mantineElement(
+    "Modal",
+    mantineId = mantineId,
+    inputId = inputId,
+    opened = opened,
+    ...
+  )
 }
 
 #' Mantine Drawer (like Modal, but slides in from a screen edge)
@@ -56,7 +62,13 @@ Modal <- function(mantineId, ..., inputId = NULL, opened = FALSE) {
 #' @param opened Initial state.
 #' @export
 Drawer <- function(mantineId, ..., inputId = NULL, opened = FALSE) {
-  mantineElement("Drawer", mantineId = mantineId, inputId = inputId, opened = opened, ...)
+  mantineElement(
+    "Drawer",
+    mantineId = mantineId,
+    inputId = inputId,
+    opened = opened,
+    ...
+  )
 }
 
 #' Mantine Modal.Stack (coordinated stack of Modal()s)
@@ -134,7 +146,13 @@ DrawerStack <- displayComponent("DrawerStack")
 #' @param opened Initial state.
 #' @export
 Dialog <- function(mantineId, ..., inputId = NULL, opened = FALSE) {
-  mantineElement("Dialog", mantineId = mantineId, inputId = inputId, opened = opened, ...)
+  mantineElement(
+    "Dialog",
+    mantineId = mantineId,
+    inputId = inputId,
+    opened = opened,
+    ...
+  )
 }
 
 #' Mantine Popover (controlled) and primitives
@@ -151,7 +169,13 @@ Dialog <- function(mantineId, ..., inputId = NULL, opened = FALSE) {
 #' @param opened Initial state.
 #' @export
 Popover <- function(mantineId, ..., inputId = NULL, opened = FALSE) {
-  mantineElement("Popover", mantineId = mantineId, inputId = inputId, opened = opened, ...)
+  mantineElement(
+    "Popover",
+    mantineId = mantineId,
+    inputId = inputId,
+    opened = opened,
+    ...
+  )
 }
 
 #' @rdname Popover

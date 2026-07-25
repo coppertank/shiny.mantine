@@ -35,7 +35,10 @@ Notifications <- displayComponent("Notifications")
 #'   <https://mantine.dev/x/notifications/#notifications-system>.
 #' @return None. Called for its side effect.
 #' @export
-showMantineNotification <- function(session = shiny::getDefaultReactiveDomain(), ...) {
+showMantineNotification <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  ...
+) {
   session$sendCustomMessage("shinyMantineNotification", list(...))
 }
 
@@ -43,6 +46,9 @@ showMantineNotification <- function(session = shiny::getDefaultReactiveDomain(),
 #' @param id Id of the notification to hide (the one passed to
 #'   `showMantineNotification(id = ...)`).
 #' @export
-hideMantineNotification <- function(session = shiny::getDefaultReactiveDomain(), id) {
+hideMantineNotification <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  id
+) {
   session$sendCustomMessage("shinyMantineHideNotification", id)
 }

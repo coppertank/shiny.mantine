@@ -15,8 +15,8 @@ openMantineConfirmModal(
 
 \item{inputId}{Id of the Shiny input that receives \code{TRUE}/\code{FALSE}.}
 
-\item{...}{Other props (\code{title}, \code{message}, \code{labels}, \code{confirmProps},
-\code{cancelProps}, ...).}
+\item{...}{Other props (\code{title}, \code{children} as plain text (the body
+message), \code{labels}, \code{confirmProps}, \code{cancelProps}, ...).}
 }
 \description{
 On confirm, \code{input[[inputId]]} receives \code{TRUE}; on cancel, \code{FALSE}.

@@ -74,10 +74,21 @@ TableScrollContainer <- displayComponent("Table.ScrollContainer")
 #'   searchable = TRUE, sortable = TRUE, selectable = TRUE
 #' )
 #' }
-DataTable <- function(inputId, data, columns, selectable = FALSE, searchable = FALSE, sortable = FALSE) {
+DataTable <- function(
+  inputId,
+  data,
+  columns,
+  selectable = FALSE,
+  searchable = FALSE,
+  sortable = FALSE
+) {
   mantineElement(
     "DataTable",
-    inputId = inputId, data = data, columns = columns,
-    selectable = selectable, searchable = searchable, sortable = sortable
+    inputId = inputId,
+    data = data,
+    columns = columns,
+    selectable = selectable,
+    searchable = searchable,
+    sortable = sortable
   )
 }

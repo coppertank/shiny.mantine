@@ -103,10 +103,20 @@ ColorSchemeToggle <- function(inputId = NULL, ...) {
 #' @param ... Other props forwarded to the underlying `Button` (`variant`,
 #'   `size`, ...).
 #' @export
-CopyButton <- function(value, label = "Copy", copiedLabel = "Copied", inputId = NULL, ...) {
+CopyButton <- function(
+  value,
+  label = "Copy",
+  copiedLabel = "Copied",
+  inputId = NULL,
+  ...
+) {
   mantineElement(
     "CopyButton",
-    value = value, label = label, copiedLabel = copiedLabel, inputId = inputId, ...
+    value = value,
+    label = label,
+    copiedLabel = copiedLabel,
+    inputId = inputId,
+    ...
   )
 }
 
@@ -155,7 +165,13 @@ ButtonWithMenu <- function(label, ..., color = "blue") {
 #' )
 #' }
 SplitButton <- function(label, inputId = NULL, ..., color = "blue") {
-  mantineElement("SplitButton", label = label, inputId = inputId, color = color, ...)
+  mantineElement(
+    "SplitButton",
+    label = label,
+    inputId = inputId,
+    color = color,
+    ...
+  )
 }
 
 #' Button with loading progress
@@ -169,10 +185,18 @@ SplitButton <- function(label, inputId = NULL, ..., color = "blue") {
 #' @param loadingLabel Label shown while loading.
 #' @param ... Other props forwarded to the underlying `Button`.
 #' @export
-LoadingProgressButton <- function(label, inputId = NULL, loadingLabel = "Loading...", ...) {
+LoadingProgressButton <- function(
+  label,
+  inputId = NULL,
+  loadingLabel = "Loading...",
+  ...
+) {
   mantineElement(
     "LoadingProgressButton",
-    label = label, inputId = inputId, loadingLabel = loadingLabel, ...
+    label = label,
+    inputId = inputId,
+    loadingLabel = loadingLabel,
+    ...
   )
 }
 
@@ -189,28 +213,43 @@ LoadingProgressButton <- function(label, inputId = NULL, loadingLabel = "Loading
 #'   [Button()].
 #' @param ... Other props forwarded to [Button()] (`variant`, `size`, ...).
 #' @export
-SocialButton <- function(provider = c("google", "twitter", "facebook", "github", "discord"),
-                          label = NULL, inputId = NULL, ...) {
+SocialButton <- function(
+  provider = c("google", "twitter", "facebook", "github", "discord"),
+  label = NULL,
+  inputId = NULL,
+  ...
+) {
   provider <- match.arg(provider)
-  preset <- switch(provider,
+  preset <- switch(
+    provider,
     google = list(
-      icon = IconBrandGoogle(size = 18), color = "red", variant = "default",
+      icon = IconBrandGoogle(size = 18),
+      color = "red",
+      variant = "default",
       defaultLabel = "Continue with Google"
     ),
     twitter = list(
-      icon = IconBrandTwitter(size = 18), color = "cyan", variant = "filled",
+      icon = IconBrandTwitter(size = 18),
+      color = "cyan",
+      variant = "filled",
       defaultLabel = "Follow on Twitter"
     ),
     facebook = list(
-      icon = IconBrandFacebook(size = 18), color = "blue", variant = "filled",
+      icon = IconBrandFacebook(size = 18),
+      color = "blue",
+      variant = "filled",
       defaultLabel = "Log in with Facebook"
     ),
     github = list(
-      icon = IconBrandGithub(size = 18), color = "dark", variant = "filled",
+      icon = IconBrandGithub(size = 18),
+      color = "dark",
+      variant = "filled",
       defaultLabel = "Log in with GitHub"
     ),
     discord = list(
-      icon = IconBrandDiscord(size = 18), color = "indigo", variant = "filled",
+      icon = IconBrandDiscord(size = 18),
+      color = "indigo",
+      variant = "filled",
       defaultLabel = "Join on Discord"
     )
   )

@@ -23,7 +23,13 @@ NULL
 #' @param maxSize Maximum size per file in bytes (`NULL` for no limit).
 #' @export
 Dropzone <- function(inputId, ..., accept = NULL, maxSize = NULL) {
-  mantineElement("Dropzone", inputId = inputId, accept = accept, maxSize = maxSize, ...)
+  mantineElement(
+    "Dropzone",
+    inputId = inputId,
+    accept = accept,
+    maxSize = maxSize,
+    ...
+  )
 }
 
 #' @rdname Dropzone

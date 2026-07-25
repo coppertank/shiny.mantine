@@ -18,14 +18,14 @@ NULL
 #' @examples
 #' \dontrun{
 #' # ui:
-#' ModalsProvider(MantineProvider(...))
+#' MantineProvider(ModalsProvider(...))
 #'
 #' # server:
 #' observeEvent(input$delete_btn, {
 #'   openMantineConfirmModal(
 #'     session, inputId = "confirm_delete",
 #'     title = "Confirm deletion",
-#'     message = "This action cannot be undone. Continue?",
+#'     children = "This action cannot be undone. Continue?",
 #'     labels = list(confirm = "Delete", cancel = "Cancel"),
 #'     confirmProps = list(color = "red")
 #'   )
@@ -44,13 +44,21 @@ ModalsProvider <- displayComponent("ModalsProvider")
 #'
 #' @param session Session object passed to the Shiny server function.
 #' @param inputId Id of the Shiny input that receives `TRUE`/`FALSE`.
-#' @param ... Other props (`title`, `message`, `labels`, `confirmProps`,
-#'   `cancelProps`, ...).
+#' @param ... Other props (`title`, `children` as plain text (the body
+#'   message), `labels`, `confirmProps`, `cancelProps`, ...).
 #' @export
-openMantineConfirmModal <- function(session = shiny::getDefaultReactiveDomain(), inputId, ...) {
-  session$sendCustomMessage("shinyMantineOpenConfirmModal", c(
-    list(inputId = session$ns(inputId)), list(...)
-  ))
+openMantineConfirmModal <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  inputId,
+  ...
+) {
+  session$sendCustomMessage(
+    "shinyMantineOpenConfirmModal",
+    c(
+      list(inputId = session$ns(inputId)),
+      list(...)
+    )
+  )
 }
 
 #' Open a generic modal (`@mantine/modals`)

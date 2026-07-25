@@ -23,7 +23,12 @@ NULL
 #' )
 #' }
 SortableList <- function(inputId, items, withHandle = FALSE) {
-  mantineElement("SortableList", inputId = inputId, items = items, withHandle = withHandle)
+  mantineElement(
+    "SortableList",
+    inputId = inputId,
+    items = items,
+    withHandle = withHandle
+  )
 }
 
 #' Drag-and-drop reorderable table
@@ -48,5 +53,10 @@ SortableList <- function(inputId, items, withHandle = FALSE) {
 #' )
 #' }
 SortableTable <- function(inputId, items, columns) {
-  mantineElement("SortableTable", inputId = inputId, items = items, columns = columns)
+  mantineElement(
+    "SortableTable",
+    inputId = inputId,
+    items = items,
+    columns = columns
+  )
 }

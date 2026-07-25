@@ -39,9 +39,16 @@
 #'   updateMantineProps(session, "my_modal", opened = FALSE)
 #' })
 #' }
-updateMantineProps <- function(session = shiny::getDefaultReactiveDomain(), mantineId, ...) {
-  session$sendCustomMessage("shinyMantineUpdateProps", list(
-    id = session$ns(mantineId),
-    props = list(...)
-  ))
+updateMantineProps <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  mantineId,
+  ...
+) {
+  session$sendCustomMessage(
+    "shinyMantineUpdateProps",
+    list(
+      id = session$ns(mantineId),
+      props = list(...)
+    )
+  )
 }

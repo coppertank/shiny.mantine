@@ -9,7 +9,13 @@
 #' @return A `mantine_element` to nest inside [MantineProvider()].
 #' @export
 TextInput <- function(inputId, label = NULL, value = "", ...) {
-  mantineElement("TextInput", inputId = inputId, label = label, value = value, ...)
+  mantineElement(
+    "TextInput",
+    inputId = inputId,
+    label = label,
+    value = value,
+    ...
+  )
 }
 
 #' @rdname TextInput
@@ -18,9 +24,17 @@ TextInput <- function(inputId, label = NULL, value = "", ...) {
 #'   avoid masking `shiny::updateTextInput()` when both packages are loaded
 #'   together.
 #' @export
-updateMantineTextInput <- function(session = shiny::getDefaultReactiveDomain(), inputId, value = NULL, ...) {
-  session$sendCustomMessage("shinyMantineUpdateInput", list(
-    inputId = session$ns(inputId),
-    value = value
-  ))
+updateMantineTextInput <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  inputId,
+  value = NULL,
+  ...
+) {
+  session$sendCustomMessage(
+    "shinyMantineUpdateInput",
+    list(
+      inputId = session$ns(inputId),
+      value = value
+    )
+  )
 }

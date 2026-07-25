@@ -15,8 +15,16 @@ Slider <- function(inputId, value = 0, ...) {
 #' @rdname Slider
 #' @param session Session object passed to the Shiny server function.
 #' @export
-updateMantineSlider <- function(session = shiny::getDefaultReactiveDomain(), inputId, value = NULL, ...) {
-  session$sendCustomMessage("shinyMantineUpdateInput", list(inputId = session$ns(inputId), value = value))
+updateMantineSlider <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  inputId,
+  value = NULL,
+  ...
+) {
+  session$sendCustomMessage(
+    "shinyMantineUpdateInput",
+    list(inputId = session$ns(inputId), value = value)
+  )
 }
 
 #' Mantine RangeSlider (Shiny stateful input, range)
@@ -33,6 +41,14 @@ RangeSlider <- function(inputId, value = c(20, 80), ...) {
 #' @rdname RangeSlider
 #' @param session Session object passed to the Shiny server function.
 #' @export
-updateMantineRangeSlider <- function(session = shiny::getDefaultReactiveDomain(), inputId, value = NULL, ...) {
-  session$sendCustomMessage("shinyMantineUpdateInput", list(inputId = session$ns(inputId), value = value))
+updateMantineRangeSlider <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  inputId,
+  value = NULL,
+  ...
+) {
+  session$sendCustomMessage(
+    "shinyMantineUpdateInput",
+    list(inputId = session$ns(inputId), value = value)
+  )
 }

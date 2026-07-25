@@ -21,15 +21,28 @@ NULL
 #' RichTextEditor("bio", content = "<p>Write something...</p>")
 #' }
 RichTextEditor <- function(inputId, content = "", placeholder = NULL, ...) {
-  mantineElement("RichTextEditor", inputId = inputId, content = content, placeholder = placeholder, ...)
+  mantineElement(
+    "RichTextEditor",
+    inputId = inputId,
+    content = content,
+    placeholder = placeholder,
+    ...
+  )
 }
 
 #' @rdname RichTextEditor
 #' @param session Session object passed to the Shiny server function.
 #' @export
-updateMantineRichTextEditor <- function(session = shiny::getDefaultReactiveDomain(), inputId, content) {
-  session$sendCustomMessage("shinyMantineUpdateInput", list(
-    inputId = session$ns(inputId),
-    value = content
-  ))
+updateMantineRichTextEditor <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  inputId,
+  content
+) {
+  session$sendCustomMessage(
+    "shinyMantineUpdateInput",
+    list(
+      inputId = session$ns(inputId),
+      value = content
+    )
+  )
 }
