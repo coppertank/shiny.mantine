@@ -199,6 +199,29 @@ observeEvent(input$confirm_delete_btn, {
 })
 ```
 
+For full control over a modal/drawer's internal layout (e.g. extra
+controls next to the title), use `ModalRoot()`/`DrawerRoot()` — the
+lower-level piece behind `Modal()`/`Drawer()` — composed with
+`ModalOverlay()`/`ModalContent()`/`ModalHeader()`/`ModalTitle()`/
+`ModalCloseButton()`/`ModalBody()` (and the `Drawer*` equivalents). They
+open/close from R exactly like the all-in-one versions, including
+`ModalStack()`/`DrawerStack()` participation:
+
+```r
+ModalRoot(
+  mantineId = "custom_modal", inputId = "custom_modal_state",
+  ModalOverlay(),
+  ModalContent(
+    ModalHeader(ModalTitle("Custom layout"), ModalCloseButton()),
+    ModalBody(Text("Modal content"))
+  )
+)
+```
+
+`FocusTrap()`/`RemoveScroll()` are the same focus-trapping/scroll-locking
+mechanisms `Modal()`/`Drawer()` use internally, for building other fully
+custom overlays that need the same behavior.
+
 ## Data display
 
 `Table()` family (compose by hand for full control), `DataTable()`
@@ -255,6 +278,21 @@ MantineProvider(
 )
 ```
 
+`MantineThemeProvider(theme = list(...))` updates the theme *object*
+exposed via Mantine's `useMantineTheme()` hook for everything nested
+inside. **It does not restyle standard components** (`Button()`,
+`Badge()`, ...): those get their colors from CSS variables that only the
+outermost `MantineProvider()` injects once, so nesting a
+`MantineThemeProvider()` with a different `primaryColor` will *not* turn
+a `Button()` a different color — that component was already compiled
+against the outer theme's CSS variables. Its practical use in
+`shiny.mantine` is narrow: it exists mainly for API completeness and for
+any future/custom component that reads `theme` reactively through that
+hook, not as a scoped-restyling tool. If you need a visually different
+theme for part of a page, that currently requires a second, independent
+`MantineProvider()` (with its own color-scheme-sync caveat — see the
+README's "Known limitations").
+
 ## Additional components
 
 Three coverage passes over every export of `@mantine/core` (plus the
@@ -269,12 +307,29 @@ console errors):
   `Collapse()` (animated show/hide, toggled via `updateMantineProps()`),
   `Menubar()`, `Menu()` extensions (submenus, checkbox/radio items,
   search, context-menu trigger), `Splitter()`/`SplitterPanel()`
-  (resizable panes), `CardSection()`/`ActionIconGroup()`.
+  (resizable panes), `CardSection()`/`ActionIconGroup()`. For a fully
+  custom arrangement of `Pagination()`'s prev/next/first/last controls,
+  `PaginationRoot()` + `PaginationFirst()`/`PaginationPrevious()`/
+  `PaginationItems()`/`PaginationNext()`/`PaginationLast()`/
+  `PaginationDots()` read the current page from it automatically (no
+  per-part wiring needed) and stay stateful exactly like `Pagination()`.
 - **Inputs**: `CheckboxGroup()`/`SwitchGroup()` (array-valued group
   inputs, same pattern as `RadioGroup()`/`ChipGroup()`),
   `CheckboxCard()`/`RadioCard()`, `FileButton()`, `MaskInput()` (masked
   text input, mounted uncontrolled internally since Mantine's masking
   hook mutates the DOM value directly), `DirectionProvider()`.
+  `HueSlider()`/`AlphaSlider()`/`AngleSlider()` are standalone versions
+  of the channel sliders `ColorPicker()` uses internally (plus a
+  circular 0-360° dial for `AngleSlider()`). `RadioIndicator()`/
+  `CheckboxIndicator()` are the purely decorative "checked" look
+  `Radio()`/`Checkbox()` render, usable without a real input behind them
+  (e.g. a read-only status list). `Input()`/`InputBase()` provide
+  Mantine's styled box (border, focus ring, left/right sections) with
+  *no* value/onChange management of their own — unlike `TextInput()` and
+  friends, not synced to Shiny; use them for visual composition.
+  `InputWrapper()`/`InputLabel()`/`InputDescription()`/`InputError()`/
+  `InputPlaceholder()` give arbitrary custom content the same
+  label/description/error chrome.
 - **Charts** (`@mantine/charts`, beyond `LineChart()`/`BarChart()`/
   `AreaChart()`/`PieChart()`/`DonutChart()`): `RadarChart()`,
   `CompositeChart()`, `RadialBarChart()`, `BubbleChart()`,
@@ -300,30 +355,42 @@ console errors):
   section on the automated generator): `Fieldset`, `DataList` family,
   `EmptyState` family, `Marquee`, `NumberFormatter`, `Pill`/`PillGroup`,
   `RollingNumber`, `SemiCircleProgress`, `TooltipFloating`, `TooltipGroup`,
-  `Typography`, `VisuallyHidden`.
+  `Typography`, `VisuallyHidden`, the `Modal`/`Drawer`/`Pagination`
+  compound sub-parts and `Input` family above, plus small standalone
+  pieces Mantine renders internally: `CheckIcon()`, `CloseIcon()`,
+  `AccordionChevron()`, `RadioIcon()`, `ActionIconGroupSection()`,
+  `ButtonGroupSection()`.
 
 ### Intentionally out of scope
 
-A few `@mantine/core`/satellite exports are deliberately left unwrapped —
-a scope decision, not an oversight:
+A previous version of this section excluded the `Modal`/`Drawer`/
+`Pagination`/`Spotlight` compound forms, `HueSlider`/`AlphaSlider`/
+`AngleSlider`, `FocusTrap`/`RemoveScroll`, `MantineThemeProvider`, the
+`Input` family, and a handful of small internal icons/sections
+(`CheckIcon`, `CloseIcon`, `RadioIcon`, `RadioIndicator`,
+`CheckboxIndicator`, `AccordionChevron`, `ActionIconGroupSection`,
+`ButtonGroupSection`). On closer inspection none of these actually needed
+function-valued props or non-serializable values (refs, live positioning
+context) — they're now all wrapped, and documented above and in
+`vignette("satellite-packages")`.
 
-- **Compound/composable forms** of `Modal`/`Drawer`/`Pagination`
-  (`ModalRoot`/`ModalBody`/..., `DrawerRoot`/..., `PaginationRoot`/...) —
-  `Modal()`/`Drawer()`/`Pagination()` already cover the common all-in-one
-  usage (stacking multiple `Modal()`/`Drawer()`s together is covered, see
-  `ModalStack()`/`DrawerStack()` above).
-- **`Combobox` internals** (`ComboboxDropdown`, `ComboboxOption`, ...) and
-  the `Input`/`InputBase`/`InputWrapper` primitives — internal building
-  blocks `Select`/`MultiSelect`/`Autocomplete`/`TagsInput`/every stateful
-  input are already built on top of, already exposed at the higher level.
-- **`Spotlight` compound form** (`SpotlightRoot`/`SpotlightAction`/...) —
-  `Spotlight(inputId, actions, ...)` already covers the common flat
-  action-list usage.
-- **Low-level positioning/accessibility primitives** not covered above:
-  `FloatingArrow`/`FloatingIndicator`, `FocusTrap`, `RemoveScroll`.
+What remains genuinely out of scope has a real architectural reason, not
+just "not gotten to yet":
+
+- **`Combobox` internals** (`ComboboxDropdown`, `ComboboxOption`, ...) —
+  driven by Mantine's own `useCombobox()` hook (open state, active
+  option, keyboard navigation state), which can't be expressed through
+  R's data-only props; `Select()`/`MultiSelect()`/`Autocomplete()`/
+  `TagsInput()`/every stateful input already built on top of it are
+  exposed at the higher level.
+- **`FloatingArrow`/`FloatingIndicator`** — need a live floating-UI
+  `context` object and/or a target-element `ref`, neither of which is a
+  plain, JSON-serializable R value.
 - **SSR/Next.js-specific helpers**: `ColorSchemeScript`,
-  `HeadlessMantineProvider`, `MantineThemeProvider`, `InlineStyles` — not
-  applicable to Shiny's client-side-only mount architecture.
+  `HeadlessMantineProvider`, `InlineStyles` — genuinely not applicable to
+  Shiny's client-side-only mount architecture (there's no server-rendered
+  HTML to hydrate, and no reason to run Mantine without emitting its own
+  CSS).
 - **`TableOfContents`/`OverflowList`** — require scanning real page DOM
   headings or render-prop-heavy overflow logic, both a poor fit for a
   declarative R wrapper.
@@ -331,12 +398,6 @@ a scope decision, not an oversight:
   `YearLevel`, `DecadeLevel`, ...) — the low-level primitive
   `DatePicker()`/`DatePickerInput()` are built on; customization goes
   through function-based `getDayProps`, a poor fit for R's data-only props.
-- **`HueSlider`/`AlphaSlider`/`AngleSlider`** — internal building blocks
-  of `ColorPicker()`, already covered for the common case.
-- **Miscellaneous tiny sub-icon/indicator parts**: `CheckIcon`,
-  `CloseIcon`, `RadioIcon`/`RadioIndicator`, `CheckboxIndicator`,
-  `AccordionChevron`, `ActionIconGroupSection`, `ButtonGroupSection` — all
-  internal pieces of components already wrapped above.
 
 ## Where to go next
 

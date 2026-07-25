@@ -94,6 +94,67 @@ const MANIFEST = [
   { name: 'TooltipGroup', slug: 'tooltip', doc: 'Shares open/close delay behaviour across a group of Tooltips' },
   { name: 'Typography', slug: 'typography', doc: 'Applies Mantine\'s prose/typography styling to arbitrary HTML content (e.g. rendered Markdown)' },
   { name: 'VisuallyHidden', slug: 'visually-hidden', doc: 'Visually hides content while keeping it available to screen readers' },
+
+  // Modal.* / Drawer.* compound parts - purely structural pieces behind
+  // Modal()/Drawer(); ModalRoot()/DrawerRoot() (the stateful piece that
+  // replaces the compound's own Root) are hand-written in R/Overlays.R.
+  { name: 'ModalOverlay', slug: 'modal', doc: 'Dimmed backdrop behind a ModalRoot()' },
+  { name: 'ModalContent', slug: 'modal', doc: 'Content box of a ModalRoot() (holds ModalHeader()/ModalBody())' },
+  { name: 'ModalHeader', slug: 'modal', doc: 'Header row of a ModalRoot() (usually ModalTitle() + ModalCloseButton())' },
+  { name: 'ModalTitle', slug: 'modal', doc: 'Title text of a ModalRoot()' },
+  { name: 'ModalCloseButton', slug: 'modal', doc: 'Close ("x") button of a ModalRoot() - already wired to its onClose' },
+  { name: 'ModalBody', slug: 'modal', doc: 'Body/content area of a ModalRoot()' },
+  { name: 'DrawerOverlay', slug: 'drawer', doc: 'Dimmed backdrop behind a DrawerRoot()' },
+  { name: 'DrawerContent', slug: 'drawer', doc: 'Content box of a DrawerRoot() (holds DrawerHeader()/DrawerBody())' },
+  { name: 'DrawerHeader', slug: 'drawer', doc: 'Header row of a DrawerRoot() (usually DrawerTitle() + DrawerCloseButton())' },
+  { name: 'DrawerTitle', slug: 'drawer', doc: 'Title text of a DrawerRoot()' },
+  { name: 'DrawerCloseButton', slug: 'drawer', doc: 'Close ("x") button of a DrawerRoot() - already wired to its onClose' },
+  { name: 'DrawerBody', slug: 'drawer', doc: 'Body/content area of a DrawerRoot()' },
+
+  // Pagination.* compound parts - purely structural/self-wired pieces
+  // behind PaginationRoot() (hand-written in R/SpecialInputs.R), reading
+  // the current page from it automatically - no props needed.
+  { name: 'PaginationItems', slug: 'pagination', doc: 'Numbered page buttons of a PaginationRoot()' },
+  { name: 'PaginationFirst', slug: 'pagination', doc: '"Go to first page" button of a PaginationRoot()' },
+  { name: 'PaginationLast', slug: 'pagination', doc: '"Go to last page" button of a PaginationRoot()' },
+  { name: 'PaginationNext', slug: 'pagination', doc: '"Go to next page" button of a PaginationRoot()' },
+  { name: 'PaginationPrevious', slug: 'pagination', doc: '"Go to previous page" button of a PaginationRoot()' },
+  { name: 'PaginationDots', slug: 'pagination', doc: 'Ellipsis ("...") separator of a PaginationRoot()' },
+
+  // Input primitives - the styled box (border, focus ring, sections) and
+  // label/description/error chrome every stateful input in this package
+  // already uses internally, exposed for building fully custom inputs.
+  // Unlike TextInput()/etc., these are NOT synced to Shiny on their own.
+  { name: 'Input', slug: 'input', doc: 'Styled input box (border, focus ring, left/right sections) with no value/onChange management of its own' },
+  { name: 'InputBase', slug: 'input', doc: 'Like Input(), extended with a few more style-composition options used internally by other inputs' },
+  { name: 'InputWrapper', slug: 'input', doc: 'Label/description/error/required-asterisk chrome around arbitrary custom content' },
+  { name: 'InputLabel', slug: 'input', doc: 'Standalone input label, styled like InputWrapper()\'s own label' },
+  { name: 'InputDescription', slug: 'input', doc: 'Standalone input description text, styled like InputWrapper()\'s own description' },
+  { name: 'InputError', slug: 'input', doc: 'Standalone input error text, styled like InputWrapper()\'s own error' },
+  { name: 'InputPlaceholder', slug: 'input', doc: 'Renders its children with input-placeholder styling (dimmed text)' },
+
+  // Focus/scroll primitives used internally by Modal()/Drawer(), exposed
+  // for building fully custom overlays with ModalRoot()/DrawerRoot().
+  { name: 'FocusTrap', slug: 'focus-trap', doc: 'Traps keyboard focus inside its single child while active' },
+  { name: 'RemoveScroll', slug: 'floating', doc: 'Prevents the page behind it from scrolling while enabled' },
+
+  // Updates the theme *object* available to custom code that explicitly
+  // calls Mantine's useMantineTheme() hook - it does NOT re-inject the
+  // CSS variables standard pre-styled components (Button, Badge, ...)
+  // actually read their colors from (those come from the CSS variables
+  // the outermost MantineProvider() sets once), so nesting one does not
+  // visually restyle standard components. Included for completeness/API
+  // parity; narrow practical use in shiny.mantine specifically.
+  { name: 'MantineThemeProvider', slug: 'mantine-provider', doc: 'Updates the theme object exposed via Mantine\'s useMantineTheme() hook for custom code - does NOT restyle standard components, see the note in `?MantineThemeProvider`' },
+
+  // Small standalone pieces Mantine renders internally (icons/sections),
+  // exposed for reuse - not from '@tabler/icons-react' (see `?icons`).
+  { name: 'CheckIcon', slug: 'checkbox', doc: 'The checkmark icon Checkbox()/CheckboxCard() render when checked' },
+  { name: 'CloseIcon', slug: 'close-button', doc: 'The "x" icon CloseButton() renders' },
+  { name: 'AccordionChevron', slug: 'accordion', doc: 'The chevron icon Accordion() renders next to each control' },
+  { name: 'RadioIcon', slug: 'radio', doc: 'The dot icon Radio()/RadioCard() render when checked' },
+  { name: 'ActionIconGroupSection', slug: 'action-icon', doc: 'Non-interactive section (e.g. a label) placed between grouped ActionIcon()s' },
+  { name: 'ButtonGroupSection', slug: 'button', doc: 'Non-interactive section (e.g. a label) placed between grouped Button()s' },
 ];
 
 const jsImportNames = MANIFEST.flatMap((c) => [c.name, ...(c.compound || []).map((s) => s.export)]);

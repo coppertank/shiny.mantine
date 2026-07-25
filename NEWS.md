@@ -18,6 +18,18 @@ Initial public release.
   shared React 18 runtime, required for compatibility with Mantine v9.
 * A runnable demo app per [ui.mantine.dev](https://ui.mantine.dev/)
   category under `inst/examples/`.
+* Compound/composable forms of `Modal()`/`Drawer()`/`Pagination()`/
+  `Spotlight()` for fully custom layouts: `ModalRoot()` + `ModalOverlay()`/
+  `ModalContent()`/`ModalHeader()`/`ModalTitle()`/`ModalCloseButton()`/
+  `ModalBody()` (and the `Drawer*`/`Pagination*`/`Spotlight*` equivalents).
+* `HueSlider()`/`AlphaSlider()`/`AngleSlider()` — standalone versions of
+  `ColorPicker()`'s channel sliders, plus a circular angle dial.
+* The `Input`/`InputBase`/`InputWrapper`/`InputLabel`/`InputDescription`/
+  `InputError`/`InputPlaceholder` primitives, `FocusTrap()`/
+  `RemoveScroll()`, `MantineThemeProvider()`, `RadioIndicator()`/
+  `CheckboxIndicator()`, and small standalone pieces Mantine renders
+  internally (`CheckIcon()`, `CloseIcon()`, `AccordionChevron()`,
+  `RadioIcon()`, `ActionIconGroupSection()`, `ButtonGroupSection()`).
 
 ### Bug fixes
 
@@ -29,3 +41,12 @@ Initial public release.
   (e.g. a `NumberInput()` mirrored to a `Slider()`).
 * Fixed `SplitButton()`'s dropdown arrow rendering with mismatched
   border-radius against the primary button.
+* Fixed a Bootstrap 3 CSS leak (`fluidPage()`'s bundled
+  `input[type="checkbox"], input[type="radio"] { margin: 4px 0 0 }`
+  rule) misaligning the checked icon inside `Checkbox()`/`Radio()`/
+  `Switch()`/`Chip()`/`CheckboxCard()`/`RadioCard()` and group items.
+* Fixed `@mantine/spotlight`'s CSS being silently dropped from the
+  production bundle (its `package.json` declares `"sideEffects": false`
+  with no `*.css` exception, unlike `@mantine/core`, so webpack's
+  tree-shaking removed the "unused" stylesheet import) — this made
+  `SpotlightActionsGroup()`'s `label` never actually render.

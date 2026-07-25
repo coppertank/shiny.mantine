@@ -50,6 +50,47 @@ Modal <- function(mantineId, ..., inputId = NULL, opened = FALSE) {
   )
 }
 
+#' Mantine Modal.Root (fully custom modal layout)
+#'
+#' The lower-level piece behind [Modal()], for full control over the
+#' modal's internal layout (e.g. extra controls next to the title, a
+#' non-standard body/footer arrangement) — compose it with
+#' [ModalOverlay()], [ModalContent()], [ModalHeader()], [ModalTitle()],
+#' [ModalCloseButton()] and [ModalBody()]. Opens/closes from R exactly
+#' like [Modal()] (`updateMantineProps(session, mantineId, opened =
+#' TRUE/FALSE)`), including [ModalStack()] participation if nested inside
+#' one — the compound and all-in-one forms are interchangeable from R's
+#' point of view.
+#'
+#' @param mantineId Identifier for [updateMantineProps()].
+#' @param ... Children — typically [ModalOverlay()] and [ModalContent()]
+#'   (wrapping [ModalHeader()] with [ModalTitle()] +
+#'   [ModalCloseButton()], and [ModalBody()]) — plus other props (`size`,
+#'   `centered`, `fullScreen`, ...). See
+#'   <https://mantine.dev/core/modal/#modalroot>.
+#' @param inputId If provided, receives `FALSE` when the user closes it.
+#' @param opened Initial state.
+#' @export
+#' @examples
+#' \dontrun{
+#' ModalRoot("custom_modal", inputId = "custom_modal_state",
+#'   ModalOverlay(),
+#'   ModalContent(
+#'     ModalHeader(ModalTitle("Custom layout"), ModalCloseButton()),
+#'     ModalBody(Text("Modal content"))
+#'   )
+#' )
+#' }
+ModalRoot <- function(mantineId, ..., inputId = NULL, opened = FALSE) {
+  mantineElement(
+    "ModalRoot",
+    mantineId = mantineId,
+    inputId = inputId,
+    opened = opened,
+    ...
+  )
+}
+
 #' Mantine Drawer (like Modal, but slides in from a screen edge)
 #'
 #' Same pattern as [Modal()]: open/close from R with
@@ -64,6 +105,32 @@ Modal <- function(mantineId, ..., inputId = NULL, opened = FALSE) {
 Drawer <- function(mantineId, ..., inputId = NULL, opened = FALSE) {
   mantineElement(
     "Drawer",
+    mantineId = mantineId,
+    inputId = inputId,
+    opened = opened,
+    ...
+  )
+}
+
+#' Mantine Drawer.Root (fully custom drawer layout)
+#'
+#' Same idea as [ModalRoot()], for [Drawer()] instead of [Modal()]:
+#' compose it with [DrawerOverlay()], [DrawerContent()], [DrawerHeader()],
+#' [DrawerTitle()], [DrawerCloseButton()] and [DrawerBody()]. Opens/closes
+#' from R exactly like [Drawer()], including [DrawerStack()] participation.
+#'
+#' @param mantineId Identifier for [updateMantineProps()].
+#' @param ... Children — typically [DrawerOverlay()] and [DrawerContent()]
+#'   (wrapping [DrawerHeader()] with [DrawerTitle()] +
+#'   [DrawerCloseButton()], and [DrawerBody()]) — plus other props
+#'   (`position`, `size`, ...). See
+#'   <https://mantine.dev/core/drawer/#drawerroot>.
+#' @param inputId If provided, receives `FALSE` when the user closes it.
+#' @param opened Initial state.
+#' @export
+DrawerRoot <- function(mantineId, ..., inputId = NULL, opened = FALSE) {
+  mantineElement(
+    "DrawerRoot",
     mantineId = mantineId,
     inputId = inputId,
     opened = opened,

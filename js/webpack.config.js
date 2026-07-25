@@ -16,7 +16,22 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader']
+        use: ['style-loader', 'css-loader'],
+        // Some Mantine satellite packages (e.g. @mantine/spotlight 9.4.2)
+        // declare "sideEffects": false in their own package.json with no
+        // "*.css" exception (unlike @mantine/core, which does). In
+        // production mode, webpack's tree-shaking then treats their
+        // `import '.../styles.css'` as dead code (nothing consumes its
+        // JS export) and silently drops it from the bundle - the CSS
+        // still injects fine at dev/watch time (no tree-shaking there),
+        // which is why this only breaks the built inst/www/mantine.js.
+        // Symptom: components render with JS-set CSS variables that no
+        // rule ever reads (e.g. Spotlight.ActionsGroup's `label`, set as
+        // `--spotlight-label` but never shown, since the `content:
+        // var(--spotlight-label)` rule that would display it never
+        // loads). Force every *.css import to be treated as having side
+        // effects, regardless of what the owning package declares.
+        sideEffects: true
       }
     ]
   }

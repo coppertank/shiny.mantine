@@ -340,3 +340,309 @@ Typography <- displayComponent("Typography")
 #' @param ... Props and children. See <https://mantine.dev/core/visually-hidden/>.
 #' @export
 VisuallyHidden <- displayComponent("VisuallyHidden")
+
+#' Mantine ModalOverlay
+#'
+#' Dimmed backdrop behind a ModalRoot(). Supports `mantineId` for reactive updates via
+#' [updateMantineProps()].
+#' @rdname ModalOverlay
+#' @param ... Props and children. See <https://mantine.dev/core/modal/>.
+#' @export
+ModalOverlay <- displayComponent("ModalOverlay")
+
+#' Mantine ModalContent
+#'
+#' Content box of a ModalRoot() (holds ModalHeader()/ModalBody()). Supports `mantineId` for reactive updates via
+#' [updateMantineProps()].
+#' @rdname ModalContent
+#' @param ... Props and children. See <https://mantine.dev/core/modal/>.
+#' @export
+ModalContent <- displayComponent("ModalContent")
+
+#' Mantine ModalHeader
+#'
+#' Header row of a ModalRoot() (usually ModalTitle() + ModalCloseButton()). Supports `mantineId` for reactive updates via
+#' [updateMantineProps()].
+#' @rdname ModalHeader
+#' @param ... Props and children. See <https://mantine.dev/core/modal/>.
+#' @export
+ModalHeader <- displayComponent("ModalHeader")
+
+#' Mantine ModalTitle
+#'
+#' Title text of a ModalRoot(). Supports `mantineId` for reactive updates via
+#' [updateMantineProps()].
+#' @rdname ModalTitle
+#' @param ... Props and children. See <https://mantine.dev/core/modal/>.
+#' @export
+ModalTitle <- displayComponent("ModalTitle")
+
+#' Mantine ModalCloseButton
+#'
+#' Close ("x") button of a ModalRoot() - already wired to its onClose. Supports `mantineId` for reactive updates via
+#' [updateMantineProps()].
+#' @rdname ModalCloseButton
+#' @param ... Props and children. See <https://mantine.dev/core/modal/>.
+#' @export
+ModalCloseButton <- displayComponent("ModalCloseButton")
+
+#' Mantine ModalBody
+#'
+#' Body/content area of a ModalRoot(). Supports `mantineId` for reactive updates via
+#' [updateMantineProps()].
+#' @rdname ModalBody
+#' @param ... Props and children. See <https://mantine.dev/core/modal/>.
+#' @export
+ModalBody <- displayComponent("ModalBody")
+
+#' Mantine DrawerOverlay
+#'
+#' Dimmed backdrop behind a DrawerRoot(). Supports `mantineId` for reactive updates via
+#' [updateMantineProps()].
+#' @rdname DrawerOverlay
+#' @param ... Props and children. See <https://mantine.dev/core/drawer/>.
+#' @export
+DrawerOverlay <- displayComponent("DrawerOverlay")
+
+#' Mantine DrawerContent
+#'
+#' Content box of a DrawerRoot() (holds DrawerHeader()/DrawerBody()). Supports `mantineId` for reactive updates via
+#' [updateMantineProps()].
+#' @rdname DrawerContent
+#' @param ... Props and children. See <https://mantine.dev/core/drawer/>.
+#' @export
+DrawerContent <- displayComponent("DrawerContent")
+
+#' Mantine DrawerHeader
+#'
+#' Header row of a DrawerRoot() (usually DrawerTitle() + DrawerCloseButton()). Supports `mantineId` for reactive updates via
+#' [updateMantineProps()].
+#' @rdname DrawerHeader
+#' @param ... Props and children. See <https://mantine.dev/core/drawer/>.
+#' @export
+DrawerHeader <- displayComponent("DrawerHeader")
+
+#' Mantine DrawerTitle
+#'
+#' Title text of a DrawerRoot(). Supports `mantineId` for reactive updates via
+#' [updateMantineProps()].
+#' @rdname DrawerTitle
+#' @param ... Props and children. See <https://mantine.dev/core/drawer/>.
+#' @export
+DrawerTitle <- displayComponent("DrawerTitle")
+
+#' Mantine DrawerCloseButton
+#'
+#' Close ("x") button of a DrawerRoot() - already wired to its onClose. Supports `mantineId` for reactive updates via
+#' [updateMantineProps()].
+#' @rdname DrawerCloseButton
+#' @param ... Props and children. See <https://mantine.dev/core/drawer/>.
+#' @export
+DrawerCloseButton <- displayComponent("DrawerCloseButton")
+
+#' Mantine DrawerBody
+#'
+#' Body/content area of a DrawerRoot(). Supports `mantineId` for reactive updates via
+#' [updateMantineProps()].
+#' @rdname DrawerBody
+#' @param ... Props and children. See <https://mantine.dev/core/drawer/>.
+#' @export
+DrawerBody <- displayComponent("DrawerBody")
+
+#' Mantine PaginationItems
+#'
+#' Numbered page buttons of a PaginationRoot(). Supports `mantineId` for reactive updates via
+#' [updateMantineProps()].
+#' @rdname PaginationItems
+#' @param ... Props and children. See <https://mantine.dev/core/pagination/>.
+#' @export
+PaginationItems <- displayComponent("PaginationItems")
+
+#' Mantine PaginationFirst
+#'
+#' "Go to first page" button of a PaginationRoot(). Supports `mantineId` for reactive updates via
+#' [updateMantineProps()].
+#' @rdname PaginationFirst
+#' @param ... Props and children. See <https://mantine.dev/core/pagination/>.
+#' @export
+PaginationFirst <- displayComponent("PaginationFirst")
+
+#' Mantine PaginationLast
+#'
+#' "Go to last page" button of a PaginationRoot(). Supports `mantineId` for reactive updates via
+#' [updateMantineProps()].
+#' @rdname PaginationLast
+#' @param ... Props and children. See <https://mantine.dev/core/pagination/>.
+#' @export
+PaginationLast <- displayComponent("PaginationLast")
+
+#' Mantine PaginationNext
+#'
+#' "Go to next page" button of a PaginationRoot(). Supports `mantineId` for reactive updates via
+#' [updateMantineProps()].
+#' @rdname PaginationNext
+#' @param ... Props and children. See <https://mantine.dev/core/pagination/>.
+#' @export
+PaginationNext <- displayComponent("PaginationNext")
+
+#' Mantine PaginationPrevious
+#'
+#' "Go to previous page" button of a PaginationRoot(). Supports `mantineId` for reactive updates via
+#' [updateMantineProps()].
+#' @rdname PaginationPrevious
+#' @param ... Props and children. See <https://mantine.dev/core/pagination/>.
+#' @export
+PaginationPrevious <- displayComponent("PaginationPrevious")
+
+#' Mantine PaginationDots
+#'
+#' Ellipsis ("...") separator of a PaginationRoot(). Supports `mantineId` for reactive updates via
+#' [updateMantineProps()].
+#' @rdname PaginationDots
+#' @param ... Props and children. See <https://mantine.dev/core/pagination/>.
+#' @export
+PaginationDots <- displayComponent("PaginationDots")
+
+#' Mantine Input
+#'
+#' Styled input box (border, focus ring, left/right sections) with no value/onChange management of its own. Supports `mantineId` for reactive updates via
+#' [updateMantineProps()].
+#' @rdname Input
+#' @param ... Props and children. See <https://mantine.dev/core/input/>.
+#' @export
+Input <- displayComponent("Input")
+
+#' Mantine InputBase
+#'
+#' Like Input(), extended with a few more style-composition options used internally by other inputs. Supports `mantineId` for reactive updates via
+#' [updateMantineProps()].
+#' @rdname InputBase
+#' @param ... Props and children. See <https://mantine.dev/core/input/>.
+#' @export
+InputBase <- displayComponent("InputBase")
+
+#' Mantine InputWrapper
+#'
+#' Label/description/error/required-asterisk chrome around arbitrary custom content. Supports `mantineId` for reactive updates via
+#' [updateMantineProps()].
+#' @rdname InputWrapper
+#' @param ... Props and children. See <https://mantine.dev/core/input/>.
+#' @export
+InputWrapper <- displayComponent("InputWrapper")
+
+#' Mantine InputLabel
+#'
+#' Standalone input label, styled like InputWrapper()'s own label. Supports `mantineId` for reactive updates via
+#' [updateMantineProps()].
+#' @rdname InputLabel
+#' @param ... Props and children. See <https://mantine.dev/core/input/>.
+#' @export
+InputLabel <- displayComponent("InputLabel")
+
+#' Mantine InputDescription
+#'
+#' Standalone input description text, styled like InputWrapper()'s own description. Supports `mantineId` for reactive updates via
+#' [updateMantineProps()].
+#' @rdname InputDescription
+#' @param ... Props and children. See <https://mantine.dev/core/input/>.
+#' @export
+InputDescription <- displayComponent("InputDescription")
+
+#' Mantine InputError
+#'
+#' Standalone input error text, styled like InputWrapper()'s own error. Supports `mantineId` for reactive updates via
+#' [updateMantineProps()].
+#' @rdname InputError
+#' @param ... Props and children. See <https://mantine.dev/core/input/>.
+#' @export
+InputError <- displayComponent("InputError")
+
+#' Mantine InputPlaceholder
+#'
+#' Renders its children with input-placeholder styling (dimmed text). Supports `mantineId` for reactive updates via
+#' [updateMantineProps()].
+#' @rdname InputPlaceholder
+#' @param ... Props and children. See <https://mantine.dev/core/input/>.
+#' @export
+InputPlaceholder <- displayComponent("InputPlaceholder")
+
+#' Mantine FocusTrap
+#'
+#' Traps keyboard focus inside its single child while active. Supports `mantineId` for reactive updates via
+#' [updateMantineProps()].
+#' @rdname FocusTrap
+#' @param ... Props and children. See <https://mantine.dev/core/focus-trap/>.
+#' @export
+FocusTrap <- displayComponent("FocusTrap")
+
+#' Mantine RemoveScroll
+#'
+#' Prevents the page behind it from scrolling while enabled. Supports `mantineId` for reactive updates via
+#' [updateMantineProps()].
+#' @rdname RemoveScroll
+#' @param ... Props and children. See <https://mantine.dev/core/floating/>.
+#' @export
+RemoveScroll <- displayComponent("RemoveScroll")
+
+#' Mantine MantineThemeProvider
+#'
+#' Updates the theme object exposed via Mantine's useMantineTheme() hook for custom code - does NOT restyle standard components, see the note in `?MantineThemeProvider`. Supports `mantineId` for reactive updates via
+#' [updateMantineProps()].
+#' @rdname MantineThemeProvider
+#' @param ... Props and children. See <https://mantine.dev/core/mantine-provider/>.
+#' @export
+MantineThemeProvider <- displayComponent("MantineThemeProvider")
+
+#' Mantine CheckIcon
+#'
+#' The checkmark icon Checkbox()/CheckboxCard() render when checked. Supports `mantineId` for reactive updates via
+#' [updateMantineProps()].
+#' @rdname CheckIcon
+#' @param ... Props and children. See <https://mantine.dev/core/checkbox/>.
+#' @export
+CheckIcon <- displayComponent("CheckIcon")
+
+#' Mantine CloseIcon
+#'
+#' The "x" icon CloseButton() renders. Supports `mantineId` for reactive updates via
+#' [updateMantineProps()].
+#' @rdname CloseIcon
+#' @param ... Props and children. See <https://mantine.dev/core/close-button/>.
+#' @export
+CloseIcon <- displayComponent("CloseIcon")
+
+#' Mantine AccordionChevron
+#'
+#' The chevron icon Accordion() renders next to each control. Supports `mantineId` for reactive updates via
+#' [updateMantineProps()].
+#' @rdname AccordionChevron
+#' @param ... Props and children. See <https://mantine.dev/core/accordion/>.
+#' @export
+AccordionChevron <- displayComponent("AccordionChevron")
+
+#' Mantine RadioIcon
+#'
+#' The dot icon Radio()/RadioCard() render when checked. Supports `mantineId` for reactive updates via
+#' [updateMantineProps()].
+#' @rdname RadioIcon
+#' @param ... Props and children. See <https://mantine.dev/core/radio/>.
+#' @export
+RadioIcon <- displayComponent("RadioIcon")
+
+#' Mantine ActionIconGroupSection
+#'
+#' Non-interactive section (e.g. a label) placed between grouped ActionIcon()s. Supports `mantineId` for reactive updates via
+#' [updateMantineProps()].
+#' @rdname ActionIconGroupSection
+#' @param ... Props and children. See <https://mantine.dev/core/action-icon/>.
+#' @export
+ActionIconGroupSection <- displayComponent("ActionIconGroupSection")
+
+#' Mantine ButtonGroupSection
+#'
+#' Non-interactive section (e.g. a label) placed between grouped Button()s. Supports `mantineId` for reactive updates via
+#' [updateMantineProps()].
+#' @rdname ButtonGroupSection
+#' @param ... Props and children. See <https://mantine.dev/core/button/>.
+#' @export
+ButtonGroupSection <- displayComponent("ButtonGroupSection")

@@ -91,6 +91,14 @@ import {
   NativeScrollArea,
   useModalsStack,
   useDrawersStack,
+  ModalRoot,
+  DrawerRoot,
+  PaginationRoot,
+  HueSlider,
+  AlphaSlider,
+  AngleSlider,
+  RadioIndicator,
+  CheckboxIndicator,
 } from '@mantine/core';
 import { Dropzone as MantineDropzone } from '@mantine/dropzone';
 import {
@@ -111,7 +119,16 @@ import '@mantine/dates/styles.css';
 import { Notifications, notifications } from '@mantine/notifications';
 import '@mantine/notifications/styles.css';
 import { ModalsProvider, modals } from '@mantine/modals';
-import { Spotlight } from '@mantine/spotlight';
+import {
+  Spotlight,
+  SpotlightRoot,
+  SpotlightSearch,
+  SpotlightActionsList,
+  SpotlightActionsGroup,
+  SpotlightAction,
+  SpotlightEmpty,
+  SpotlightFooter,
+} from '@mantine/spotlight';
 import '@mantine/spotlight/styles.css';
 import {
   LineChart, BarChart, AreaChart, PieChart, DonutChart,
@@ -1490,7 +1507,12 @@ const components = {
   PasswordInput: withReactiveProps(withShinyEventInput(PasswordInput)),
   Slider: withReactiveProps(withShinyValueInput(Slider)),
   RangeSlider: withReactiveProps(withShinyValueInput(RangeSlider)),
+  HueSlider: withReactiveProps(withShinyValueInput(HueSlider)),
+  AlphaSlider: withReactiveProps(withShinyValueInput(AlphaSlider)),
+  AngleSlider: withReactiveProps(withShinyValueInput(AngleSlider)),
   Radio: withReactiveProps(Radio),
+  RadioIndicator: withReactiveProps(RadioIndicator),
+  CheckboxIndicator: withReactiveProps(CheckboxIndicator),
   RadioGroup: withReactiveProps(withShinyValueInput(RadioGroup)),
   // Chip "raw" (unwrapped): when it's a child of ChipGroup, Mantine
   // automatically links it to the group's internal context
@@ -1512,6 +1534,7 @@ const components = {
   Textarea: withReactiveProps(withShinyEventInput(Textarea)),
   MaskInput: withReactiveProps(ShinyMaskInput),
   Pagination: withReactiveProps(withShinyValueInput(Pagination)),
+  PaginationRoot: withReactiveProps(withShinyValueInput(PaginationRoot)),
   Accordion: withReactiveProps(withShinyValueInput(Accordion)),
   'Accordion.Item': Accordion.Item,
   'Accordion.Control': Accordion.Control,
@@ -1531,8 +1554,10 @@ const components = {
   CheckboxCard: withReactiveProps(CheckboxCard),
   RadioCard: withReactiveProps(RadioCard),
   Modal: withStackableOpen(Modal, ModalStackContext),
+  ModalRoot: withStackableOpen(ModalRoot, ModalStackContext),
   ModalStack: withReactiveProps(ShinyModalStack),
   Drawer: withStackableOpen(Drawer, DrawerStackContext),
+  DrawerRoot: withStackableOpen(DrawerRoot, DrawerStackContext),
   DrawerStack: withReactiveProps(ShinyDrawerStack),
   Dialog: withReactiveProps(withControlledOpen(Dialog)),
   Popover: withReactiveProps(withControlledOpen(Popover)),
@@ -1564,6 +1589,13 @@ const components = {
   Notifications,
   ModalsProvider,
   Spotlight: ShinySpotlight,
+  SpotlightRoot: withReactiveProps(SpotlightRoot),
+  SpotlightSearch: withReactiveProps(SpotlightSearch),
+  SpotlightActionsList: withReactiveProps(SpotlightActionsList),
+  SpotlightActionsGroup: withReactiveProps(SpotlightActionsGroup),
+  SpotlightAction: withShinyClickValue(SpotlightAction),
+  SpotlightEmpty: withReactiveProps(SpotlightEmpty),
+  SpotlightFooter: withReactiveProps(SpotlightFooter),
   LineChart: withReactiveProps(LineChart),
   BarChart: withReactiveProps(BarChart),
   AreaChart: withReactiveProps(AreaChart),

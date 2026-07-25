@@ -436,6 +436,37 @@ CheckboxCard <- displayComponent("CheckboxCard")
 #' @export
 RadioCard <- displayComponent("RadioCard")
 
+#' Mantine RadioIndicator / CheckboxIndicator (standalone, decorative)
+#'
+#' The visual "checked" indicator [Radio()]/[Checkbox()] render
+#' internally, usable on its own wherever you need the same look without a
+#' real input behind it — e.g. a read-only status list, or a custom row
+#' that toggles some other way. Purely decorative: `checked`/
+#' `indeterminate` are plain display props, not synced with Shiny (pair
+#' with [updateMantineProps()] if you need to change them from the
+#' server).
+#'
+#' @rdname RadioIndicator
+#' @param checked Whether to show the checked state.
+#' @param ... Other props (`color`, `size`, `radius`, ...). See
+#'   <https://mantine.dev/core/radio/#radioindicator>.
+#' @export
+RadioIndicator <- function(checked = FALSE, ...) {
+  mantineElement("RadioIndicator", checked = checked, ...)
+}
+
+#' @rdname RadioIndicator
+#' @param indeterminate Shows the indeterminate state (ignores `checked`).
+#' @export
+CheckboxIndicator <- function(checked = FALSE, indeterminate = FALSE, ...) {
+  mantineElement(
+    "CheckboxIndicator",
+    checked = checked,
+    indeterminate = indeterminate,
+    ...
+  )
+}
+
 # FileButton / MaskInput / DirectionProvider --------------------------------
 
 #' Mantine FileButton (button that opens the native file picker)

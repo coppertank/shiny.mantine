@@ -415,6 +415,50 @@ updateMantinePagination <- function(
   )
 }
 
+#' Mantine Pagination.Root (fully custom pagination layout)
+#'
+#' The lower-level piece behind [Pagination()], for a fully custom
+#' arrangement of the prev/next/first/last controls (reordering them,
+#' dropping some, adding your own elements in between) — compose it with
+#' [PaginationFirst()], [PaginationPrevious()], [PaginationItems()],
+#' [PaginationNext()], [PaginationLast()] and [PaginationDots()], which
+#' read the current page from it automatically (no per-part wiring
+#' needed). Stateful exactly like [Pagination()]:
+#' `input[[inputId]]` is synced on page change, and
+#' [updateMantinePagination()] works on it the same way.
+#'
+#' @param inputId Id of the Shiny input; `input[[inputId]]` is synced on
+#'   page change.
+#' @param total Total number of pages.
+#' @param ... Children (typically [PaginationFirst()],
+#'   [PaginationPrevious()], [PaginationItems()], [PaginationNext()],
+#'   [PaginationLast()]) and other props (`siblings`, `boundaries`, ...).
+#'   See <https://mantine.dev/core/pagination/#compound-components>.
+#' @param value Initial page. Must be passed by name (as in the example
+#'   below): with children in `...`, an unnamed argument here would bind
+#'   to `value` positionally instead of joining the children, since `...`
+#'   only captures unnamed arguments that come *after* it.
+#' @export
+#' @examples
+#' \dontrun{
+#' Group(
+#'   PaginationRoot(
+#'     inputId = "page", total = 10,
+#'     PaginationFirst(), PaginationPrevious(), PaginationItems(),
+#'     PaginationNext(), PaginationLast()
+#'   )
+#' )
+#' }
+PaginationRoot <- function(inputId, total, ..., value = 1) {
+  mantineElement(
+    "PaginationRoot",
+    inputId = inputId,
+    total = total,
+    value = value,
+    ...
+  )
+}
+
 # Accordion -------------------------------------------------------------------
 
 #' Mantine Accordion (Shiny stateful input)

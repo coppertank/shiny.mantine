@@ -34,6 +34,7 @@ reference:
     and color-scheme context to every other component.
   contents:
   - MantineProvider
+  - MantineThemeProvider
 
 - title: "Layout"
   desc: "Structural/positioning components."
@@ -86,8 +87,10 @@ reference:
   contents:
   - Button
   - ButtonGroup
+  - ButtonGroupSection
   - ActionIcon
   - ActionIconGroup
+  - ActionIconGroupSection
   - UnstyledButton
   - CloseButton
   - CopyButton
@@ -109,6 +112,13 @@ reference:
   - TabsPanel
   - Breadcrumbs
   - Pagination
+  - PaginationRoot
+  - PaginationItems
+  - PaginationFirst
+  - PaginationLast
+  - PaginationNext
+  - PaginationPrevious
+  - PaginationDots
   - Stepper
   - StepperStep
   - StepperCompleted
@@ -165,9 +175,11 @@ reference:
   - CheckboxGroup
   - CheckboxGroupItem
   - CheckboxCard
+  - CheckboxIndicator
   - Radio
   - RadioGroup
   - RadioCard
+  - RadioIndicator
   - Switch
   - SwitchGroup
   - SwitchGroupItem
@@ -176,12 +188,22 @@ reference:
   - Rating
   - ColorInput
   - ColorPicker
+  - HueSlider
+  - AlphaSlider
   - FileInput
   - FileButton
   - Slider
   - RangeSlider
+  - AngleSlider
   - SegmentedControl
   - Fieldset
+  - Input
+  - InputBase
+  - InputWrapper
+  - InputLabel
+  - InputDescription
+  - InputError
+  - InputPlaceholder
 
 - title: "Dates & time (`@mantine/dates`)"
   contents:
@@ -202,8 +224,22 @@ reference:
   contents:
   - Modal
   - ModalStack
+  - ModalRoot
+  - ModalOverlay
+  - ModalContent
+  - ModalHeader
+  - ModalTitle
+  - ModalCloseButton
+  - ModalBody
   - Drawer
   - DrawerStack
+  - DrawerRoot
+  - DrawerOverlay
+  - DrawerContent
+  - DrawerHeader
+  - DrawerTitle
+  - DrawerCloseButton
+  - DrawerBody
   - Dialog
   - Popover
   - PopoverTarget
@@ -212,6 +248,8 @@ reference:
   - Collapse
   - Transition
   - Overlay
+  - FocusTrap
+  - RemoveScroll
 
 - title: "Data display"
   contents:
@@ -319,6 +357,13 @@ reference:
 - title: "Spotlight (`@mantine/spotlight`)"
   contents:
   - Spotlight
+  - SpotlightRoot
+  - SpotlightSearch
+  - SpotlightActionsList
+  - SpotlightActionsGroup
+  - SpotlightAction
+  - SpotlightEmpty
+  - SpotlightFooter
 
 - title: "Code highlight (`@mantine/code-highlight`)"
   contents:
@@ -355,3 +400,13 @@ reference:
   desc: "Re-exported `@tabler/icons-react` icons used by the example apps and available for your own UIs."
   contents:
   - starts_with("Icon")
+
+- title: "Mantine's own small icons"
+  desc: >
+    Standalone versions of small icons/pieces Mantine renders internally
+    (not from `@tabler/icons-react` - see "Icons" above).
+  contents:
+  - CheckIcon
+  - CloseIcon
+  - AccordionChevron
+  - RadioIcon

@@ -152,6 +152,29 @@ server <- function(input, output, session) {
 shinyApp(ui, server)
 ```
 
+For grouped actions (or a fully custom search/empty/footer layout) that
+the flat `actions` list above doesn't allow, use `SpotlightRoot()` +
+`SpotlightSearch()`/`SpotlightActionsList()`/`SpotlightActionsGroup()`/
+`SpotlightAction()`/`SpotlightEmpty()`/`SpotlightFooter()` — the same
+global command-palette instance, no store management needed from R.
+Unlike `Spotlight()`, the compound form doesn't filter actions by the
+search query itself: `SpotlightSearch()` only renders the search box,
+matching typed text against actions (and conditionally including
+`SpotlightEmpty()` only when nothing matches) is up to you:
+
+```r
+SpotlightRoot(
+  SpotlightSearch(placeholder = "Search..."),
+  SpotlightActionsList(
+    SpotlightActionsGroup(
+      label = "Navigation",
+      SpotlightAction("spotlight_choice", "home", label = "Home"),
+      SpotlightAction("spotlight_choice", "settings", label = "Settings")
+    )
+  )
+)
+```
+
 ## `@mantine/charts`
 
 Chart components accept `data` as either a `data.frame` (one row per
