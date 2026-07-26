@@ -1,0 +1,193 @@
+---
+title: "Core: Layout"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Core: Layout}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE
+)
+```
+
+```{r setup}
+library(shiny)
+library(shiny.mantine)
+```
+
+An R rewrite of the ["Layout" category](https://mantine.dev/core/app-shell/)
+on mantine.dev/core: structural/positioning components. Every wrapper here
+is a thin, direct pass-through to the underlying Mantine component — any
+prop documented on the linked mantine.dev page works exactly the same way
+from R, just written as a named argument instead of JSX camelCase.
+
+## AppShell
+
+<https://mantine.dev/core/app-shell/> — responsive application shell with
+a header, collapsible navbar, contextual aside and footer, all defined
+declaratively via layout props rather than manual CSS positioning.
+
+```r
+MantineProvider(
+  AppShell(
+    header = list(height = 60),
+    navbar = list(width = 260, breakpoint = "sm", collapsed = list(mobile = TRUE)),
+    aside = list(width = 260, breakpoint = "md", collapsed = list(mobile = TRUE)),
+    footer = list(height = 50),
+    padding = "md",
+
+    AppShellHeader(
+      Group(h = "100%", px = "md", navbarBurger("nav_opened", hiddenFrom = "sm"), Title("My app", order = 3))
+    ),
+    AppShellNavbar(
+      p = "md",
+      navLinkItem("nav_click", "home", "Home", leftSection = IconHome2(size = 16)),
+      navLinkItem("nav_click", "settings", "Settings", leftSection = IconSettings(size = 16))
+    ),
+    AppShellMain(Text("Page content goes here")),
+    AppShellAside(p = "md", Text("Contextual aside")),
+    AppShellFooter(p = "md", Text("Footer", size = "xs"))
+  )
+)
+```
+
+`navbarBurger()` (a thin wrapper reporting clicks like `Button()`) is
+meant to toggle the navbar's mobile-collapsed state; wire it up with
+`updateMantineProps(session, "app_shell_id", navbar = list(collapsed = list(mobile = !opened)))`
+if you give the `AppShell()` itself a `mantineId`. See the full working
+demo: `shiny::runApp(system.file("examples/appshell-app.R", package = "shiny.mantine"))`.
+
+## AspectRatio
+
+<https://mantine.dev/core/aspect-ratio/> — keeps a fixed width/height
+ratio for its single child (e.g. embedding a responsive video or map).
+
+```r
+AspectRatio(
+  ratio = 16 / 9,
+  w = 320,
+  tags$iframe(src = "https://www.youtube.com/embed/dQw4w9WgXcQ", frameborder = 0)
+)
+```
+
+## Center
+
+<https://mantine.dev/core/center/> — centers its content horizontally
+and vertically with flexbox; pass `inline = TRUE` to use `inline-flex`
+instead of `flex` (useful inside text flow).
+
+```r
+Center(h = 200, Stack(align = "center", Loader(), Text("Loading...")))
+```
+
+## Container
+
+<https://mantine.dev/core/container/> — centers content horizontally and
+constrains its max width, the standard outer wrapper for page content.
+
+```r
+Container(size = "sm", py = "xl", Title("Centered narrow content", order = 2))
+```
+
+## Flex
+
+<https://mantine.dev/core/flex/> — a flexbox container with shorthand
+props for every common flex CSS property (`direction`, `wrap`, `gap`,
+`align`, `justify`), for arrangements `Group()`/`Stack()` don't cover
+(e.g. `direction` that changes per breakpoint).
+
+```r
+Flex(
+  direction = list(base = "column", sm = "row"),
+  gap = list(base = "sm", sm = "lg"),
+  justify = "flex-start",
+  align = list(base = "stretch", sm = "center"),
+  Button("First", inputId = "flex_btn1"),
+  Button("Second", inputId = "flex_btn2"),
+  Button("Third", inputId = "flex_btn3")
+)
+```
+
+## Grid
+
+<https://mantine.dev/core/grid/> — a 12-column responsive grid system
+(`GridCol()`'s `span` accepts a number, `"auto"`, `"content"`, or a
+per-breakpoint list).
+
+```r
+Grid(
+  GridCol(span = 8, Paper(withBorder = TRUE, p = "md", Text("Main content (span 8)"))),
+  GridCol(span = 4, Paper(withBorder = TRUE, p = "md", Text("Sidebar (span 4)"))),
+  GridCol(span = list(base = 12, sm = 6), Paper(withBorder = TRUE, p = "md", Text("Half on tablet+, full on mobile")))
+)
+```
+
+## Group
+
+<https://mantine.dev/core/group/> — a horizontal flexbox container;
+`justify`, `align`, `gap`, `wrap` map directly to their flexbox
+equivalents.
+
+```r
+Group(justify = "space-between", Text("Left side"), Button("Right side", inputId = "group_btn"))
+```
+
+## SimpleGrid
+
+<https://mantine.dev/core/simple-grid/> — a responsive grid with equal
+column widths, simpler than `Grid()` when you don't need column
+spanning, just "N columns, fewer on small screens":
+
+```r
+SimpleGrid(
+  cols = list(base = 1, sm = 2, lg = 3),
+  spacing = "lg",
+  Card(withBorder = TRUE, Text("Card A")),
+  Card(withBorder = TRUE, Text("Card B")),
+  Card(withBorder = TRUE, Text("Card C"))
+)
+```
+
+## Space
+
+<https://mantine.dev/core/space/> — an empty horizontal or vertical
+spacer, an explicit alternative to margin props.
+
+```r
+Group(Text("Left"), Space(w = "xl"), Text("Right, with extra horizontal gap"))
+```
+
+## Splitter
+
+<https://mantine.dev/core/splitter/> — resizable panes the user can drag
+to resize, composed of `Splitter()` (the root, controls `orientation`)
+and `SplitterPanel()` (each pane, with optional `defaultSize`/`minSize`).
+
+```r
+Splitter(
+  orientation = "horizontal",
+  style = list(height = "300px"),
+  SplitterPanel(defaultSize = 30, minSize = 20, p = "md", Text("Left pane")),
+  SplitterPanel(p = "md", Text("Right pane"))
+)
+```
+
+## Stack
+
+<https://mantine.dev/core/stack/> — a vertical flexbox container, the
+counterpart of `Group()`; almost every example throughout this package's
+documentation uses it to arrange components top-to-bottom.
+
+```r
+Stack(gap = "md", Title("Section", order = 3), Text("First line"), Button("Action", inputId = "stack_btn"))
+```
+
+## Where to go next
+
+- `vignette("core-inputs")` — text/numeric/choice/boolean form inputs.
+- `vignette("architecture")` — how these R calls become a React tree.

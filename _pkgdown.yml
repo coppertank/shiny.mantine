@@ -22,10 +22,32 @@ navbar:
         href: articles/getting-started.html
       - text: Architecture
         href: articles/architecture.html
+      - text: -------
+      - text: "Core: Layout"
+        href: articles/core-layout.html
+      - text: "Core: Inputs"
+        href: articles/core-inputs.html
+      - text: "Core: Combobox"
+        href: articles/core-combobox.html
+      - text: "Core: Buttons"
+        href: articles/core-buttons.html
+      - text: "Core: Navigation"
+        href: articles/core-navigation.html
+      - text: "Core: Feedback"
+        href: articles/core-feedback.html
+      - text: "Core: Overlays"
+        href: articles/core-overlays.html
+      - text: "Core: Data display"
+        href: articles/core-data-display.html
+      - text: "Core: Typography"
+        href: articles/core-typography.html
+      - text: "Core: Miscellaneous"
+        href: articles/core-misc.html
+      - text: -------
       - text: Satellite packages
         href: articles/satellite-packages.html
-      - text: Component gallery
-        href: articles/component-gallery.html
+      - text: Extras & Recipes
+        href: articles/extras.html
 
 reference:
 - title: "Provider"
@@ -63,6 +85,7 @@ reference:
   - ScrollArea
   - ScrollAreaAutosize
   - NativeScrollArea
+  - Scroller
   - AspectRatio
   - Affix
   - Portal
@@ -119,6 +142,8 @@ reference:
   - PaginationNext
   - PaginationPrevious
   - PaginationDots
+  - PaginationControl
+  - PaginationLabel
   - Stepper
   - StepperStep
   - StepperCompleted
@@ -203,7 +228,11 @@ reference:
   - InputLabel
   - InputDescription
   - InputError
+  - InputSuccess
   - InputPlaceholder
+  - InputClearButton
+  - PillsInput
+  - PillsInputField
 
 - title: "Dates & time (`@mantine/dates`)"
   contents:
@@ -249,7 +278,9 @@ reference:
   - Transition
   - Overlay
   - FocusTrap
+  - FocusTrapInitialFocus
   - RemoveScroll
+  - FloatingWindow
 
 - title: "Data display"
   contents:

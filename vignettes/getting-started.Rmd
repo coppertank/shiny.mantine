@@ -32,12 +32,13 @@ in sync automatically.
 This vignette covers installation and your first app. For the concepts
 behind the package (how props are serialized, how updates flow from R
 back to already-mounted components, the reactive output system), see
-`vignette("architecture", package = "shiny.mantine")`. For the eight
+`vignette("architecture", package = "shiny.mantine")`. For the ten
 Mantine satellite packages (dates, notifications, modals, spotlight,
-charts, code-highlight, nprogress, tiptap), see
+charts, code-highlight, nprogress, tiptap, dropzone, carousel), see
 `vignette("satellite-packages", package = "shiny.mantine")`. For a tour of
-every component family, see
-`vignette("component-gallery", package = "shiny.mantine")`.
+every `@mantine/core` component, organized the same way as
+[mantine.dev/core](https://mantine.dev/core/), start with
+`vignette("core-layout", package = "shiny.mantine")`.
 
 ## Installing the package
 
@@ -63,7 +64,7 @@ npm run build
 ```
 
 This compiles `js/src/index.js` (which imports the whole Mantine core
-library plus all eight satellite packages, its own bundled copy of React
+library plus all ten satellite packages, its own bundled copy of React
 19, and a handful of smaller integrations) into `inst/www/mantine.js` via
 webpack. The bundle is intentionally self-contained — see
 `vignette("architecture")` for why it bundles its own React copy instead
@@ -156,7 +157,11 @@ list.files(system.file("examples", package = "shiny.mantine"))
 
 - `vignette("architecture")` — how the R-to-React serialization works,
   the generic `updateMantineProps()` channel, and `mantineOutput()`/`renderMantine()`.
+- `vignette("core-layout")` — the first of ten `core-*` vignettes
+  touring every `@mantine/core` component, one per mantine.dev/core
+  category.
 - `vignette("satellite-packages")` — dates, notifications, modals,
-  spotlight, charts, code-highlight, nprogress, and the rich text editor.
-- `vignette("component-gallery")` — a categorized tour of every
-  component family, with a runnable snippet each.
+  spotlight, charts, code-highlight, nprogress, the rich text editor,
+  dropzone, and carousel.
+- `vignette("extras")` — group inputs, drag-and-drop reordering, and
+  button recipes that don't have their own mantine.dev/core page.

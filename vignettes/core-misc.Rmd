@@ -1,0 +1,232 @@
+---
+title: "Core: Miscellaneous"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Core: Miscellaneous}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE
+)
+```
+
+```{r setup}
+library(shiny)
+library(shiny.mantine)
+```
+
+An R rewrite of the ["Miscellaneous" category](https://mantine.dev/core/box/)
+on mantine.dev/core — components that don't fit neatly into the other
+nine categories — plus, at the end, the two core-level provider
+components and a summary of what's intentionally not wrapped anywhere in
+`shiny.mantine`.
+
+## Box
+
+<https://mantine.dev/core/box/> — the most basic building block: a
+`<div>` (or any element via `component`) with access to every Mantine
+style prop (`p`, `m`, `bg`, `c`, ...). Most components in this package
+are themselves built on top of it.
+
+```r
+Box(p = "md", bg = "gray.1", style = list(borderRadius = 8), Text("A styled box"))
+```
+
+## Collapse
+
+<https://mantine.dev/core/collapse/> — animated show/hide for its
+children; `opened` is controlled entirely from R via `mantineId` +
+`updateMantineProps()` (there's no click target built in — pair it with
+a `Button()`).
+
+```r
+Stack(
+  Button("Toggle details", inputId = "toggle_btn"),
+  Collapse(mantineId = "details", opened = FALSE, Text("Collapsible content revealed here."))
+)
+
+# server:
+observeEvent(input$toggle_btn, {
+  updateMantineProps(session, "details", opened = input$toggle_btn %% 2 == 1)
+})
+```
+
+## Divider
+
+<https://mantine.dev/core/divider/> — a horizontal (or vertical) rule,
+optionally with a centered `label`.
+
+```r
+Stack(Text("Section one"), Divider(label = "OR", labelPosition = "center"), Text("Section two"))
+```
+
+## Marquee
+
+<https://mantine.dev/core/marquee/> — a horizontally scrolling ticker of
+content, for announcements/logos.
+
+```r
+Marquee(Text("Breaking news: shiny.mantine now covers every Mantine core component!"))
+```
+
+## Paper
+
+<https://mantine.dev/core/paper/> — a bordered/shadowed surface, the
+plain content container `Card()` builds on; used throughout this
+package's own examples as the default "box around a demo".
+
+```r
+Paper(withBorder = TRUE, shadow = "sm", radius = "md", p = "lg", Text("Content inside a Paper"))
+```
+
+## Portal
+
+<https://mantine.dev/core/portal/> — renders its children into a
+different part of the DOM (`document.body` by default), the mechanism
+`Modal()`/`Menu()`/`Tooltip()` use internally to escape any parent's
+`overflow: hidden`/`z-index` stacking context. Rarely needed directly.
+
+```r
+Portal(Text("Rendered at the end of <body>, not in its original position in the tree."))
+```
+
+## ScrollArea
+
+<https://mantine.dev/core/scroll-area/> — a styled scrollable container
+with custom (not browser-native) scrollbars. `ScrollAreaAutosize()`
+grows with content up to `mah` before scrolling; `NativeScrollArea()`
+opts back into plain OS scrollbars while keeping the same API.
+
+```r
+ScrollArea(h = 200, Stack(lapply(1:30, function(i) Text(paste("Line", i)))))
+```
+
+## Scroller
+
+<https://mantine.dev/core/scroller/> — a horizontally-scrollable
+container with prev/next arrow controls, e.g. for a row of chips or
+thumbnails that doesn't fit the available width.
+
+```r
+Scroller(
+  Group(gap = "xs", wrap = "nowrap", lapply(1:20, function(i) Badge(paste("Item", i))))
+)
+```
+
+## Transition
+
+<https://mantine.dev/core/transition/> — mounts/unmounts a child with an
+animation (fade, slide, scale, ...), controlled by `mounted`.
+
+```r
+Stack(
+  Button("Toggle", inputId = "transition_btn"),
+  Transition(mantineId = "fade_box", mounted = TRUE, transition = "fade", Paper(withBorder = TRUE, p = "md", Text("Fades in/out")))
+)
+
+# server:
+observeEvent(input$transition_btn, {
+  updateMantineProps(session, "fade_box", mounted = input$transition_btn %% 2 == 1)
+})
+```
+
+## VisuallyHidden
+
+<https://mantine.dev/core/visually-hidden/> — visually hides content
+while keeping it available to screen readers (e.g. a label for an
+icon-only button that also needs visible sighted-user context
+elsewhere).
+
+```r
+ActionIcon(inputId = "search_icon_btn", IconSearch(size = 18), VisuallyHidden("Search"))
+```
+
+## FocusTrap / RemoveScroll
+
+Not on mantine.dev/core's own "Miscellaneous" page, but closely related
+in spirit — the focus-trapping/scroll-locking mechanisms `Modal()`/
+`Drawer()` use internally (see `vignette("core-overlays")`), exposed for
+building other fully custom overlays:
+
+```r
+FocusTrap(
+  active = TRUE,
+  Stack(
+    FocusTrapInitialFocus(), # marks which element should receive focus first
+    TextInput(inputId = "first_field", label = "Focused first"),
+    TextInput(inputId = "second_field", label = "Second field")
+  )
+)
+RemoveScroll(enabled = TRUE, Paper(withBorder = TRUE, p = "md", Text("Page behind this can't be scrolled while enabled.")))
+```
+
+## Provider components
+
+`MantineProvider()` — required, always outermost, see
+`vignette("getting-started")` — aside, the two other core-level
+providers:
+
+`DirectionProvider()` sets `"ltr"`/`"rtl"` reading direction for
+everything nested inside:
+
+```r
+MantineProvider(DirectionProvider(dir = "rtl"), Text("Right-to-left content"))
+```
+
+`MantineThemeProvider(theme = list(...))` updates the theme *object*
+exposed via Mantine's `useMantineTheme()` hook for custom code that
+explicitly reads it. **It does not restyle standard components**
+(`Button()`, `Badge()`, ...): those get their colors from CSS variables
+that only the outermost `MantineProvider()` injects once, so nesting a
+`MantineThemeProvider()` with a different `primaryColor` will *not*
+change a nested `Button()`'s color:
+
+```r
+Group(
+  Button("Outside the provider", inputId = "btn_a"),
+  MantineThemeProvider(theme = list(primaryColor = "red"), Button("Inside (still the same color)", inputId = "btn_b"))
+)
+```
+
+If you need a visually different theme for part of a page, that
+currently requires a second, independent `MantineProvider()` (with its
+own color-scheme-sync caveat — see the README's "Known limitations").
+
+## Intentionally out of scope
+
+A handful of `@mantine/core` exports have no R wrapper, each for a
+concrete architectural reason rather than "not gotten to yet" (every
+`mantine.dev/core` page was checked against this package's exports):
+
+- **`Combobox` internals** (`ComboboxDropdown`, `ComboboxOption`, ...) —
+  driven by Mantine's own `useCombobox()` hook, which can't be expressed
+  through R's data-only props; every component built on top of it
+  (`Select()`, `MultiSelect()`, ...) is exposed at the higher level — see
+  `vignette("core-combobox")`.
+- **`FloatingArrow`/`FloatingIndicator`** — need a live floating-UI
+  `context` object and/or a target-element `ref`, neither of which is a
+  plain, JSON-serializable R value.
+- **SSR/Next.js-specific helpers** (`ColorSchemeScript`,
+  `HeadlessMantineProvider`, `InlineStyles`) — not applicable to Shiny's
+  client-side-only mount architecture.
+- **`TableOfContents`/`OverflowList`** — require scanning real page DOM
+  headings or render-prop-heavy overflow logic, both a poor fit for a
+  declarative R wrapper.
+- **`Calendar`** and its sub-parts (`Month`, `Day`, `WeekdaysRow`, ...) —
+  the low-level primitive `DatePicker()`/`DatePickerInput()` are built
+  on; customization goes through function-based `getDayProps`, a poor
+  fit for R's data-only props.
+
+## Where to go next
+
+- `vignette("core-layout")` — where the tour of mantine.dev/core starts.
+- `vignette("satellite-packages")` — the separate npm packages
+  (`@mantine/dates`, `notifications`, `modals`, `spotlight`, `charts`,
+  `code-highlight`, `nprogress`, `tiptap`, `dropzone`, `carousel`).
+- `vignette("architecture")` — how every component here is serialized
+  and kept in sync with Shiny under the hood.

@@ -42,9 +42,9 @@ shinyApp(ui, server)
 
 - **Full core coverage** — layout, typography, navigation, every stateful
   input, overlays, data display, and dozens of smaller components.
-- **All 8 satellite packages** — `@mantine/dates`, `notifications`,
+- **All 10 satellite packages** — `@mantine/dates`, `notifications`,
   `modals`, `spotlight`, `charts` (13 chart types), `code-highlight`,
-  `nprogress`, and `tiptap` (rich text editor).
+  `nprogress`, `tiptap` (rich text editor), `dropzone`, and `carousel`.
 - **`Pages()`/`Page()`** — a client-side router for multi-page apps with
   instant, no-round-trip navigation.
 - **`updateMantineProps()`** — a generic channel to update *any* prop of a
@@ -81,8 +81,18 @@ Long-form guides ship as package vignettes
 |---|---|
 | `getting-started` | Installing the package and building your first app |
 | `architecture` | The serialization engine, reactive props, reactive output, the automated component generator |
-| `satellite-packages` | A worked example for each of the 8 satellite packages |
-| `component-gallery` | A categorized tour of every component, plus what's intentionally out of scope and why |
+| `core-layout` | AppShell, AspectRatio, Center, Container, Flex, Grid, Group, SimpleGrid, Space, Splitter, Stack |
+| `core-inputs` | Text/numeric/choice/boolean form inputs, sliders, color pickers, the Input family |
+| `core-combobox` | Select, MultiSelect, TagsInput, Autocomplete, TreeSelect, Pill |
+| `core-buttons` | Button, ActionIcon, CloseButton, CopyButton, FileButton, UnstyledButton |
+| `core-navigation` | Anchor, Breadcrumbs, Burger, NavLink, Pagination, Stepper, Tabs, Tree |
+| `core-feedback` | Alert, Loader, Progress, RingProgress, Skeleton, Notification, EmptyState |
+| `core-overlays` | Modal, Drawer, Dialog, Popover, HoverCard, Tooltip, Menu, Menubar, Affix |
+| `core-data-display` | Accordion, Avatar, Badge, Card, Image, Table/DataTable, Timeline |
+| `core-typography` | Text, Title, Blockquote, Code, Highlight, List, Mark, Typography |
+| `core-misc` | Box, Collapse, Divider, Paper, Portal, ScrollArea, Transition, provider components |
+| `satellite-packages` | A worked example for each of the 10 satellite packages |
+| `extras` | Group inputs, drag-and-drop reordering, and pure-R button recipes |
 
 `inst/examples/` has a runnable demo app per
 [ui.mantine.dev](https://ui.mantine.dev/) category (buttons, navbars,
@@ -125,14 +135,14 @@ development.
 - Multiple `MantineProvider()`s on one page don't sync color scheme live
   between each other (persists via `localStorage`, so it's consistent
   after a reload).
-- The JS bundle is ~2.3 MiB (React 19 + Mantine core, all 8 satellite
+- The JS bundle is ~2.3 MiB (React 19 + Mantine core, all 10 satellite
   packages, Recharts, Tiptap, Tabler icons). Fine for internal/demo use;
   consider code-splitting per route for production.
 - `CodeHighlight()` has no real syntax coloring (plain-text adapter only,
   to avoid bundling `highlight.js`/`shiki`); `RichTextEditor()` covers
   basic formatting only (no tables, images, or collaborative editing).
-- See `vignette("component-gallery")`'s "Intentionally out of scope"
-  section for the low-level primitives left unwrapped.
+- See `vignette("core-misc")`'s "Intentionally out of scope" section for
+  the low-level primitives left unwrapped.
 
 ## License
 

@@ -78,6 +78,15 @@ import {
   RadioIcon,
   ActionIconGroupSection,
   ButtonGroupSection,
+  PillsInput,
+  PillsInputField,
+  Scroller,
+  FloatingWindow,
+  InputClearButton,
+  InputSuccess,
+  PaginationControl,
+  PaginationLabel,
+  FocusTrapInitialFocus,
 } from '@mantine/core';
 
 // Merged into the main registry in index.js, each wrapped in
@@ -160,4 +169,13 @@ export const generatedComponents = {
   RadioIcon,
   ActionIconGroupSection,
   ButtonGroupSection,
+  PillsInput,
+  'PillsInput.Field': PillsInputField,
+  Scroller,
+  FloatingWindow,
+  InputClearButton,
+  InputSuccess,
+  PaginationControl,
+  PaginationLabel,
+  FocusTrapInitialFocus,
 };

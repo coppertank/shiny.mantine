@@ -646,3 +646,79 @@ ActionIconGroupSection <- displayComponent("ActionIconGroupSection")
 #' @param ... Props and children. See <https://mantine.dev/core/button/>.
 #' @export
 ButtonGroupSection <- displayComponent("ButtonGroupSection")
+
+#' Mantine PillsInput
+#'
+#' Styled input box for a list of Pill()s plus a text field, the multi-value building block MultiSelect()/TagsInput() use internally. Supports `mantineId` for reactive updates via
+#' [updateMantineProps()].
+#' @rdname PillsInput
+#' @param ... Props and children. See <https://mantine.dev/core/pills-input/>.
+#' @export
+PillsInput <- displayComponent("PillsInput")
+
+#' @rdname PillsInput
+#' @export
+PillsInputField <- displayComponent("PillsInput.Field")
+
+#' Mantine Scroller
+#'
+#' Horizontally scrollable container with prev/next arrow controls (e.g. for a row of chips/thumbnails). Supports `mantineId` for reactive updates via
+#' [updateMantineProps()].
+#' @rdname Scroller
+#' @param ... Props and children. See <https://mantine.dev/core/scroller/>.
+#' @export
+Scroller <- displayComponent("Scroller")
+
+#' Mantine FloatingWindow
+#'
+#' A draggable floating panel positioned anywhere in the viewport (drag to move; position is not updatable from the server once mounted). Supports `mantineId` for reactive updates via
+#' [updateMantineProps()].
+#' @rdname FloatingWindow
+#' @param ... Props and children. See <https://mantine.dev/core/floating-window/>.
+#' @export
+FloatingWindow <- displayComponent("FloatingWindow")
+
+#' Mantine InputClearButton
+#'
+#' The "x" clear button Select()/DatePickerInput()/etc. render when clearable, exposed for custom inputs built on Input(). Supports `mantineId` for reactive updates via
+#' [updateMantineProps()].
+#' @rdname InputClearButton
+#' @param ... Props and children. See <https://mantine.dev/core/input/>.
+#' @export
+InputClearButton <- displayComponent("InputClearButton")
+
+#' Mantine InputSuccess
+#'
+#' Standalone input success text, styled like the internal success state of stateful inputs. Supports `mantineId` for reactive updates via
+#' [updateMantineProps()].
+#' @rdname InputSuccess
+#' @param ... Props and children. See <https://mantine.dev/core/input/>.
+#' @export
+InputSuccess <- displayComponent("InputSuccess")
+
+#' Mantine PaginationControl
+#'
+#' Generic clickable pagination-styled button, for building entirely custom page controls inside PaginationRoot(). Supports `mantineId` for reactive updates via
+#' [updateMantineProps()].
+#' @rdname PaginationControl
+#' @param ... Props and children. See <https://mantine.dev/core/pagination/>.
+#' @export
+PaginationControl <- displayComponent("PaginationControl")
+
+#' Mantine PaginationLabel
+#'
+#' The compact "page X of Y" label PaginationRoot() shows in its `layout = "responsive"` mode. Supports `mantineId` for reactive updates via
+#' [updateMantineProps()].
+#' @rdname PaginationLabel
+#' @param ... Props and children. See <https://mantine.dev/core/pagination/>.
+#' @export
+PaginationLabel <- displayComponent("PaginationLabel")
+
+#' Mantine FocusTrapInitialFocus
+#'
+#' Invisible marker: the first focusable element FocusTrap() should focus, if not the first one in DOM order. Supports `mantineId` for reactive updates via
+#' [updateMantineProps()].
+#' @rdname FocusTrapInitialFocus
+#' @param ... Props and children. See <https://mantine.dev/core/focus-trap/>.
+#' @export
+FocusTrapInitialFocus <- displayComponent("FocusTrapInitialFocus")

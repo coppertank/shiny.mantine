@@ -3,9 +3,10 @@
 Initial public release.
 
 * R wrappers for the full `@mantine/core` component set (layout,
-  typography, navigation, inputs, overlays, data display) plus all eight
+  typography, navigation, inputs, overlays, data display) plus all ten
   satellite packages: `dates`, `notifications`, `modals`, `spotlight`,
-  `charts`, `code-highlight`, `nprogress`, and `tiptap`.
+  `charts`, `code-highlight`, `nprogress`, `tiptap`, `dropzone`, and
+  `carousel`.
 * A client-side page router (`Pages()`/`Page()`).
 * A generic reactive-props update channel (`updateMantineProps()`) for
   updating any component prop from the server, not just an input's value.
@@ -30,6 +31,27 @@ Initial public release.
   `CheckboxIndicator()`, and small standalone pieces Mantine renders
   internally (`CheckIcon()`, `CloseIcon()`, `AccordionChevron()`,
   `RadioIcon()`, `ActionIconGroupSection()`, `ButtonGroupSection()`).
+* Every page on <https://mantine.dev/core/> was audited against this
+  package's exports (comparing this package's exports against every
+  `@mantine/core` runtime export, cross-checked against Mantine's own
+  documented page list) to close the last three genuinely missing
+  components — `Scroller()` (horizontally-scrollable container with
+  arrow controls), `FloatingWindow()` (a draggable floating panel), and
+  `PillsInput()`/`PillsInputField()` (the multi-value input box
+  `MultiSelect()`/`TagsInput()` use internally) — plus a handful of small
+  sub-parts rounding out already-covered families: `InputClearButton()`,
+  `InputSuccess()`, `PaginationControl()`, `PaginationLabel()`,
+  `FocusTrapInitialFocus()`.
+* Vignettes restructured around <https://mantine.dev/core/>'s own
+  category sidebar: the single `component-gallery` vignette is replaced
+  by ten `core-*` vignettes (`core-layout`, `core-inputs`,
+  `core-combobox`, `core-buttons`, `core-navigation`, `core-feedback`,
+  `core-overlays`, `core-data-display`, `core-typography`, `core-misc`),
+  each an R rewrite of the corresponding mantine.dev/core page(s), plus a
+  new `extras` vignette for group inputs, drag-and-drop reordering, and
+  button recipes that don't have their own mantine.dev/core page.
+  `satellite-packages` gained `@mantine/dropzone`/`@mantine/carousel`
+  sections that used to live in the removed vignette.
 
 ### Bug fixes
 

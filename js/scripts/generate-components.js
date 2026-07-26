@@ -155,6 +155,25 @@ const MANIFEST = [
   { name: 'RadioIcon', slug: 'radio', doc: 'The dot icon Radio()/RadioCard() render when checked' },
   { name: 'ActionIconGroupSection', slug: 'action-icon', doc: 'Non-interactive section (e.g. a label) placed between grouped ActionIcon()s' },
   { name: 'ButtonGroupSection', slug: 'button', doc: 'Non-interactive section (e.g. a label) placed between grouped Button()s' },
+
+  // Gaps found auditing every documented page on mantine.dev/core against
+  // this package's exports (see the "Mantine core coverage" vignette
+  // section): the only three genuinely missing top-level pages, plus a
+  // few small, simple (BoxProps-only, no required function/ref props)
+  // sub-parts that round out families already covered above.
+  {
+    name: 'PillsInput',
+    slug: 'pills-input',
+    doc: 'Styled input box for a list of Pill()s plus a text field, the multi-value building block MultiSelect()/TagsInput() use internally',
+    compound: [{ export: 'PillsInputField', jsName: 'Field' }],
+  },
+  { name: 'Scroller', slug: 'scroller', doc: 'Horizontally scrollable container with prev/next arrow controls (e.g. for a row of chips/thumbnails)' },
+  { name: 'FloatingWindow', slug: 'floating-window', doc: 'A draggable floating panel positioned anywhere in the viewport (drag to move; position is not updatable from the server once mounted)' },
+  { name: 'InputClearButton', slug: 'input', doc: 'The "x" clear button Select()/DatePickerInput()/etc. render when clearable, exposed for custom inputs built on Input()' },
+  { name: 'InputSuccess', slug: 'input', doc: 'Standalone input success text, styled like the internal success state of stateful inputs' },
+  { name: 'PaginationControl', slug: 'pagination', doc: 'Generic clickable pagination-styled button, for building entirely custom page controls inside PaginationRoot()' },
+  { name: 'PaginationLabel', slug: 'pagination', doc: 'The compact "page X of Y" label PaginationRoot() shows in its `layout = "responsive"` mode' },
+  { name: 'FocusTrapInitialFocus', slug: 'focus-trap', doc: 'Invisible marker: the first focusable element FocusTrap() should focus, if not the first one in DOM order' },
 ];
 
 const jsImportNames = MANIFEST.flatMap((c) => [c.name, ...(c.compound || []).map((s) => s.export)]);

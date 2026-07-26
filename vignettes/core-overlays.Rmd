@@ -1,0 +1,253 @@
+---
+title: "Core: Overlays"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Core: Overlays}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE
+)
+```
+
+```{r setup}
+library(shiny)
+library(shiny.mantine)
+```
+
+An R rewrite of the ["Overlays" category](https://mantine.dev/core/modal/)
+on mantine.dev/core. `Modal()`/`Drawer()`/`Dialog()`/`Popover()` are all
+controlled from R the same way: a required `mantineId` identifies them
+for [`updateMantineProps(session, mantineId, opened = TRUE/FALSE)`](../reference/updateMantineProps.html),
+and an optional `inputId` receives `FALSE` when the user closes them
+(click outside, Escape, the built-in close button).
+
+## Modal
+
+<https://mantine.dev/core/modal/> — a centered dialog with a dimmed
+backdrop.
+
+```r
+Stack(
+  Button("Open", inputId = "open_btn"),
+  Modal(
+    mantineId = "demo_modal", inputId = "modal_state", title = "Demo",
+    Text("Are you sure you want to continue?"),
+    Button("Confirm", inputId = "confirm_btn")
+  )
+)
+
+# server:
+observeEvent(input$open_btn, {
+  updateMantineProps(session, "demo_modal", opened = TRUE)
+})
+```
+
+More than one `Modal()` open at once needs `ModalStack()` instead of
+independent ones (they don't otherwise coordinate z-index/focus
+trapping):
+
+```r
+ModalStack(
+  mantineId = "delete_stack",
+  Modal("delete_page", inputId = "delete_page_state", title = "Delete this page?",
+    Button("Continue", inputId = "go_to_confirm")
+  ),
+  Modal("confirm_delete", title = "Are you really sure?",
+    Button("Yes, delete", inputId = "confirm_delete_btn", color = "red")
+  )
+)
+```
+
+For full control over the internal layout, use the compound form —
+`ModalRoot()` + `ModalOverlay()`/`ModalContent()`/`ModalHeader()`/
+`ModalTitle()`/`ModalCloseButton()`/`ModalBody()` — which opens/closes
+exactly like `Modal()` (and can join a `ModalStack()` too):
+
+```r
+ModalRoot(
+  "custom_modal", inputId = "custom_modal_state",
+  ModalOverlay(),
+  ModalContent(
+    ModalHeader(ModalTitle("Custom layout"), ModalCloseButton()),
+    ModalBody(Text("Modal content"))
+  )
+)
+```
+
+## Drawer
+
+<https://mantine.dev/core/drawer/> — like `Modal()`, but slides in from
+a screen edge (`position = "left"/"right"/"top"/"bottom"`). Same API,
+including `DrawerStack()` and the `DrawerRoot()` compound form.
+
+```r
+Drawer(mantineId = "settings_drawer", inputId = "drawer_state", title = "Settings", position = "right", Text("Drawer content"))
+```
+
+## Dialog
+
+<https://mantine.dev/core/dialog/> — a small, non-modal overlay anchored
+to a screen corner (no dimmed backdrop), for lightweight prompts.
+
+```r
+Dialog(mantineId = "cookie_dialog", inputId = "cookie_state", opened = TRUE, Text("We use cookies."), Button("Accept", inputId = "accept_btn"))
+```
+
+## Popover
+
+<https://mantine.dev/core/popover/> — a floating panel anchored to a
+target element; compose with `PopoverTarget()`/`PopoverDropdown()`. Use
+this specifically when you need to open/close it from R — for a
+self-managed client-side dropdown, `HoverCard()`/`Menu()` below are
+simpler.
+
+```r
+Popover(
+  mantineId = "info_popover", inputId = "popover_state",
+  PopoverTarget(Button("Info", inputId = "info_btn")),
+  PopoverDropdown(Text("Extra information shown on click."))
+)
+```
+
+## HoverCard
+
+<https://mantine.dev/core/hover-card/> — a floating panel shown on
+hover (not click); fully self-managed client-side, no `mantineId`
+needed.
+
+```r
+HoverCard(
+  HoverCardTarget(Anchor(href = "#", "@username")),
+  HoverCardDropdown(Text("Preview shown on hover."))
+)
+```
+
+## Tooltip
+
+<https://mantine.dev/core/tooltip/> — a small label shown on hover;
+`TooltipFloating()` follows the cursor instead of anchoring to the
+target, `TooltipGroup()` shares open/close delay across several
+tooltips.
+
+```r
+Tooltip(label = "Settings", ActionIcon(inputId = "settings_icon_btn", IconSettings(size = 18)))
+```
+
+## Menu
+
+<https://mantine.dev/core/menu/> — a dropdown menu opened by clicking
+its target; compose with `MenuTarget()`/`MenuDropdown()`/`menuItem()`.
+Also supports submenus (`MenuSub()`), checkbox/radio items
+(`MenuCheckboxItem()`/`MenuRadioGroup()`), an inline search
+(`MenuSearch()`), and a right-click context-menu variant
+(`MenuContextMenu()`).
+
+```r
+Menu(
+  MenuTarget(Button("Actions", inputId = "menu_btn")),
+  MenuDropdown(
+    menuItem("action", "edit", "Edit", leftSection = IconEdit(size = 16)),
+    MenuDivider(),
+    menuItem("action", "delete", "Delete", leftSection = IconTrash(size = 16), color = "red")
+  )
+)
+```
+
+## Menubar
+
+<https://mantine.dev/core/menubar/> — a desktop-app-style horizontal bar
+of always-visible menus (File, Edit, View, ...), distinct from a single
+dropdown `Menu()`.
+
+```r
+Menubar(
+  MenubarMenu(
+    MenubarTarget(Button("File", inputId = "file_menu_btn", variant = "subtle")),
+    MenubarDropdown(menuItem("file_action", "new", "New"), menuItem("file_action", "open", "Open"))
+  ),
+  MenubarMenu(
+    MenubarTarget(Button("Edit", inputId = "edit_menu_btn", variant = "subtle")),
+    MenubarDropdown(menuItem("edit_action", "undo", "Undo"))
+  )
+)
+```
+
+## Affix
+
+<https://mantine.dev/core/affix/> — fixed-position content (e.g. a
+"back to top" button) that stays in place while the page scrolls.
+
+```r
+Affix(position = list(bottom = 20, right = 20), Button("Back to top", inputId = "back_to_top_btn"))
+```
+
+## LoadingOverlay
+
+<https://mantine.dev/core/loading-overlay/> — a full-cover spinner
+overlay for a section of the page while it loads.
+
+```r
+Box(
+  pos = "relative", h = 200,
+  LoadingOverlay(mantineId = "table_loading", visible = TRUE),
+  Text("Content being loaded...")
+)
+
+# server:
+observeEvent(input$data_ready, {
+  updateMantineProps(session, "table_loading", visible = FALSE)
+})
+```
+
+## Overlay
+
+<https://mantine.dev/core/overlay/> — a semi-transparent layer over some
+content, the building block `Modal()`/`LoadingOverlay()` use internally
+for the dimmed backdrop; available standalone for custom overlays.
+
+```r
+Box(pos = "relative", Image(src = "https://placehold.co/400x200"), Overlay(color = "#000", opacity = 0.6, zIndex = 1))
+```
+
+## FloatingWindow
+
+<https://mantine.dev/core/floating-window/> — a draggable floating
+panel positioned anywhere in the viewport by the user; `initialPosition`
+sets where it starts (plain `list(top=, left=)`/`list(bottom=, right=)`
+data — the window's *live* position while being dragged isn't
+readable/settable from the server, since that needs a client-side ref).
+
+```r
+FloatingWindow(
+  initialPosition = list(top = 20, right = 20),
+  style = list(border = "1px solid #ddd", background = "white", padding = "12px", width = 220),
+  Text("Drag me by clicking and holding anywhere on me.")
+)
+```
+
+## FocusTrap / RemoveScroll
+
+Not their own mantine.dev/core pages, but the two mechanisms
+`Modal()`/`Drawer()` use internally — `FocusTrap()` keeps keyboard focus
+inside its child while `active`, `RemoveScroll()` locks page scrolling
+while `enabled` — exposed for building other fully custom overlays that
+need the same behavior. See `vignette("core-misc")`.
+
+## FloatingArrow / FloatingIndicator (not wrapped)
+
+Both need a live floating-UI `context` object and/or a target-element
+`ref` to position themselves against another element — neither is a
+plain, JSON-serializable R value, so they're not wrapped.
+
+## Where to go next
+
+- `vignette("core-misc")` — `FocusTrap()`, `RemoveScroll()`, and other
+  miscellaneous components.
+- `vignette("extras")` — group inputs, drag-and-drop reordering, and
+  button recipes that don't have their own mantine.dev/core page.

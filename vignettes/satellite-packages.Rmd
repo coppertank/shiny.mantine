@@ -20,10 +20,13 @@ library(shiny)
 library(shiny.mantine)
 ```
 
-Beyond Mantine's core component library, `shiny.mantine` bundles all
-eight Mantine v9 satellite packages: dates, notifications, modals,
-spotlight, charts, code-highlight, nprogress, and a rich text editor
-(tiptap). This vignette walks through each with a runnable example.
+Beyond Mantine's core component library (see the `core-*` vignettes,
+starting with `vignette("core-layout")`), `shiny.mantine` bundles every
+separate Mantine v9 npm package: dates, notifications, modals,
+spotlight, charts, code-highlight, nprogress, a rich text editor
+(tiptap), drag-and-drop file uploads (dropzone), and an image/content
+carousel (carousel). This vignette walks through each with a runnable
+example.
 
 ## `@mantine/dates`
 
@@ -301,3 +304,56 @@ shinyApp(ui, server)
 treat it as untrusted user input if you ever render it back with
 `HTML()`/`dangerouslySetInnerHTML`-style trust, the same way you would any
 other free-text field.
+
+## `@mantine/dropzone`
+
+`Dropzone()` is a drag-and-drop (or click-to-browse) file upload area.
+Like `FileInput()`/`FileButton()` in `vignette("core-inputs")`/
+`vignette("core-buttons")`, only file *metadata* (name/size/type) is
+reported to Shiny, never the file content — pair it with a real
+`shiny::fileInput()` alongside it if you need the actual upload.
+`DropzoneAccept()`/`DropzoneReject()`/`DropzoneIdle()` render different
+content depending on whether the dragged file(s) currently over the
+dropzone would be accepted.
+
+```r
+ui <- fluidPage(
+  MantineProvider(
+    Dropzone(
+      inputId = "upload", accept = "image/png,image/jpeg", maxSize = 5 * 1024^2,
+      DropzoneAccept(Text("Drop the file here")),
+      DropzoneReject(Text("File type not accepted", c = "red")),
+      DropzoneIdle(Text("Drag an image here, or click to select one"))
+    )
+  ),
+  verbatimTextOutput("files")
+)
+
+server <- function(input, output, session) {
+  output$files <- renderPrint(input$upload)
+}
+
+shinyApp(ui, server)
+```
+
+## `@mantine/carousel`
+
+`Carousel()`/`CarouselSlide()` — a swipeable/scrollable carousel for
+images or any other content, built on Embla Carousel.
+
+```r
+ui <- fluidPage(
+  MantineProvider(
+    Carousel(
+      height = 200, slideSize = "33.333%", slideGap = "md", withIndicators = TRUE,
+      CarouselSlide(Image(src = "https://placehold.co/400x200?text=1")),
+      CarouselSlide(Image(src = "https://placehold.co/400x200?text=2")),
+      CarouselSlide(Image(src = "https://placehold.co/400x200?text=3"))
+    )
+  )
+)
+
+server <- function(input, output, session) {}
+
+shinyApp(ui, server)
+```

@@ -1,0 +1,181 @@
+---
+title: "Extras & Recipes"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Extras & Recipes}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE
+)
+```
+
+```{r setup}
+library(shiny)
+library(shiny.mantine)
+```
+
+Components covered by the `core-*` vignettes each have their own
+`mantine.dev/core/...` page. This vignette covers what doesn't: group-input
+variants that are sub-sections of an existing mantine.dev page rather than
+their own, two `shiny.mantine`-only drag-and-drop reordering components, and
+a handful of pure-R "recipe" buttons composed on top of `Button()` (the kind
+shown on [ui.mantine.dev](https://ui.mantine.dev), not mantine.dev/core).
+
+## Group inputs
+
+<https://mantine.dev/core/checkbox/#checkboxgroup> and
+<https://mantine.dev/core/radio/#radiogroup> — `Checkbox()`/`Switch()` are
+single booleans; for an array-valued *group* of them, use the dedicated
+`CheckboxGroup()`/`SwitchGroup()` plus their own `CheckboxGroupItem()`/
+`SwitchGroupItem()` children (never the standalone `Checkbox()`/`Switch()`,
+which manage their own independent checked state and would conflict with the
+group's):
+
+```r
+Stack(
+  CheckboxGroup(
+    inputId = "fruits", label = "Pick fruits", value = character(0),
+    CheckboxGroupItem(value = "apple", label = "Apple"),
+    CheckboxGroupItem(value = "banana", label = "Banana")
+  ),
+  SwitchGroup(
+    inputId = "features", label = "Enable features", value = character(0),
+    SwitchGroupItem(value = "beta", label = "Beta features"),
+    SwitchGroupItem(value = "telemetry", label = "Telemetry")
+  )
+)
+
+# server:
+observe(print(input$fruits))  # e.g. c("apple", "banana")
+```
+
+`RadioGroup()`/`ChipGroup()` (covered in `vignette("core-inputs")`) already
+follow this same pattern, but nest the plain `Radio()`/`Chip()` directly
+since those don't have a separate `checked` state of their own to conflict
+with.
+
+<https://mantine.dev/core/checkbox/#checkboxcard> — `CheckboxCard()`/
+`RadioCard()` are card-styled selectable items: visually a bordered,
+clickable card instead of a small checkbox/radio circle, nested the same way
+inside `CheckboxGroup()`/`RadioGroup()`:
+
+```r
+RadioGroup(
+  inputId = "plan", label = "Choose a plan", value = "free",
+  RadioCard(value = "free", Text("Free")),
+  RadioCard(value = "pro", Text("Pro"))
+)
+```
+
+`RadioIndicator()`/`CheckboxIndicator()` are the purely decorative "checked"
+look `Radio()`/`Checkbox()` render internally, usable without a real input
+behind them — e.g. a read-only status list:
+
+```r
+Group(RadioIndicator(checked = TRUE), Text("Step 1 complete"))
+```
+
+## Drag-and-drop reordering (`shiny.mantine` extras)
+
+Not mantine.dev components — built on `@hello-pangea/dnd` to fill a gap
+Mantine core itself doesn't cover. After each reorder, `input[[inputId]]`
+receives the new order as a vector of `value`.
+
+`SortableList()` reorders a plain list of `list(value=, label=)` items,
+optionally restricting the drag start to a handle icon:
+
+```r
+SortableList(
+  "elements", withHandle = TRUE,
+  items = list(
+    list(value = "H", label = "Hydrogen"),
+    list(value = "He", label = "Helium")
+  )
+)
+
+# server:
+observe(print(input$elements))  # e.g. c("He", "H") after dragging Helium to the top
+```
+
+`SortableTable()` is the same idea for full table rows (`cells` = the
+values for each column):
+
+```r
+SortableTable(
+  "periodic_rows",
+  columns = c("Symbol", "Name"),
+  items = list(
+    list(value = "H", cells = list("H", "Hydrogen")),
+    list(value = "He", cells = list("He", "Helium"))
+  )
+)
+```
+
+## Button recipes
+
+Pure R compositions on top of `Button()`/`ActionIcon()` for patterns shown
+on [ui.mantine.dev/category/buttons](https://ui.mantine.dev/category/buttons/)
+— not separate mantine.dev/core pages, so not covered in
+`vignette("core-buttons")`. See `inst/examples/buttons-app.R` for a runnable
+demo of all of them together.
+
+`ColorSchemeToggle()` flips the whole `MantineProvider()`'s light/dark
+theme:
+
+```r
+ColorSchemeToggle(inputId = "scheme_toggle")
+```
+
+`ButtonWithMenu()` opens a dropdown menu on click, items passed as
+`menuItem()`:
+
+```r
+ButtonWithMenu(
+  "Create new",
+  menuItem("create_action", "project", "Project"),
+  menuItem("create_action", "folder", "Folder")
+)
+```
+
+`SplitButton()` pairs a primary action with a small arrow opening a menu of
+alternatives:
+
+```r
+SplitButton(
+  "Send", inputId = "send_btn",
+  menuItem("send_action", "now", "Send now"),
+  menuItem("send_action", "schedule", "Schedule send")
+)
+```
+
+`LoadingProgressButton()` shows a simulated progress bar over itself on
+click; `input[[inputId]]` receives `TRUE` when it reaches 100%:
+
+```r
+LoadingProgressButton("Upload", inputId = "upload_done", loadingLabel = "Uploading...")
+```
+
+`SocialButton()` is a preconfigured icon + color + label for a common
+provider (`"google"`, `"twitter"`, `"facebook"`, `"github"`, `"discord"`) —
+copy and adapt its source in `R/Buttons.R` if you need another provider:
+
+```r
+Stack(
+  SocialButton("google", inputId = "google_login"),
+  SocialButton("github", inputId = "github_login")
+)
+```
+
+## Where to go next
+
+- `vignette("core-layout")` — where the tour of mantine.dev/core starts.
+- `vignette("core-inputs")` — `RadioGroup()`/`ChipGroup()`, the group inputs
+  that don't need their own `*Item()` wrapper.
+- `vignette("architecture")` — how every component here is serialized and
+  kept in sync with Shiny under the hood.
