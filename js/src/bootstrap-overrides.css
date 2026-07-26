@@ -21,3 +21,29 @@
 .shiny-mantine-output input[type='radio'] {
   margin: 0;
 }
+
+/*
+ * Mantine's own stylesheet sets `body { color: var(--mantine-color-text);
+ * background-color: var(--mantine-color-body); }`, meant to be the
+ * inherited default for any text/background that doesn't set its own
+ * (Text/Title/Paper's content, Stepper labels, plain <h4>/<p>, ...).
+ * Bootstrap 3's `body { color: #333333; }` (loaded by
+ * fluidPage()/bootstrapPage()) has the exact same specificity (a bare
+ * `body` selector) and, appearing later in the cascade, wins the tie -
+ * permanently pinning inherited text to a fixed dark gray that never
+ * switches with light/dark mode. Invisible in light mode (#333 still
+ * reads fine on a white background) but nearly unreadable in dark mode,
+ * where it sits on Paper/Card/etc.'s correctly-switched dark background
+ * (those *do* set their own `background-color`, just not `color`).
+ *
+ * A single class selector already outranks a bare element selector on
+ * specificity alone, so scoping the fix to our own mount containers wins
+ * regardless of stylesheet load order, without `!important` and without
+ * repainting any plain (non-Mantine) Shiny content elsewhere on a mixed
+ * page - same scoping rationale as the checkbox/radio fix above.
+ */
+.shiny-mantine-container,
+.shiny-mantine-output {
+  color: var(--mantine-color-text);
+  background-color: var(--mantine-color-body);
+}

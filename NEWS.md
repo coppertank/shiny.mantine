@@ -74,6 +74,15 @@ Initial public release.
   (e.g. a `NumberInput()` mirrored to a `Slider()`).
 * Fixed `SplitButton()`'s dropdown arrow rendering with mismatched
   border-radius against the primary button.
+* Fixed unreadable text in dark mode inside `fluidPage()`/`bootstrapPage()`
+  apps: Bootstrap 3's `body { color: #333333; }` has the same specificity
+  as, and (loaded later) wins over, Mantine's own `body { color:
+  var(--mantine-color-text); }`, permanently pinning every
+  Text/Title/Paper/Stepper label (anything that inherits text color rather
+  than setting its own) to a fixed dark gray that never adapted to dark
+  mode — invisible in light mode, unreadable against dark-mode
+  backgrounds. A more specific rule scoped to `.shiny-mantine-container`/
+  `.shiny-mantine-output` now wins regardless of stylesheet load order.
 * Fixed a Bootstrap 3 CSS leak (`fluidPage()`'s bundled
   `input[type="checkbox"], input[type="radio"] { margin: 4px 0 0 }`
   rule) misaligning the checked icon inside `Checkbox()`/`Radio()`/
