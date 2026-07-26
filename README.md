@@ -9,12 +9,13 @@
 R wrappers for [Mantine UI v9](https://mantine.dev) — a modern React
 component library — for use in [Shiny](https://shiny.posit.co/) apps.
 
-Every component in Mantine's core library and all eight of its satellite
+Every component in Mantine's core library and all 10 of its satellite
 packages (dates, notifications, modals, spotlight, charts, code
-highlighting, progress bar, rich text editor) are wrapped, plus a
-client-side page router and two architectural pieces regular one-way
-`htmltools` rendering doesn't give you: a generic reactive-props update
-channel and a `renderUI()`-equivalent reactive output for Mantine content.
+highlighting, navigation progress bar, rich text editor, dropzone,
+carousel) are wrapped, plus a client-side page router and two
+architectural pieces regular one-way `htmltools` rendering doesn't give
+you: a generic reactive-props update channel and a `renderUI()`-equivalent
+reactive output for Mantine content.
 
 ```r
 library(shiny)
@@ -83,14 +84,14 @@ Long-form guides ship as package vignettes
 | `architecture` | The serialization engine, reactive props, reactive output, the automated component generator |
 | `core-layout` | AppShell, AspectRatio, Center, Container, Flex, Grid, Group, SimpleGrid, Space, Splitter, Stack |
 | `core-inputs` | Text/numeric/choice/boolean form inputs, sliders, color pickers, the Input family |
-| `core-combobox` | Select, MultiSelect, TagsInput, Autocomplete, TreeSelect, Pill |
+| `core-combobox` | Select, MultiSelect, TagsInput, Autocomplete, TreeSelect, Pill, ComboboxPopover, Combobox |
 | `core-buttons` | Button, ActionIcon, CloseButton, CopyButton, FileButton, UnstyledButton |
 | `core-navigation` | Anchor, Breadcrumbs, Burger, NavLink, Pagination, Stepper, Tabs, Tree |
 | `core-feedback` | Alert, Loader, Progress, RingProgress, Skeleton, Notification, EmptyState |
 | `core-overlays` | Modal, Drawer, Dialog, Popover, HoverCard, Tooltip, Menu, Menubar, Affix |
 | `core-data-display` | Accordion, Avatar, Badge, Card, Image, Table/DataTable, Timeline |
 | `core-typography` | Text, Title, Blockquote, Code, Highlight, List, Mark, Typography |
-| `core-misc` | Box, Collapse, Divider, Paper, Portal, ScrollArea, Transition, provider components |
+| `core-misc` | Box, Collapse, Divider, Paper, Portal, ScrollArea, OverflowList, TableOfContents, Transition, provider components |
 | `satellite-packages` | A worked example for each of the 10 satellite packages |
 | `extras` | Group inputs, drag-and-drop reordering, and pure-R button recipes |
 

@@ -11,6 +11,9 @@ import {
   TimeGrid,
   MiniCalendar,
   InlineDateTimePicker,
+  MonthPicker,
+  YearPicker,
+  TimeValue,
 } from '@mantine/dates';
 import '@mantine/dates/styles.css';
 import { withReactiveProps, withShinyValueInput, withShinyEventInput } from '../shared';
@@ -27,5 +30,8 @@ export const components = {
   TimeGrid: withReactiveProps(withShinyValueInput(TimeGrid)),
   MiniCalendar: withReactiveProps(withShinyValueInput(MiniCalendar)),
   InlineDateTimePicker: withReactiveProps(withShinyValueInput(InlineDateTimePicker)),
+  MonthPicker: withReactiveProps(withShinyValueInput(MonthPicker)),
+  YearPicker: withReactiveProps(withShinyValueInput(YearPicker)),
+  TimeValue: withReactiveProps(TimeValue),
   DatesProvider,
 };

@@ -17,6 +17,17 @@ toDateString <- function(x) {
   format(x, "%Y-%m-%d")
 }
 
+#' @keywords internal
+toTimeString <- function(x) {
+  if (is.null(x)) {
+    return(NULL)
+  }
+  if (is.character(x)) {
+    return(x)
+  }
+  format(x, "%H:%M:%S")
+}
+
 #' Mantine DateInput (Shiny stateful input, text field with calendar)
 #' @param inputId Id of the Shiny input; `input[[inputId]]` (a
 #'   `"YYYY-MM-DD"` string) is synced on selection.
@@ -359,4 +370,84 @@ updateMantineInlineDateTimePicker <- function(
     "shinyMantineUpdateInput",
     list(inputId = session$ns(inputId), value = value)
   )
+}
+
+#' Mantine MonthPicker (always-visible inline month calendar)
+#'
+#' Like [DatePicker()], but for month-level selection — the inline
+#' counterpart of [MonthPickerInput()]. Use [YearPicker()] for year-level
+#' selection.
+#' @rdname MonthPicker
+#' @param inputId Id of the Shiny input; `input[[inputId]]` (a
+#'   `"YYYY-MM-DD"` string, first day of the month) is synced on
+#'   selection.
+#' @param value Initial value.
+#' @param ... Other props (`type` = `"default"`/`"multiple"`/`"range"`,
+#'   `numberOfColumns`, `presets`, ...). See
+#'   <https://mantine.dev/dates/month-picker/>.
+#' @export
+MonthPicker <- function(inputId, value = NULL, ...) {
+  mantineElement("MonthPicker", inputId = inputId, value = toDateString(value), ...)
+}
+
+#' @rdname MonthPicker
+#' @param session Session object passed to the Shiny server function.
+#' @export
+updateMantineMonthPicker <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  inputId,
+  value = NULL,
+  ...
+) {
+  session$sendCustomMessage(
+    "shinyMantineUpdateInput",
+    list(inputId = session$ns(inputId), value = toDateString(value))
+  )
+}
+
+#' Mantine YearPicker (always-visible inline year calendar)
+#'
+#' Like [DatePicker()], but for year-level selection — the inline
+#' counterpart of [YearPickerInput()]. See [MonthPicker()] for month-level
+#' selection.
+#' @rdname YearPicker
+#' @param inputId Id of the Shiny input; `input[[inputId]]` (a
+#'   `"YYYY-MM-DD"` string, first day of the year) is synced on selection.
+#' @param value Initial value.
+#' @param ... Other props (`type`, `numberOfColumns`, `presets`, ...). See
+#'   <https://mantine.dev/dates/year-picker/>.
+#' @export
+YearPicker <- function(inputId, value = NULL, ...) {
+  mantineElement("YearPicker", inputId = inputId, value = toDateString(value), ...)
+}
+
+#' @rdname YearPicker
+#' @param session Session object passed to the Shiny server function.
+#' @export
+updateMantineYearPicker <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  inputId,
+  value = NULL,
+  ...
+) {
+  session$sendCustomMessage(
+    "shinyMantineUpdateInput",
+    list(inputId = session$ns(inputId), value = toDateString(value))
+  )
+}
+
+#' Mantine TimeValue (formats a time string/Date for display)
+#'
+#' Purely a display component (not a Shiny input) — renders `value`
+#' formatted as 12h/24h time, e.g. inside a [Text()].
+#' @param value Time to format: a `"HH:mm:ss"` string, or a `Date`/`POSIXct`.
+#' @param ... Other props (`format` = `"12h"`/`"24h"`, `withSeconds`,
+#'   `amPmLabels`, ...). See <https://mantine.dev/dates/time-value/>.
+#' @export
+#' @examples
+#' \dontrun{
+#' TimeValue(value = "18:45:34", format = "12h")
+#' }
+TimeValue <- function(value, ...) {
+  mantineElement("TimeValue", value = toTimeString(value), ...)
 }

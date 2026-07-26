@@ -23,10 +23,12 @@ library(shiny.mantine)
 An R rewrite of the ["Combobox" category](https://mantine.dev/core/select/)
 on mantine.dev/core — every dropdown-driven choice input, all built on
 top of Mantine's internal `useCombobox()` state machine (open state,
-active option, keyboard navigation). That hook itself isn't exposed from
-R (its state can't be expressed as plain serializable props — see
-`vignette("core-misc")`'s "Intentionally out of scope" section), but
-every component built on top of it is fully wrapped and stateful.
+active option, keyboard navigation). That hook itself can't be expressed
+through R's plain serializable props directly — but unlike earlier
+versions of this package, it no longer has to be: `Combobox()` (below)
+creates and owns the store on the JS side for you, so even the headless
+primitive stays available from R for building a fully custom
+dropdown-driven input, on top of the ready-made ones below.
 
 ## Select
 
@@ -104,19 +106,64 @@ for displaying (not necessarily editing) a list of tags:
 PillGroup(Pill("R"), Pill("Shiny"), Pill("Mantine", withRemoveButton = TRUE))
 ```
 
-## Combobox internals (not wrapped)
+## ComboboxPopover
 
-`Combobox`, `ComboboxDropdown`, `ComboboxOption`, `ComboboxSearch`, and
-the rest of its compound sub-parts are intentionally not wrapped: they
-require driving `useCombobox()` yourself (tracking open state, the
-active/highlighted option, keyboard events), which has no
-plain-serializable-props equivalent. Every component on this page is
-already built on top of it — reach for those first, and only consider
-this a hard limit if you need a completely bespoke dropdown-driven input
-that none of them cover.
+<https://mantine.dev/core/combobox-popover/> — like `Select()`, but
+renders no input of its own: you supply the clickable target (typically
+a `Button()`) via `ComboboxPopoverTarget()`. Useful when the trigger
+shouldn't look like a text field.
+
+```r
+ComboboxPopover(
+  inputId = "framework", data = c("React", "Angular", "Vue", "Svelte"),
+  ComboboxPopoverTarget(Button("Pick a framework", variant = "default"))
+)
+```
+
+## Combobox (headless primitive)
+
+<https://mantine.dev/core/combobox/> — reach for this only when
+`Select()`/`MultiSelect()`/`Autocomplete()`/`TagsInput()`/
+`ComboboxPopover()` don't fit (e.g. options need fully custom
+icons/layout beyond what `renderOption`-style composition in those
+covers). The real Mantine `Combobox` is driven by a live `useCombobox()`
+store (a JS object with methods); `Combobox()` creates and owns that
+store internally, so the R API stays declarative:
+
+- `ComboboxTarget()`'s single child (e.g. a `Button()`) toggles the
+  dropdown on click automatically.
+- Selecting a `ComboboxOption()` sends its `value` to `input[[inputId]]`
+  (as an event, like `actionButton()`) and closes the dropdown;
+  highlighting the current selection (`active = TRUE`) is your
+  responsibility, same as Mantine's own controlled examples.
+- `ComboboxSearch()` is wired like any text input
+  (`input[[inputId]]` on every keystroke) — pair it with
+  `renderMantine()`/`mantineOutput()` to re-render `ComboboxOptions()`
+  server-side as the user types, since an R-side `filter` function can't
+  cross the bridge the way Mantine's own `filter` prop does.
+
+```r
+Combobox(
+  inputId = "fruit",
+  ComboboxTarget(Button("Pick a fruit", variant = "default")),
+  ComboboxDropdown(
+    ComboboxOptions(
+      ComboboxOption(value = "apple", "🍎 Apple"),
+      ComboboxOption(value = "banana", "🍌 Banana")
+    )
+  )
+)
+
+# server:
+observeEvent(input$fruit, {
+  message("Picked: ", input$fruit)
+})
+```
 
 ## Where to go next
 
 - `vignette("core-inputs")` — text/numeric/choice/boolean form inputs.
 - `vignette("core-misc")` — the full "Intentionally out of scope" list,
-  including why `Combobox` internals aren't wrapped.
+  covering the parts of `Combobox`'s design (a raw `ref`/DOM-driven
+  `FloatingIndicator`, `Calendar`'s `getDayProps`) that stay out of
+  reach even with this pragmatic wrapper.

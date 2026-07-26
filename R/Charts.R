@@ -253,3 +253,22 @@ Heatmap <- function(data, startDate = NULL, endDate = NULL, ...) {
 SankeyChart <- function(data, ...) {
   mantineElement("SankeyChart", data = data, ...)
 }
+
+#' Mantine BarsList (list of horizontal bars with names and values)
+#'
+#' @param data A `data.frame` (or list of rows) with `name` and `value`
+#'   columns.
+#' @param ... Other props (`barsLabel`, `valueLabel`, `barGap`,
+#'   `minBarSize`, `barHeight`, ...). See
+#'   <https://mantine.dev/charts/bars-list/>.
+#' @export
+#' @examples
+#' \dontrun{
+#' BarsList(data = data.frame(
+#'   name = c("React", "Vue", "Angular"),
+#'   value = c(950000, 320000, 580000)
+#' ))
+#' }
+BarsList <- function(data, ...) {
+  mantineElement("BarsList", data = chartData(data), ...)
+}

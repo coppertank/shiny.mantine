@@ -57,10 +57,14 @@ shinyApp(ui, server)
 
 `DatesProvider()` sets locale/`firstDayOfWeek` for every date component
 nested inside it. Also available: `MonthPickerInput()`/`YearPickerInput()`
-(month/year-only selection), `TimePicker()`/`TimeGrid()` (dropdown/grid
-time pickers, distinct from the native `TimeInput()`), `MiniCalendar()`
-(compact single-week strip), and `InlineDateTimePicker()` (like
-`DateTimePicker()`, but always visible instead of behind a popover).
+(popover month/year-only selection) and their always-visible inline
+counterparts `MonthPicker()`/`YearPicker()` (like `DatePicker()`, but for
+month/year granularity), `TimePicker()`/`TimeGrid()` (dropdown/grid time
+pickers, distinct from the native `TimeInput()`), `MiniCalendar()`
+(compact single-week strip), `InlineDateTimePicker()` (like
+`DateTimePicker()`, but always visible instead of behind a popover), and
+`TimeValue()` (a display-only component that formats a time string/`Date`
+for 12h/24h display, e.g. inside a `Text()`).
 
 ## `@mantine/notifications`
 
@@ -210,10 +214,13 @@ shinyApp(ui, function(input, output, session) {})
 `LineChart()`'s `data`/`series` shape; `DonutChart()`/`FunnelChart()` share
 `PieChart()`'s `name`/`value`/`color` shape. `RadialBarChart()`/
 `BubbleChart()` take `data`/`dataKey` without `series`. `Sparkline()` takes
-a plain numeric vector instead of a `data.frame`. `ScatterChart()`,
-`Treemap()`, `Heatmap()`, and `SankeyChart()` have their own nested `data`
-shapes (documented in each function's `?help` page) rather than one flat
-table, since their charts aren't naturally one-row-per-point.
+a plain numeric vector instead of a `data.frame`. `BarsList()` takes a
+`data.frame`/list of rows with `name`/`value` columns, rendering each row
+as a horizontal bar with its value (no axes) — good for compact
+top-N/leaderboard displays. `ScatterChart()`, `Treemap()`, `Heatmap()`,
+and `SankeyChart()` have their own nested `data` shapes (documented in
+each function's `?help` page) rather than one flat table, since their
+charts aren't naturally one-row-per-point.
 
 Charts with an unbounded container (e.g. a plain `Stack()` with no fixed
 height, as above) need an explicit `h` (height) — Recharts, which every
@@ -277,9 +284,10 @@ round out the imperative API.
 ## `@mantine/tiptap`
 
 `RichTextEditor()` is a rich text editor with **reduced scope** compared
-to a full Tiptap setup: bold/italic/underline/strikethrough, H1-H4
-headings, blockquotes, lists, links, alignment, and undo/redo — no
-tables, images, or collaborative editing.
+to a full Tiptap setup: bold/italic/underline/strikethrough/highlight/
+inline code, H1-H6 headings, blockquotes, lists (incl. task lists),
+links, alignment, sub/superscript, and undo/redo — no tables, images,
+text color, or collaborative editing.
 
 ```r
 ui <- fluidPage(
@@ -304,6 +312,16 @@ shinyApp(ui, server)
 treat it as untrusted user input if you ever render it back with
 `HTML()`/`dangerouslySetInnerHTML`-style trust, the same way you would any
 other free-text field.
+
+Use `controls` to trim down or reorder the toolbar (a list of character
+vectors, one per visually separated button cluster):
+
+```r
+RichTextEditor(
+  "notes", content = "<p></p>",
+  controls = list(c("bold", "italic"), c("bulletList", "orderedList"))
+)
+```
 
 ## `@mantine/dropzone`
 

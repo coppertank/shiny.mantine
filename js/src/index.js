@@ -99,6 +99,11 @@ import {
   AngleSlider,
   RadioIndicator,
   CheckboxIndicator,
+  Combobox,
+  useCombobox,
+  ComboboxPopover,
+  OverflowList,
+  TableOfContents,
 } from '@mantine/core';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { generatedComponents } from './generated-components';
@@ -1073,6 +1078,141 @@ function DataTable({
   );
 }
 
+// ---------------------------------------------------------------------------
+// Combobox: Mantine's headless building block for fully custom select-like
+// components (Select/MultiSelect/Autocomplete/TagsInput/PillsInput are all
+// built on top of it internally). The real component requires a live
+// useCombobox() store (an imperative JS object with methods, e.g.
+// combobox.toggleDropdown()) passed as its `store` prop - unlike every
+// other prop in this package, that store cannot be expressed as JSON and
+// cross the R/JS bridge. ShinyCombobox below creates and owns that store
+// internally, so the R API (R/Combobox.R) stays fully declarative.
+// ---------------------------------------------------------------------------
+const ComboboxRawContext = React.createContext(null);
+
+function ShinyCombobox({
+  inputId, opened: initialOpened, onOptionSubmit, children, ...props
+}) {
+  const [localOpened, setLocalOpened] = useState(Boolean(initialOpened));
+  useEffect(() => { setLocalOpened(Boolean(initialOpened)); }, [initialOpened]);
+
+  const combobox = useCombobox({
+    opened: localOpened,
+    onOpenedChange: setLocalOpened,
+    onDropdownClose: () => combobox.resetSelectedOption(),
+  });
+
+  return React.createElement(
+    ComboboxRawContext.Provider,
+    { value: combobox },
+    React.createElement(Combobox, {
+      ...props,
+      store: combobox,
+      onOptionSubmit: (value) => {
+        setLocalOpened(false);
+        setShinyValue(inputId, value, { priority: 'event' });
+        if (onOptionSubmit) onOptionSubmit(value);
+      },
+    }, children),
+  );
+}
+
+// Combobox.Target only wires aria-*/keyboard handling in real Mantine -
+// opening on click must be added by hand in every vanilla example
+// (`onClick={() => combobox.toggleDropdown()}`). Since an R-built target
+// (e.g. Button()) can't attach that itself, this clones the single child
+// to splice the handler in automatically.
+function ShinyComboboxTarget({ children, ...props }) {
+  const combobox = useContext(ComboboxRawContext);
+  const child = React.Children.only(children);
+  return React.createElement(
+    Combobox.Target,
+    props,
+    React.cloneElement(child, {
+      onClick: (event) => {
+        if (combobox) combobox.toggleDropdown();
+        if (child.props.onClick) child.props.onClick(event);
+      },
+    }),
+  );
+}
+
+// Combobox.Search: the free-text field inside a searchable custom
+// combobox's dropdown - wired like any other Shiny text input
+// (input[[inputId]] on every keystroke), so the server can re-render
+// ComboboxOptions() (via renderMantine()/mantineOutput()) to filter as the
+// user types, since an R-side filter function can't cross the bridge the
+// way Mantine's own `filter` prop does. Also opens the dropdown on focus
+// and keeps the store's selected-option index in sync, matching Mantine's
+// own searchable examples.
+function ShinyComboboxSearch({
+  inputId, value: initialValue, onChange, onFocus, ...props
+}) {
+  const combobox = useContext(ComboboxRawContext);
+  const [value, setValue] = useState(initialValue ?? '');
+
+  useEffect(() => {
+    inputUpdateHandlers[inputId] = (v) => setValue(v ?? '');
+    return () => { delete inputUpdateHandlers[inputId]; };
+  }, [inputId]);
+
+  return React.createElement(Combobox.Search, {
+    ...props,
+    value,
+    onChange: (event) => {
+      const v = event.currentTarget.value;
+      setValue(v);
+      if (combobox) combobox.updateSelectedOptionIndex();
+      setShinyValue(inputId, v);
+      if (onChange) onChange(event);
+    },
+    onFocus: (event) => {
+      if (combobox) combobox.openDropdown();
+      if (onFocus) onFocus(event);
+    },
+  });
+}
+
+// ---------------------------------------------------------------------------
+// OverflowList: real Mantine requires `renderItem`/`renderOverflow` render
+// functions (not serializable). `children` here are already fully-built
+// elements (one per item, built however the caller likes in R); the
+// overflow indicator is a plain Badge whose label is `overflowLabel` with
+// "{n}" substituted for the hidden count, since an arbitrary R-side render
+// function can't cross the bridge either.
+// ---------------------------------------------------------------------------
+function ShinyOverflowList({ children, overflowLabel, ...props }) {
+  const items = React.Children.toArray(children);
+  return React.createElement(OverflowList, {
+    ...props,
+    data: items,
+    renderItem: (item) => item,
+    renderOverflow: (hidden) => React.createElement(
+      Badge,
+      {},
+      (overflowLabel || '+{n}').replace('{n}', hidden.length),
+    ),
+  });
+}
+
+// ---------------------------------------------------------------------------
+// TableOfContents: autonomously scans the real DOM (via use-scroll-spy) for
+// headings matching `scrollSpySelector` and highlights whichever is
+// currently in view. `getControlProps` (a JS callback) is hardcoded to
+// Mantine's own documented recipe (scrollIntoView() + the heading text as
+// label) - the only part that can't be customized from R.
+// ---------------------------------------------------------------------------
+function ShinyTableOfContents({ scrollSpySelector, scrollSpyOptions, ...props }) {
+  return React.createElement(TableOfContents, {
+    ...props,
+    scrollSpyOptions: { selector: scrollSpySelector, ...scrollSpyOptions },
+    getControlProps: ({ data }) => ({
+      onClick: () => data.getNode().scrollIntoView(),
+      children: data.value,
+    }),
+  });
+}
+
 // Shiny's bundled Bootstrap 3 CSS (attached by fluidPage()/bootstrapPage(),
 // but *not* by a plain tagList() UI) sets `html { font-size: 10px; }`,
 // while Mantine's entire rem-based size scale is calibrated for a 16px
@@ -1252,6 +1392,25 @@ const components = {
   'Popover.Dropdown': Popover.Dropdown,
   Affix: withReactiveProps(Affix),
   LoadingOverlay: withReactiveProps(LoadingOverlay),
+  Combobox: withReactiveProps(ShinyCombobox),
+  'Combobox.Target': ShinyComboboxTarget,
+  'Combobox.EventsTarget': Combobox.EventsTarget,
+  'Combobox.DropdownTarget': Combobox.DropdownTarget,
+  'Combobox.Dropdown': Combobox.Dropdown,
+  'Combobox.Options': Combobox.Options,
+  'Combobox.Option': Combobox.Option,
+  'Combobox.Search': withReactiveProps(ShinyComboboxSearch),
+  'Combobox.Empty': Combobox.Empty,
+  'Combobox.Footer': Combobox.Footer,
+  'Combobox.Header': Combobox.Header,
+  'Combobox.Group': Combobox.Group,
+  'Combobox.Chevron': Combobox.Chevron,
+  'Combobox.ClearButton': Combobox.ClearButton,
+  'Combobox.HiddenInput': Combobox.HiddenInput,
+  ComboboxPopover: withReactiveProps(withShinyValueInput(ComboboxPopover)),
+  'ComboboxPopover.Target': ComboboxPopover.Target,
+  OverflowList: withReactiveProps(ShinyOverflowList),
+  TableOfContents: withReactiveProps(ShinyTableOfContents),
   // Every entry from here down through Carousel.Slide is backed by a
   // separate Mantine satellite package (dates, notifications, modals,
   // spotlight, charts, code-highlight, nprogress, tiptap, dropzone,
@@ -1270,6 +1429,9 @@ const components = {
   TimeGrid: lazyLeaf('dates', () => import(/* webpackChunkName: "dates" */ './satellites/dates'), 'TimeGrid'),
   MiniCalendar: lazyLeaf('dates', () => import(/* webpackChunkName: "dates" */ './satellites/dates'), 'MiniCalendar'),
   InlineDateTimePicker: lazyLeaf('dates', () => import(/* webpackChunkName: "dates" */ './satellites/dates'), 'InlineDateTimePicker'),
+  MonthPicker: lazyLeaf('dates', () => import(/* webpackChunkName: "dates" */ './satellites/dates'), 'MonthPicker'),
+  YearPicker: lazyLeaf('dates', () => import(/* webpackChunkName: "dates" */ './satellites/dates'), 'YearPicker'),
+  TimeValue: lazyLeaf('dates', () => import(/* webpackChunkName: "dates" */ './satellites/dates'), 'TimeValue'),
   DatesProvider: lazyWrapper('dates', () => import(/* webpackChunkName: "dates" */ './satellites/dates'), 'DatesProvider'),
   DirectionProvider,
   Notification: withReactiveProps(Notification),
@@ -1305,6 +1467,7 @@ const components = {
   Treemap: lazyLeaf('charts', () => import(/* webpackChunkName: "charts" */ './satellites/charts'), 'Treemap'),
   Heatmap: lazyLeaf('charts', () => import(/* webpackChunkName: "charts" */ './satellites/charts'), 'Heatmap'),
   SankeyChart: lazyLeaf('charts', () => import(/* webpackChunkName: "charts" */ './satellites/charts'), 'SankeyChart'),
+  BarsList: lazyLeaf('charts', () => import(/* webpackChunkName: "charts" */ './satellites/charts'), 'BarsList'),
   CodeHighlight: lazyLeaf('codeHighlight', () => import(/* webpackChunkName: "codeHighlight" */ './satellites/codeHighlight'), 'CodeHighlight'),
   InlineCodeHighlight: lazyLeaf('codeHighlight', () => import(/* webpackChunkName: "codeHighlight" */ './satellites/codeHighlight'), 'InlineCodeHighlight'),
   CodeHighlightTabs: lazyLeaf('codeHighlight', () => import(/* webpackChunkName: "codeHighlight" */ './satellites/codeHighlight'), 'CodeHighlightTabs'),

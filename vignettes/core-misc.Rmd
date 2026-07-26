@@ -118,6 +118,34 @@ Scroller(
 )
 ```
 
+## OverflowList
+
+<https://mantine.dev/core/overflow-list/> — hides items that don't fit
+in the container width and collapses them into a single indicator. Real
+Mantine configures this via `renderItem`/`renderOverflow` (JS render
+functions); here, pass fully pre-built elements directly and the hidden
+count is folded into `overflowLabel` (`"{n}"` is substituted):
+
+```r
+OverflowList(
+  Badge("Apple"), Badge("Banana"), Badge("Cherry"), Badge("Date"), Badge("Elderberry"),
+  overflowLabel = "+{n} more"
+)
+```
+
+## TableOfContents
+
+<https://mantine.dev/core/table-of-contents/> — scans the page's real
+DOM headings and highlights whichever is in view as the user scrolls;
+clicking an entry scrolls it into view. This is Mantine's own documented
+recipe hardcoded in (the only part that's a JS callback, so the only
+part that can't be customized from R) — `scrollSpySelector` is the one
+thing every real usage actually varies:
+
+```r
+TableOfContents(scrollSpySelector = "#article h2, #article h3")
+```
+
 ## Transition
 
 <https://mantine.dev/core/transition/> — mounts/unmounts a child with an
@@ -199,28 +227,31 @@ own color-scheme-sync caveat — see the README's "Known limitations").
 
 ## Intentionally out of scope
 
-A handful of `@mantine/core` exports have no R wrapper, each for a
-concrete architectural reason rather than "not gotten to yet" (every
-`mantine.dev/core` page was checked against this package's exports):
+A handful of `@mantine/core`/`@mantine/dates` exports have no R wrapper,
+each for a concrete architectural reason rather than "not gotten to yet"
+(every `mantine.dev` page was checked against this package's exports —
+see `vignette("core-combobox")` for how far the pragmatic `Combobox()`
+wrapper actually goes, which is further than the bullets below):
 
-- **`Combobox` internals** (`ComboboxDropdown`, `ComboboxOption`, ...) —
-  driven by Mantine's own `useCombobox()` hook, which can't be expressed
-  through R's data-only props; every component built on top of it
-  (`Select()`, `MultiSelect()`, ...) is exposed at the higher level — see
-  `vignette("core-combobox")`.
-- **`FloatingArrow`/`FloatingIndicator`** — need a live floating-UI
-  `context` object and/or a target-element `ref`, neither of which is a
-  plain, JSON-serializable R value.
+- **`FloatingIndicator`** (and the lower-level `FloatingArrow`) — both
+  need a literal DOM element `ref` (`target`/`parent`) recalculated on
+  every state change, not a plain, JSON-serializable R value. Mantine's
+  own styled components (`SegmentedControl()`, `Tabs()`, ...) already
+  provide the equivalent animated-indicator effect out of the box
+  without it.
 - **SSR/Next.js-specific helpers** (`ColorSchemeScript`,
   `HeadlessMantineProvider`, `InlineStyles`) — not applicable to Shiny's
   client-side-only mount architecture.
-- **`TableOfContents`/`OverflowList`** — require scanning real page DOM
-  headings or render-prop-heavy overflow logic, both a poor fit for a
-  declarative R wrapper.
-- **`Calendar`** and its sub-parts (`Month`, `Day`, `WeekdaysRow`, ...) —
-  the low-level primitive `DatePicker()`/`DatePickerInput()` are built
-  on; customization goes through function-based `getDayProps`, a poor
-  fit for R's data-only props.
+- **`Calendar`** (`@mantine/dates`) and its sub-parts (`Month`, `Day`,
+  `WeekdaysRow`, ...) — the low-level primitive `DatePicker()`/
+  `DatePickerInput()`/`MonthPicker()`/`YearPicker()` are built on;
+  customization beyond what those offer goes through a function-based
+  `getDayProps` callback, which can't cross the R/JSON bridge.
+- **`RichTextEditor`'s `ColorPicker`/`Color`/`UnsetColor` controls** —
+  would need the Tiptap `Color`/`TextStyle` extensions plus a swatches
+  configuration wired in; out of scope for this package's intentionally
+  reduced-scope editor (see `vignette("core-typography")` — no tables,
+  images, or collaborative editing either).
 
 ## Where to go next
 

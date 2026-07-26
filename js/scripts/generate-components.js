@@ -174,6 +174,19 @@ const MANIFEST = [
   { name: 'PaginationControl', slug: 'pagination', doc: 'Generic clickable pagination-styled button, for building entirely custom page controls inside PaginationRoot()' },
   { name: 'PaginationLabel', slug: 'pagination', doc: 'The compact "page X of Y" label PaginationRoot() shows in its `layout = "responsive"` mode' },
   { name: 'FocusTrapInitialFocus', slug: 'focus-trap', doc: 'Invisible marker: the first focusable element FocusTrap() should focus, if not the first one in DOM order' },
+
+  // Fourth coverage pass (re-diffed against every documented mantine.dev
+  // page, since mantine.dev/core grew a handful of pages since the third
+  // pass above): Combobox/ComboboxPopover/OverflowList/TableOfContents
+  // all need custom JS logic (an internally-owned useCombobox() store, a
+  // children->data adapter, a hardcoded getControlProps), so they're
+  // hand-written directly in js/src/index.js (R/Combobox.R,
+  // R/OverflowList.R, R/TableOfContents.R) rather than added here - this
+  // generator only covers pure props/children passthrough. Calendar and
+  // FloatingIndicator remain unwrapped (see the "Intentionally out of
+  // scope" vignette section) - the former needs a `getDayProps` render
+  // callback and the latter a live DOM element `ref`, neither expressible
+  // as JSON-serializable R props.
 ];
 
 const jsImportNames = MANIFEST.flatMap((c) => [c.name, ...(c.compound || []).map((s) => s.export)]);

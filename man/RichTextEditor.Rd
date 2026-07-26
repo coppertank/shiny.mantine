@@ -5,7 +5,7 @@
 \alias{updateMantineRichTextEditor}
 \title{Mantine RichTextEditor (rich text editor, based on Tiptap)}
 \usage{
-RichTextEditor(inputId, content = "", placeholder = NULL, ...)
+RichTextEditor(inputId, content = "", placeholder = NULL, controls = NULL, ...)
 
 updateMantineRichTextEditor(
   session = shiny::getDefaultReactiveDomain(),
@@ -21,8 +21,20 @@ content's HTML.}
 
 \item{placeholder}{Placeholder text shown when the editor is empty.}
 
+\item{controls}{Toolbar layout: a list of character vectors, one per
+\code{ControlsGroup} (a visually separated cluster of buttons). Available
+control names: \code{"bold"}, \code{"italic"}, \code{"underline"}, \code{"strikethrough"},
+\code{"clearFormatting"}, \code{"highlight"}, \code{"code"}, \code{"codeBlock"}, \code{"h1"}-
+\code{"h6"}, \code{"blockquote"}, \code{"hr"}, \code{"bulletList"}, \code{"orderedList"},
+\code{"taskList"}, \code{"taskListLift"}, \code{"taskListSink"}, \code{"link"},
+\code{"unlink"}, \code{"alignLeft"}, \code{"alignCenter"}, \code{"alignRight"},
+\code{"alignJustify"}, \code{"superscript"}, \code{"subscript"}, \code{"undo"}, \code{"redo"}.
+Defaults to a sensible full set; pass a shorter list to trim the
+toolbar down, e.g. \code{list(c("bold", "italic"), c("bulletList", "orderedList"))}.}
+
 \item{...}{Other props passed to \verb{@mantine/tiptap}'s \code{RichTextEditor}
-component (e.g. \code{minHeight}). See \url{https://mantine.dev/x/tiptap/}.}
+component (e.g. \code{minHeight}, \code{stickyOffset}). See
+\url{https://mantine.dev/x/tiptap/}.}
 
 \item{session}{Session object passed to the Shiny server function.}
 }
@@ -30,13 +42,21 @@ component (e.g. \code{minHeight}). See \url{https://mantine.dev/x/tiptap/}.}
 A \code{mantine_element} to nest inside \code{\link[=MantineProvider]{MantineProvider()}}.
 }
 \description{
-Reduced scope compared to full Tiptap: only basic formatting
-(bold/italic/underline, headings, lists, blockquotes, links, alignment)
-— no tables, images, or collaborative editing. \code{input[[inputId]]} is
-updated on every edit with the content as HTML.
+Reduced scope compared to full Tiptap: only basic formatting (bold,
+italic, underline, strikethrough, highlight, inline code, headings,
+blockquote, lists incl. task lists, links, alignment, sub/superscript)
+— no tables, images, text color, or collaborative editing.
+\code{input[[inputId]]} is updated on every edit with the content as HTML.
 }
 \examples{
 \dontrun{
 RichTextEditor("bio", content = "<p>Write something...</p>")
+
+# Trimmed-down toolbar
+RichTextEditor(
+  "bio",
+  content = "<p>Write something...</p>",
+  controls = list(c("bold", "italic"), c("bulletList", "orderedList"))
+)
 }
 }
