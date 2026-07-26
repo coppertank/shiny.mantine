@@ -63,12 +63,16 @@ npm install
 npm run build
 ```
 
-This compiles `js/src/index.js` (which imports the whole Mantine core
-library plus all ten satellite packages, its own bundled copy of React
-19, and a handful of smaller integrations) into `inst/www/mantine.js` via
-webpack. The bundle is intentionally self-contained — see
-`vignette("architecture")` for why it bundles its own React copy instead
-of sharing one with `shiny.react`.
+This compiles `js/src/index.js` (the whole Mantine core library, React 19,
+and Tabler icons) into `inst/www/mantine.js`, plus one additional chunk
+file per satellite package (`js/src/satellites/*.js` — dates,
+notifications, modals, spotlight, charts, code-highlight, nprogress,
+tiptap, dropzone, carousel), via webpack. The main bundle is intentionally
+self-contained — see `vignette("architecture")` for why it bundles its
+own React copy instead of sharing one with `shiny.react` — while each
+satellite chunk is only fetched the first time a component from that
+family actually mounts, so an app that never uses e.g. `RichTextEditor()`
+never downloads Tiptap at all.
 
 After rebuilding the JS bundle, regenerate the R documentation and
 reinstall:

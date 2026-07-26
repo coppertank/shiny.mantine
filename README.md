@@ -135,9 +135,14 @@ development.
 - Multiple `MantineProvider()`s on one page don't sync color scheme live
   between each other (persists via `localStorage`, so it's consistent
   after a reload).
-- The JS bundle is ~2.3 MiB (React 19 + Mantine core, all 10 satellite
-  packages, Recharts, Tiptap, Tabler icons). Fine for internal/demo use;
-  consider code-splitting per route for production.
+- The main JS bundle (`inst/www/mantine.js`, always loaded) is ~1.1 MiB —
+  React 19, every `@mantine/core` component, Tabler icons. Each of the 10
+  satellite packages (dates, notifications, modals, spotlight, charts,
+  code-highlight, nprogress, tiptap, dropzone, carousel) ships as its own
+  chunk (e.g. `charts.mantine.js`, `tiptap.mantine.js`), fetched on demand
+  the first time a component from that family actually mounts — an app
+  that never uses e.g. `LineChart()`/`RichTextEditor()` never downloads
+  Recharts/Tiptap at all.
 - `CodeHighlight()` has no real syntax coloring (plain-text adapter only,
   to avoid bundling `highlight.js`/`shiki`); `RichTextEditor()` covers
   basic formatting only (no tables, images, or collaborative editing).

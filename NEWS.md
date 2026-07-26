@@ -2,6 +2,17 @@
 
 Initial public release.
 
+* Each of the 10 Mantine satellite packages (dates, notifications, modals,
+  spotlight, charts, code-highlight, nprogress, tiptap, dropzone,
+  carousel) is now code-split into its own chunk
+  (`inst/www/<family>.mantine.js`), dynamically fetched (JS + CSS) the
+  first time a component from that family actually mounts, instead of
+  bundled unconditionally into `inst/www/mantine.js`. A bare
+  `MantineProvider()` app now loads ~1.1 MiB of JS and a single
+  `@mantine/core` stylesheet instead of ~2.3 MiB and 11 stylesheets
+  (10 satellite packages + core) regardless of which components it
+  actually uses. See `js/src/satellites/*.js`, `js/src/lazy.js`, and the
+  updated "Known limitations" section of the README.
 * R wrappers for the full `@mantine/core` component set (layout,
   typography, navigation, inputs, overlays, data display) plus all ten
   satellite packages: `dates`, `notifications`, `modals`, `spotlight`,

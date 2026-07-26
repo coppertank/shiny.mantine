@@ -100,60 +100,19 @@ import {
   RadioIndicator,
   CheckboxIndicator,
 } from '@mantine/core';
-import { Dropzone as MantineDropzone } from '@mantine/dropzone';
-import {
-  DateInput,
-  DatePickerInput,
-  DatePicker,
-  TimeInput,
-  MonthPickerInput,
-  YearPickerInput,
-  DateTimePicker,
-  DatesProvider,
-  TimePicker,
-  TimeGrid,
-  MiniCalendar,
-  InlineDateTimePicker,
-} from '@mantine/dates';
-import '@mantine/dates/styles.css';
-import { Notifications, notifications } from '@mantine/notifications';
-import '@mantine/notifications/styles.css';
-import { ModalsProvider, modals } from '@mantine/modals';
-import {
-  Spotlight,
-  SpotlightRoot,
-  SpotlightSearch,
-  SpotlightActionsList,
-  SpotlightActionsGroup,
-  SpotlightAction,
-  SpotlightEmpty,
-  SpotlightFooter,
-} from '@mantine/spotlight';
-import '@mantine/spotlight/styles.css';
-import {
-  LineChart, BarChart, AreaChart, PieChart, DonutChart,
-  RadarChart, CompositeChart, RadialBarChart, BubbleChart, FunnelChart,
-  Sparkline, ScatterChart, Treemap, Heatmap, SankeyChart,
-} from '@mantine/charts';
-import '@mantine/charts/styles.css';
-import {
-  CodeHighlight, InlineCodeHighlight, CodeHighlightTabs, CodeHighlightAdapterProvider, plainTextAdapter,
-} from '@mantine/code-highlight';
-import '@mantine/code-highlight/styles.css';
-import { NavigationProgress, nprogress } from '@mantine/nprogress';
-import '@mantine/nprogress/styles.css';
-import { RichTextEditor } from '@mantine/tiptap';
-import '@mantine/tiptap/styles.css';
-import { useEditor } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
-import Underline from '@tiptap/extension-underline';
-import Link from '@tiptap/extension-link';
-import TextAlign from '@tiptap/extension-text-align';
-import Placeholder from '@tiptap/extension-placeholder';
-import { Carousel } from '@mantine/carousel';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { generatedComponents } from './generated-components';
 import { reorder, createBuildElement } from './serialization';
+import {
+  inputUpdateHandlers,
+  setShinyValue,
+  withShinyEventInput,
+  withShinyValueInput,
+  withShinyClickValue,
+  propUpdateHandlers,
+  withReactiveProps,
+} from './shared';
+import { lazyLeaf, lazyWrapper } from './lazy';
 import {
   IconHome2,
   IconLayoutDashboard,
@@ -206,8 +165,6 @@ import {
   IconCategory,
 } from '@tabler/icons-react';
 import '@mantine/core/styles.css';
-import '@mantine/dropzone/styles.css';
-import '@mantine/carousel/styles.css';
 import './bootstrap-overrides.css';
 
 // ---------------------------------------------------------------------------
@@ -220,90 +177,11 @@ import './bootstrap-overrides.css';
 // update channel via custom message) using exclusively our own React.
 // ---------------------------------------------------------------------------
 
-const inputUpdateHandlers = {};
-
 if (window.Shiny) {
   window.Shiny.addCustomMessageHandler('shinyMantineUpdateInput', ({ inputId, value }) => {
     const handler = inputUpdateHandlers[inputId];
     if (handler) handler(value);
   });
-}
-
-function setShinyValue(inputId, value, opts) {
-  if (window.Shiny && inputId) window.Shiny.setInputValue(inputId, value, opts);
-}
-
-// All three HOCs below share one rule, matching plain Shiny's own
-// update*Input() convention: a server-pushed value (arriving through
-// inputUpdateHandlers[inputId], i.e. updateMantineXxx()) must only update
-// what's on screen — it must never itself look like a fresh user edit and
-// echo straight back out through setShinyValue(). Without that guard, two
-// inputs kept in sync via a pair of observeEvent()s that each call the
-// other's update*() function (a common, otherwise-legitimate pattern —
-// e.g. NumberInput + Slider mirroring one value) ping-pong: every real
-// user-driven change bounces an "echo" off the other input and back,
-// doubling every round-trip, and on a fast-firing gesture like a slider
-// drag the echoes race the live drag position and arrive out of order,
-// which is what actually produces the erratic/"jumping" behavior. A
-// per-instance ref flags the very next value-effect run as
-// server-originated so it updates local state without re-reporting it,
-// while the initial mount (flag unset) still reports the starting value
-// as before.
-
-// A component whose value changes via a native DOM `onChange` event (e.g.
-// TextInput): the new value is `event.currentTarget.value`.
-function withShinyEventInput(Component) {
-  return function Wrapped({ inputId, value: initialValue, onChange, ...props }) {
-    const [value, setValue] = useState(initialValue ?? '');
-    const skipEcho = useRef(false);
-
-    useEffect(() => {
-      if (skipEcho.current) { skipEcho.current = false; return; }
-      setShinyValue(inputId, value);
-    }, [inputId, value]);
-
-    useEffect(() => {
-      inputUpdateHandlers[inputId] = (v) => { skipEcho.current = true; setValue(v); };
-      return () => { delete inputUpdateHandlers[inputId]; };
-    }, [inputId]);
-
-    return React.createElement(Component, {
-      ...props,
-      value,
-      onChange: (event) => {
-        setValue(event.currentTarget.value);
-        if (onChange) onChange(event);
-      },
-    });
-  };
-}
-
-// A component whose `onChange` receives the new value directly as its only
-// argument (e.g. Select): `(value) => ...`.
-function withShinyValueInput(Component) {
-  return function Wrapped({ inputId, value: initialValue, onChange, ...props }) {
-    const [value, setValue] = useState(initialValue ?? null);
-    const skipEcho = useRef(false);
-
-    useEffect(() => {
-      if (skipEcho.current) { skipEcho.current = false; return; }
-      setShinyValue(inputId, value);
-    }, [inputId, value]);
-
-    useEffect(() => {
-      inputUpdateHandlers[inputId] = (v) => { skipEcho.current = true; setValue(v); };
-      return () => { delete inputUpdateHandlers[inputId]; };
-    }, [inputId]);
-
-    return React.createElement(Component, {
-      ...props,
-      value,
-      onChange: (newValue) => {
-        setValue(newValue);
-        if (onChange) onChange(newValue);
-      },
-    });
-  };
 }
 
 // A boolean component whose value changes via
@@ -345,20 +223,6 @@ function withShinyClick(Component) {
       onClick: (event) => {
         clicks.current += 1;
         setShinyValue(inputId, clicks.current, { priority: 'event' });
-        if (onClick) onClick(event);
-      },
-    });
-  };
-}
-
-// A component whose click sends a fixed value decided on the R side (e.g.
-// Burger's toggle): every click reports the same `value`.
-function withShinyClickValue(Component) {
-  return function Wrapped({ inputId, value, onClick, ...props }) {
-    return React.createElement(Component, {
-      ...props,
-      onClick: (event) => {
-        setShinyValue(inputId, value, { priority: 'event' });
         if (onClick) onClick(event);
       },
     });
@@ -458,8 +322,6 @@ function ShinyTransition({ mounted, children, ...props }) {
 // current props of the component mounted with the same `mantineId`.
 // Essential for opening/closing Modal/Drawer/Dialog from R.
 // ---------------------------------------------------------------------------
-const propUpdateHandlers = {};
-
 if (window.Shiny) {
   window.Shiny.addCustomMessageHandler('shinyMantineUpdateProps', ({ id, props }) => {
     const handler = propUpdateHandlers[id];
@@ -467,77 +329,61 @@ if (window.Shiny) {
   });
 }
 
-function withReactiveProps(Component) {
-  return function Wrapped({ mantineId, ...props }) {
-    const [patch, setPatch] = useState({});
-
-    useEffect(() => {
-      if (!mantineId) return undefined;
-      propUpdateHandlers[mantineId] = (newProps) => setPatch((prev) => ({ ...prev, ...newProps }));
-      return () => { delete propUpdateHandlers[mantineId]; };
-    }, [mantineId]);
-
-    return React.createElement(Component, { ...props, ...patch });
-  };
-}
-
 // ---------------------------------------------------------------------------
-// @mantine/notifications: Mantine-styled notifications (instead of
-// shiny::showNotification()'s Bootstrap toast) triggerable from R with
-// showMantineNotification()/hideMantineNotification(). Requires a
-// <Notifications/> mounted once in the page (see R/Notifications.R).
+// @mantine/notifications, @mantine/modals, @mantine/nprogress: each is an
+// imperative API (show a toast / open a confirm dialog / drive a progress
+// bar) triggered directly by a custom message from R, with no React element
+// of its own necessarily on screen yet - unlike a lazyLeaf()-wrapped
+// component (whose own mount is what triggers the chunk fetch), these
+// handlers must kick off the dynamic import() themselves, the first time
+// each message type actually arrives. Every call below shares the same
+// cached chunk request as the matching lazyLeaf()/lazyWrapper() entries in
+// the components registry (see js/src/lazy.js), so using e.g. Notifications
+// in the UI *and* showMantineNotification() from the server only ever
+// downloads @mantine/notifications once.
 // ---------------------------------------------------------------------------
 if (window.Shiny) {
   window.Shiny.addCustomMessageHandler('shinyMantineNotification', (payload) => {
-    notifications.show(payload);
+    import(/* webpackChunkName: "notifications" */ './satellites/notifications').then(({ notifications }) => notifications.show(payload));
   });
   window.Shiny.addCustomMessageHandler('shinyMantineHideNotification', (id) => {
-    notifications.hide(id);
+    import(/* webpackChunkName: "notifications" */ './satellites/notifications').then(({ notifications }) => notifications.hide(id));
   });
 }
 
-// ---------------------------------------------------------------------------
-// @mantine/modals: imperative API (confirm/prompt) triggerable from R.
-// Requires <ModalsProvider> mounted once (typically wrapping the whole
-// content, like MantineProvider). Simple props only (no nested component
-// trees: use Modal() for rich Mantine content).
-// ---------------------------------------------------------------------------
 if (window.Shiny) {
   window.Shiny.addCustomMessageHandler('shinyMantineOpenConfirmModal', ({ inputId, ...payload }) => {
-    modals.openConfirmModal({
+    import(/* webpackChunkName: "modals" */ './satellites/modals').then(({ modals }) => modals.openConfirmModal({
       ...payload,
       onConfirm: () => setShinyValue(inputId, true, { priority: 'event' }),
       onCancel: () => setShinyValue(inputId, false, { priority: 'event' }),
-    });
+    }));
   });
   window.Shiny.addCustomMessageHandler('shinyMantineOpenModal', (payload) => {
-    modals.open(payload);
+    import(/* webpackChunkName: "modals" */ './satellites/modals').then(({ modals }) => modals.open(payload));
   });
   window.Shiny.addCustomMessageHandler('shinyMantineCloseModal', (id) => {
-    modals.close(id);
+    import(/* webpackChunkName: "modals" */ './satellites/modals').then(({ modals }) => modals.close(id));
   });
   // Shiny.addCustomMessageHandler() requires a handler with exactly one
   // argument (even though no payload is needed here) — a zero-arity
   // handler makes the registration throw and breaks the whole script.
   window.Shiny.addCustomMessageHandler('shinyMantineCloseAllModals', (_unused) => {
-    modals.closeAll();
+    import(/* webpackChunkName: "modals" */ './satellites/modals').then(({ modals }) => modals.closeAll());
   });
 }
 
-// ---------------------------------------------------------------------------
-// @mantine/nprogress: navigation-style progress bar at the top of the
-// page, drivable from R with startMantineProgress()/setMantineProgress()/
-// completeMantineProgress()/etc.
-// ---------------------------------------------------------------------------
 if (window.Shiny) {
   window.Shiny.addCustomMessageHandler('shinyMantineProgress', ({ action, value }) => {
-    if (action === 'start') nprogress.start();
-    else if (action === 'stop') nprogress.stop();
-    else if (action === 'set') nprogress.set(value);
-    else if (action === 'increment') nprogress.increment(value);
-    else if (action === 'decrement') nprogress.decrement(value);
-    else if (action === 'complete') nprogress.complete();
-    else if (action === 'reset') nprogress.reset();
+    import(/* webpackChunkName: "nprogress" */ './satellites/nprogress').then(({ nprogress }) => {
+      if (action === 'start') nprogress.start();
+      else if (action === 'stop') nprogress.stop();
+      else if (action === 'set') nprogress.set(value);
+      else if (action === 'increment') nprogress.increment(value);
+      else if (action === 'decrement') nprogress.decrement(value);
+      else if (action === 'complete') nprogress.complete();
+      else if (action === 'reset') nprogress.reset();
+    });
   });
 }
 
@@ -817,34 +663,6 @@ function LoadingProgressButton({
   );
 }
 
-// ---------------------------------------------------------------------------
-// Dropzone (file upload): reports the metadata of dropped files
-// (name/size/type) to Shiny — file content is not uploaded over this
-// channel, it's meant to let the server react (validation, kicking off a
-// real upload via a regular shiny::fileInput() alongside it, ...).
-// ---------------------------------------------------------------------------
-function ShinyDropzone({
-  inputId, children, onDrop, onReject, ...props
-}) {
-  return React.createElement(MantineDropzone, {
-    ...props,
-    onDrop: (files) => {
-      // Wrapped in { count, files } (instead of a bare array) because a
-      // JSON array with a single object gets "flattened" by R differently
-      // than one with several objects (a classic jsonlite/Shiny gotcha) —
-      // making `length(input$x)` unreliable for counting files. `count` is
-      // always a single, stable number.
-      const meta = files.map((f) => ({ name: f.name, size: f.size, type: f.type }));
-      setShinyValue(inputId, { count: files.length, files: meta }, { priority: 'event' });
-      if (onDrop) onDrop(files);
-    },
-    onReject: (fileRejections) => {
-      setShinyValue(`${inputId}_rejected`, fileRejections.length, { priority: 'event' });
-      if (onReject) onReject(fileRejections);
-    },
-  }, children);
-}
-
 // FileInput receives a File/File[]/null from Mantine (not JSON-serializable):
 // only the metadata is reported to Shiny, same { count, files } schema as
 // ShinyDropzone (`count` always reliable, even with a single file).
@@ -897,137 +715,6 @@ function ShinyFileInput({ inputId, onChange, ...props }) {
       if (onChange) onChange(payload);
     },
   });
-}
-
-// Spotlight (command palette, Cmd+K by default): `actions` arrives as plain
-// data from R ([{id, label, description, leftSection}, ...]); every
-// selection reports `id` to Shiny via `inputId`, same pattern as
-// menuItem()/navLinkItem().
-function ShinySpotlight({ inputId, actions, ...props }) {
-  const mappedActions = (actions || []).map((a) => ({
-    ...a,
-    onClick: () => setShinyValue(inputId, a.id, { priority: 'event' }),
-  }));
-  return React.createElement(Spotlight, { ...props, actions: mappedActions });
-}
-
-// CodeHighlight requires a syntax-highlighting "adapter"
-// (highlight.js/shiki, not included to avoid bloating the bundle): always
-// use plainTextAdapter (no colors, but no extra dependencies) so the
-// component works out of the box with no extra setup.
-function ShinyCodeHighlight(props) {
-  return React.createElement(
-    CodeHighlightAdapterProvider,
-    { adapter: plainTextAdapter },
-    React.createElement(CodeHighlight, props),
-  );
-}
-
-function ShinyInlineCodeHighlight(props) {
-  return React.createElement(
-    CodeHighlightAdapterProvider,
-    { adapter: plainTextAdapter },
-    React.createElement(InlineCodeHighlight, props),
-  );
-}
-
-function ShinyCodeHighlightTabs(props) {
-  return React.createElement(
-    CodeHighlightAdapterProvider,
-    { adapter: plainTextAdapter },
-    React.createElement(CodeHighlightTabs, props),
-  );
-}
-
-// ---------------------------------------------------------------------------
-// @mantine/tiptap: rich text editor. Reduced scope compared to full tiptap
-// (no tables/images/collaboration): only basic formatting (bold, italic,
-// lists, headings, links, alignment), which covers the vast majority of
-// use cases in a Shiny form. The content's HTML is reported to Shiny as a
-// regular input (like a textarea), not as an "event": every edit updates
-// `input$inputId`.
-function ShinyRichTextEditor({
-  inputId, content: initialContent, placeholder, ...props
-}) {
-  const editor = useEditor({
-    extensions: [
-      StarterKit,
-      Underline,
-      Link,
-      TextAlign.configure({ types: ['heading', 'paragraph'] }),
-      ...(placeholder ? [Placeholder.configure({ placeholder })] : []),
-    ],
-    content: initialContent || '',
-    onUpdate: ({ editor: ed }) => {
-      setShinyValue(inputId, ed.getHTML());
-    },
-  });
-
-  useEffect(() => {
-    if (!editor) return undefined;
-    setShinyValue(inputId, editor.getHTML());
-    inputUpdateHandlers[inputId] = (html) => {
-      if (html !== editor.getHTML()) editor.commands.setContent(html || '');
-    };
-    return () => { delete inputUpdateHandlers[inputId]; };
-  }, [editor, inputId]);
-
-  return React.createElement(
-    RichTextEditor,
-    { editor, ...props },
-    React.createElement(
-      RichTextEditor.Toolbar,
-      { sticky: true },
-      React.createElement(
-        RichTextEditor.ControlsGroup,
-        null,
-        React.createElement(RichTextEditor.Bold),
-        React.createElement(RichTextEditor.Italic),
-        React.createElement(RichTextEditor.Underline),
-        React.createElement(RichTextEditor.Strikethrough),
-        React.createElement(RichTextEditor.ClearFormatting),
-        React.createElement(RichTextEditor.Highlight),
-        React.createElement(RichTextEditor.Code),
-      ),
-      React.createElement(
-        RichTextEditor.ControlsGroup,
-        null,
-        React.createElement(RichTextEditor.H1),
-        React.createElement(RichTextEditor.H2),
-        React.createElement(RichTextEditor.H3),
-        React.createElement(RichTextEditor.H4),
-      ),
-      React.createElement(
-        RichTextEditor.ControlsGroup,
-        null,
-        React.createElement(RichTextEditor.Blockquote),
-        React.createElement(RichTextEditor.Hr),
-        React.createElement(RichTextEditor.BulletList),
-        React.createElement(RichTextEditor.OrderedList),
-      ),
-      React.createElement(
-        RichTextEditor.ControlsGroup,
-        null,
-        React.createElement(RichTextEditor.Link),
-        React.createElement(RichTextEditor.Unlink),
-      ),
-      React.createElement(
-        RichTextEditor.ControlsGroup,
-        null,
-        React.createElement(RichTextEditor.AlignLeft),
-        React.createElement(RichTextEditor.AlignCenter),
-        React.createElement(RichTextEditor.AlignRight),
-        React.createElement(RichTextEditor.AlignJustify),
-      ),
-      React.createElement(
-        RichTextEditor.ControlsGroup,
-        null,
-        React.createElement(RichTextEditor.Undo),
-        React.createElement(RichTextEditor.Redo),
-      ),
-    ),
-    React.createElement(RichTextEditor.Content),
-  );
 }
 
 // ---------------------------------------------------------------------------
@@ -1565,18 +1252,25 @@ const components = {
   'Popover.Dropdown': Popover.Dropdown,
   Affix: withReactiveProps(Affix),
   LoadingOverlay: withReactiveProps(LoadingOverlay),
-  DateInput: withReactiveProps(withShinyValueInput(DateInput)),
-  DatePickerInput: withReactiveProps(withShinyValueInput(DatePickerInput)),
-  DatePicker: withReactiveProps(withShinyValueInput(DatePicker)),
-  TimeInput: withReactiveProps(withShinyEventInput(TimeInput)),
-  MonthPickerInput: withReactiveProps(withShinyValueInput(MonthPickerInput)),
-  YearPickerInput: withReactiveProps(withShinyValueInput(YearPickerInput)),
-  DateTimePicker: withReactiveProps(withShinyValueInput(DateTimePicker)),
-  TimePicker: withReactiveProps(withShinyValueInput(TimePicker)),
-  TimeGrid: withReactiveProps(withShinyValueInput(TimeGrid)),
-  MiniCalendar: withReactiveProps(withShinyValueInput(MiniCalendar)),
-  InlineDateTimePicker: withReactiveProps(withShinyValueInput(InlineDateTimePicker)),
-  DatesProvider,
+  // Every entry from here down through Carousel.Slide is backed by a
+  // separate Mantine satellite package (dates, notifications, modals,
+  // spotlight, charts, code-highlight, nprogress, tiptap, dropzone,
+  // carousel), lazily fetched (JS + its own CSS) on first actual use via
+  // lazyLeaf()/lazyWrapper() (js/src/lazy.js) rather than bundled
+  // unconditionally into every app - see js/src/satellites/*.js for each
+  // family's real component definitions.
+  DateInput: lazyLeaf('dates', () => import(/* webpackChunkName: "dates" */ './satellites/dates'), 'DateInput'),
+  DatePickerInput: lazyLeaf('dates', () => import(/* webpackChunkName: "dates" */ './satellites/dates'), 'DatePickerInput'),
+  DatePicker: lazyLeaf('dates', () => import(/* webpackChunkName: "dates" */ './satellites/dates'), 'DatePicker'),
+  TimeInput: lazyLeaf('dates', () => import(/* webpackChunkName: "dates" */ './satellites/dates'), 'TimeInput'),
+  MonthPickerInput: lazyLeaf('dates', () => import(/* webpackChunkName: "dates" */ './satellites/dates'), 'MonthPickerInput'),
+  YearPickerInput: lazyLeaf('dates', () => import(/* webpackChunkName: "dates" */ './satellites/dates'), 'YearPickerInput'),
+  DateTimePicker: lazyLeaf('dates', () => import(/* webpackChunkName: "dates" */ './satellites/dates'), 'DateTimePicker'),
+  TimePicker: lazyLeaf('dates', () => import(/* webpackChunkName: "dates" */ './satellites/dates'), 'TimePicker'),
+  TimeGrid: lazyLeaf('dates', () => import(/* webpackChunkName: "dates" */ './satellites/dates'), 'TimeGrid'),
+  MiniCalendar: lazyLeaf('dates', () => import(/* webpackChunkName: "dates" */ './satellites/dates'), 'MiniCalendar'),
+  InlineDateTimePicker: lazyLeaf('dates', () => import(/* webpackChunkName: "dates" */ './satellites/dates'), 'InlineDateTimePicker'),
+  DatesProvider: lazyWrapper('dates', () => import(/* webpackChunkName: "dates" */ './satellites/dates'), 'DatesProvider'),
   DirectionProvider,
   Notification: withReactiveProps(Notification),
   Transition: withReactiveProps(ShinyTransition),
@@ -1586,36 +1280,36 @@ const components = {
   'Progress.Root': Progress.Root,
   'Progress.Section': withReactiveProps(Progress.Section),
   'Progress.Label': Progress.Label,
-  Notifications,
-  ModalsProvider,
-  Spotlight: ShinySpotlight,
-  SpotlightRoot: withReactiveProps(SpotlightRoot),
-  SpotlightSearch: withReactiveProps(SpotlightSearch),
-  SpotlightActionsList: withReactiveProps(SpotlightActionsList),
-  SpotlightActionsGroup: withReactiveProps(SpotlightActionsGroup),
-  SpotlightAction: withShinyClickValue(SpotlightAction),
-  SpotlightEmpty: withReactiveProps(SpotlightEmpty),
-  SpotlightFooter: withReactiveProps(SpotlightFooter),
-  LineChart: withReactiveProps(LineChart),
-  BarChart: withReactiveProps(BarChart),
-  AreaChart: withReactiveProps(AreaChart),
-  PieChart: withReactiveProps(PieChart),
-  DonutChart: withReactiveProps(DonutChart),
-  RadarChart: withReactiveProps(RadarChart),
-  CompositeChart: withReactiveProps(CompositeChart),
-  RadialBarChart: withReactiveProps(RadialBarChart),
-  BubbleChart: withReactiveProps(BubbleChart),
-  FunnelChart: withReactiveProps(FunnelChart),
-  Sparkline: withReactiveProps(Sparkline),
-  ScatterChart: withReactiveProps(ScatterChart),
-  Treemap: withReactiveProps(Treemap),
-  Heatmap: withReactiveProps(Heatmap),
-  SankeyChart: withReactiveProps(SankeyChart),
-  CodeHighlight: withReactiveProps(ShinyCodeHighlight),
-  InlineCodeHighlight: withReactiveProps(ShinyInlineCodeHighlight),
-  CodeHighlightTabs: withReactiveProps(ShinyCodeHighlightTabs),
-  NavigationProgress,
-  RichTextEditor: ShinyRichTextEditor,
+  Notifications: lazyLeaf('notifications', () => import(/* webpackChunkName: "notifications" */ './satellites/notifications'), 'Notifications'),
+  ModalsProvider: lazyWrapper('modals', () => import(/* webpackChunkName: "modals" */ './satellites/modals'), 'ModalsProvider'),
+  Spotlight: lazyLeaf('spotlight', () => import(/* webpackChunkName: "spotlight" */ './satellites/spotlight'), 'Spotlight'),
+  SpotlightRoot: lazyLeaf('spotlight', () => import(/* webpackChunkName: "spotlight" */ './satellites/spotlight'), 'SpotlightRoot'),
+  SpotlightSearch: lazyLeaf('spotlight', () => import(/* webpackChunkName: "spotlight" */ './satellites/spotlight'), 'SpotlightSearch'),
+  SpotlightActionsList: lazyLeaf('spotlight', () => import(/* webpackChunkName: "spotlight" */ './satellites/spotlight'), 'SpotlightActionsList'),
+  SpotlightActionsGroup: lazyLeaf('spotlight', () => import(/* webpackChunkName: "spotlight" */ './satellites/spotlight'), 'SpotlightActionsGroup'),
+  SpotlightAction: lazyLeaf('spotlight', () => import(/* webpackChunkName: "spotlight" */ './satellites/spotlight'), 'SpotlightAction'),
+  SpotlightEmpty: lazyLeaf('spotlight', () => import(/* webpackChunkName: "spotlight" */ './satellites/spotlight'), 'SpotlightEmpty'),
+  SpotlightFooter: lazyLeaf('spotlight', () => import(/* webpackChunkName: "spotlight" */ './satellites/spotlight'), 'SpotlightFooter'),
+  LineChart: lazyLeaf('charts', () => import(/* webpackChunkName: "charts" */ './satellites/charts'), 'LineChart'),
+  BarChart: lazyLeaf('charts', () => import(/* webpackChunkName: "charts" */ './satellites/charts'), 'BarChart'),
+  AreaChart: lazyLeaf('charts', () => import(/* webpackChunkName: "charts" */ './satellites/charts'), 'AreaChart'),
+  PieChart: lazyLeaf('charts', () => import(/* webpackChunkName: "charts" */ './satellites/charts'), 'PieChart'),
+  DonutChart: lazyLeaf('charts', () => import(/* webpackChunkName: "charts" */ './satellites/charts'), 'DonutChart'),
+  RadarChart: lazyLeaf('charts', () => import(/* webpackChunkName: "charts" */ './satellites/charts'), 'RadarChart'),
+  CompositeChart: lazyLeaf('charts', () => import(/* webpackChunkName: "charts" */ './satellites/charts'), 'CompositeChart'),
+  RadialBarChart: lazyLeaf('charts', () => import(/* webpackChunkName: "charts" */ './satellites/charts'), 'RadialBarChart'),
+  BubbleChart: lazyLeaf('charts', () => import(/* webpackChunkName: "charts" */ './satellites/charts'), 'BubbleChart'),
+  FunnelChart: lazyLeaf('charts', () => import(/* webpackChunkName: "charts" */ './satellites/charts'), 'FunnelChart'),
+  Sparkline: lazyLeaf('charts', () => import(/* webpackChunkName: "charts" */ './satellites/charts'), 'Sparkline'),
+  ScatterChart: lazyLeaf('charts', () => import(/* webpackChunkName: "charts" */ './satellites/charts'), 'ScatterChart'),
+  Treemap: lazyLeaf('charts', () => import(/* webpackChunkName: "charts" */ './satellites/charts'), 'Treemap'),
+  Heatmap: lazyLeaf('charts', () => import(/* webpackChunkName: "charts" */ './satellites/charts'), 'Heatmap'),
+  SankeyChart: lazyLeaf('charts', () => import(/* webpackChunkName: "charts" */ './satellites/charts'), 'SankeyChart'),
+  CodeHighlight: lazyLeaf('codeHighlight', () => import(/* webpackChunkName: "codeHighlight" */ './satellites/codeHighlight'), 'CodeHighlight'),
+  InlineCodeHighlight: lazyLeaf('codeHighlight', () => import(/* webpackChunkName: "codeHighlight" */ './satellites/codeHighlight'), 'InlineCodeHighlight'),
+  CodeHighlightTabs: lazyLeaf('codeHighlight', () => import(/* webpackChunkName: "codeHighlight" */ './satellites/codeHighlight'), 'CodeHighlightTabs'),
+  NavigationProgress: lazyLeaf('nprogress', () => import(/* webpackChunkName: "nprogress" */ './satellites/nprogress'), 'NavigationProgress'),
+  RichTextEditor: lazyLeaf('tiptap', () => import(/* webpackChunkName: "tiptap" */ './satellites/tiptap'), 'RichTextEditor'),
   Stepper: withReactiveProps(withShinyStepClick(Stepper)),
   'Stepper.Step': Stepper.Step,
   'Stepper.Completed': Stepper.Completed,
@@ -1623,12 +1317,12 @@ const components = {
   TreeSelect: withReactiveProps(withShinyValueInput(TreeSelect)),
   Collapse: withReactiveProps(ShinyCollapse),
   FileButton: ShinyFileButton,
-  Dropzone: ShinyDropzone,
-  'Dropzone.Accept': MantineDropzone.Accept,
-  'Dropzone.Reject': MantineDropzone.Reject,
-  'Dropzone.Idle': MantineDropzone.Idle,
-  Carousel,
-  'Carousel.Slide': Carousel.Slide,
+  Dropzone: lazyLeaf('dropzone', () => import(/* webpackChunkName: "dropzone" */ './satellites/dropzone'), 'Dropzone'),
+  'Dropzone.Accept': lazyLeaf('dropzone', () => import(/* webpackChunkName: "dropzone" */ './satellites/dropzone'), 'Dropzone.Accept'),
+  'Dropzone.Reject': lazyLeaf('dropzone', () => import(/* webpackChunkName: "dropzone" */ './satellites/dropzone'), 'Dropzone.Reject'),
+  'Dropzone.Idle': lazyLeaf('dropzone', () => import(/* webpackChunkName: "dropzone" */ './satellites/dropzone'), 'Dropzone.Idle'),
+  Carousel: lazyLeaf('carousel', () => import(/* webpackChunkName: "carousel" */ './satellites/carousel'), 'Carousel'),
+  'Carousel.Slide': lazyLeaf('carousel', () => import(/* webpackChunkName: "carousel" */ './satellites/carousel'), 'Carousel.Slide'),
   SortableList,
   SortableTable,
   DataTable,

@@ -5,7 +5,34 @@ module.exports = {
   entry: './src/index.js',
   output: {
     path: path.join(__dirname, '..', 'inst', 'www'),
-    filename: 'mantine.js'
+    filename: 'mantine.js',
+    // Named (rather than webpack's default numeric-id) chunk files for the
+    // lazily-loaded satellite packages (js/src/satellites/*.js, dynamic
+    // import()ed from js/src/index.js/lazy.js) - e.g. "dates.mantine.js"
+    // instead of "3.mantine.js". Purely cosmetic (easier to spot in the
+    // network tab or inside the built inst/www/ directory), webpack infers
+    // each chunk's [name] from the imported file's own basename with no
+    // magic comment needed. publicPath is left on its default "auto":
+    // since htmltools' htmlDependency() serves the whole inst/www
+    // directory at one resource path and the browser always loads
+    // mantine.js itself via a plain <script src>, webpack 5 correctly
+    // infers the right base URL for these chunks from that same script
+    // tag (document.currentScript.src) with no explicit configuration.
+    chunkFilename: '[name].mantine.js'
+  },
+  optimization: {
+    // Production mode otherwise assigns short numeric/hashed chunk ids
+    // (e.g. "412.mantine.js") regardless of the webpackChunkName magic
+    // comments below - "named" makes those comments actually control the
+    // emitted filename (e.g. "dates.mantine.js").
+    chunkIds: 'named',
+    // Webpack's default splitChunks would otherwise pull each satellite's
+    // own node_modules dependencies into a *separate* "vendors" chunk
+    // alongside its named one (e.g. loading Spotlight for the first time
+    // would mean two HTTP round trips instead of one) - disabled so each
+    // js/src/satellites/*.js dynamic import() resolves to exactly one
+    // self-contained file.
+    splitChunks: false
   },
   module: {
     rules: [
