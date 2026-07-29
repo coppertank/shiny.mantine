@@ -38,18 +38,26 @@ heatmap_data <- setNames(
 
 schedule_resources <- data.frame(
   id = c("tokyo", "paris", "ny"),
-  label = c("Meeting room: Tokyo", "Meeting room: Paris", "Meeting room: New York")
+  label = c(
+    "Meeting room: Tokyo",
+    "Meeting room: Paris",
+    "Meeting room: New York"
+  )
 )
 schedule_events <- data.frame(
   id = 1:4,
   title = c("Team standup", "Client call", "Design review", "All-hands"),
   start = c(
-    "2026-07-27 08:00:00", "2026-07-27 12:00:00",
-    "2026-07-27 16:00:00", "2026-07-27 20:00:00"
+    "2026-07-27 08:00:00",
+    "2026-07-27 12:00:00",
+    "2026-07-27 16:00:00",
+    "2026-07-27 20:00:00"
   ),
   end = c(
-    "2026-07-27 09:00:00", "2026-07-27 14:00:00",
-    "2026-07-27 18:00:00", "2026-07-27 21:30:00"
+    "2026-07-27 09:00:00",
+    "2026-07-27 14:00:00",
+    "2026-07-27 18:00:00",
+    "2026-07-27 21:30:00"
   ),
   color = c("blue", "green", "grape", "orange"),
   resourceId = c("tokyo", "paris", "tokyo", "ny")
@@ -105,25 +113,49 @@ ui <- fluidPage(
           placeholder = "Pick a location",
           clearable = TRUE,
           data = list(
-            list(value = "asia", label = "Asia", children = list(
-              list(value = "jp", label = "Japan", children = list(
-                list(value = "tokyo", label = "Tokyo"),
-                list(value = "osaka", label = "Osaka")
-              )),
-              list(value = "cn", label = "China", children = list(
-                list(value = "shanghai", label = "Shanghai"),
-                list(value = "beijing", label = "Beijing")
-              ))
-            )),
-            list(value = "europe", label = "Europe", children = list(
-              list(value = "it", label = "Italy", children = list(
-                list(value = "rome", label = "Rome"),
-                list(value = "milan", label = "Milan")
-              )),
-              list(value = "fr", label = "France", children = list(
-                list(value = "paris", label = "Paris")
-              ))
-            ))
+            list(
+              value = "asia",
+              label = "Asia",
+              children = list(
+                list(
+                  value = "jp",
+                  label = "Japan",
+                  children = list(
+                    list(value = "tokyo", label = "Tokyo"),
+                    list(value = "osaka", label = "Osaka")
+                  )
+                ),
+                list(
+                  value = "cn",
+                  label = "China",
+                  children = list(
+                    list(value = "shanghai", label = "Shanghai"),
+                    list(value = "beijing", label = "Beijing")
+                  )
+                )
+              )
+            ),
+            list(
+              value = "europe",
+              label = "Europe",
+              children = list(
+                list(
+                  value = "it",
+                  label = "Italy",
+                  children = list(
+                    list(value = "rome", label = "Rome"),
+                    list(value = "milan", label = "Milan")
+                  )
+                ),
+                list(
+                  value = "fr",
+                  label = "France",
+                  children = list(
+                    list(value = "paris", label = "Paris")
+                  )
+                )
+              )
+            )
           )
         )
       ),
@@ -153,7 +185,8 @@ ui <- fluidPage(
             Text("Default (top)", size = "xs", fw = 600),
             Heatmap(
               data = heatmap_data,
-              startDate = "2026-01-01", endDate = "2026-03-31",
+              startDate = "2026-01-01",
+              endDate = "2026-03-31",
               withTooltip = TRUE
             )
           ),
@@ -162,7 +195,8 @@ ui <- fluidPage(
             Text("monthLabelsPosition = \"bottom\"", size = "xs", fw = 600),
             Heatmap(
               data = heatmap_data,
-              startDate = "2026-01-01", endDate = "2026-03-31",
+              startDate = "2026-01-01",
+              endDate = "2026-03-31",
               withTooltip = TRUE,
               monthLabelsPosition = "bottom"
             )
