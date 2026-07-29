@@ -217,10 +217,27 @@ shinyApp(ui, function(input, output, session) {})
 a plain numeric vector instead of a `data.frame`. `BarsList()` takes a
 `data.frame`/list of rows with `name`/`value` columns, rendering each row
 as a horizontal bar with its value (no axes) — good for compact
-top-N/leaderboard displays. `ScatterChart()`, `Treemap()`, `Heatmap()`,
-and `SankeyChart()` have their own nested `data` shapes (documented in
-each function's `?help` page) rather than one flat table, since their
-charts aren't naturally one-row-per-point.
+top-N/leaderboard displays. `SunburstChart()` (added in Mantine 9.5) takes
+a nested list like `Treemap()` (`list(name=, value=, color=,
+children=...)`) and plots it as concentric rings. `BulletChart()` (also
+added in 9.5) is a compact KPI chart: an actual `value` plotted against an
+optional `target` and a `ranges` data.frame/list of rows (`value` = each
+range's upper bound, `color`, optional `label`) shown as background bands.
+`ScatterChart()`, `Treemap()`, `Heatmap()`, and `SankeyChart()` have their
+own nested `data` shapes (documented in each function's `?help` page)
+rather than one flat table, since their charts aren't naturally
+one-row-per-point.
+
+```r
+BulletChart(
+  value = 260000, target = 275000, label = "Revenue",
+  ranges = data.frame(
+    value = c(150000, 225000, 300000),
+    color = c("red.8", "yellow.8", "teal.8"),
+    label = c("Poor", "Average", "Good")
+  )
+)
+```
 
 Charts with an unbounded container (e.g. a plain `Stack()` with no fixed
 height, as above) need an explicit `h` (height) — Recharts, which every
@@ -228,8 +245,16 @@ Mantine chart is built on, silently renders nothing if it can't resolve a
 definite pixel height for itself. `LineChart()`/`BarChart()`/`PieChart()`/
 etc. happen to ship a sensible default; several of the newer chart types
 (`RadarChart()`, `RadialBarChart()`, `BubbleChart()`, `CompositeChart()`,
-`ScatterChart()`) do not, so pass `h = 250` (or similar) explicitly if one
-of these renders blank.
+`ScatterChart()`, `SunburstChart()`) do not, so pass `h = 250` (or
+similar) explicitly if one of these renders blank.
+
+Since Mantine 9.5, `LineChart()`/`BarChart()`/`AreaChart()`/
+`CompositeChart()`/`ScatterChart()`/`BubbleChart()`/`PieChart()`/
+`DonutChart()`/`RadarChart()`/`RadialBarChart()`/`FunnelChart()` support
+`accessibilityLayer` (keyboard navigation, `TRUE` by default) and
+`LineChart()`/`BarChart()`/`AreaChart()`/`CompositeChart()` support
+`withBrush = TRUE` to show a range-selector brush under the chart — both
+plain boolean props, passed through like any other.
 
 ## `@mantine/code-highlight`
 
@@ -354,6 +379,33 @@ server <- function(input, output, session) {
 shinyApp(ui, server)
 ```
 
+`DropzoneFullScreen()` is the same idea, but instead of a fixed drop
+area it listens for drops anywhere on the browser window while its
+`active` prop is `TRUE` — typically toggled by a button via
+`updateMantineProps(session, mantineId, active = TRUE/FALSE)`:
+
+```r
+ui <- fluidPage(
+  MantineProvider(
+    Button("Activate full-screen drop", inputId = "activate_btn"),
+    DropzoneFullScreen(
+      inputId = "upload", mantineId = "full_dz", active = FALSE,
+      Text("Drop files anywhere on the page")
+    )
+  )
+)
+
+server <- function(input, output, session) {
+  active <- reactiveVal(FALSE)
+  observeEvent(input$activate_btn, {
+    active(!active())
+    updateMantineProps(session, "full_dz", active = active())
+  })
+}
+
+shinyApp(ui, server)
+```
+
 ## `@mantine/carousel`
 
 `Carousel()`/`CarouselSlide()` — a swipeable/scrollable carousel for
@@ -375,3 +427,80 @@ server <- function(input, output, session) {}
 
 shinyApp(ui, server)
 ```
+
+## `@mantine/schedule`
+
+Calendar/scheduling views: `DayView()`, `WeekView()`, `MonthView()`,
+`YearView()`, `AgendaView()` (a scrollable event list over a fixed date
+range), `MobileMonthView()` (touch-optimized), the resource-grouped
+`ResourcesDayView()`/`ResourcesWeekView()`/`ResourcesMonthView()` (events
+grouped into rows/columns by e.g. meeting room or staff member), and
+`Schedule()` (all of the above behind one component with its own
+day/week/month/year switcher). Events are a `data.frame`/list of rows with
+`id`, `title`, `start`, `end`, and optionally `color`/`resourceId`
+columns — `start`/`end` accept `"YYYY-MM-DD HH:mm:ss"` strings or R
+`Date`/`POSIXct` values, converted automatically.
+
+```r
+events <- data.frame(
+  id = 1:2,
+  title = c("Team standup", "Client call"),
+  start = c("2026-07-27 09:00:00", "2026-07-27 11:00:00"),
+  end = c("2026-07-27 09:30:00", "2026-07-27 12:00:00"),
+  color = c("blue", "green")
+)
+
+ui <- fluidPage(
+  MantineProvider(
+    DayView(inputId = "day1", date = Sys.Date(), events = events, startTime = "08:00:00")
+  ),
+  verbatimTextOutput("clicked")
+)
+
+server <- function(input, output, session) {
+  output$clicked <- renderPrint(input$day1_event_click)
+}
+
+shinyApp(ui, server)
+```
+
+Every view reports its currently displayed `date` as `input[[inputId]]`
+(the primary value, like every other stateful input in this package); a
+handful of other interactions are reported under suffixed input ids —
+`input[[paste0(inputId, "_event_click")]]` (clicked event's `id`),
+`input[[paste0(inputId, "_slot_click")]]`, `input[[paste0(inputId,
+"_slot_select")]]` (a drag-to-select range, needs `withDragSlotSelect =
+TRUE`), `input[[paste0(inputId, "_event_drop")]]`/`input[[paste0(inputId,
+"_event_resize")]]` (needs `withEventsDragAndDrop`/`withEventResize =
+TRUE`) — see `?ScheduleViews` for the full list. Update `date`/`events`
+(or any other prop) from the server with `updateMantineProps()` (needs a
+`mantineId`).
+
+`ResourcesDayView()`/`ResourcesWeekView()`/`ResourcesMonthView()` also
+take a `resources` data.frame/list (`id`/`label` columns), and each
+event's `resourceId` should match one of them. Their `intervalMinutes`
+prop (default `60`) accepts values dividing evenly into an hour (e.g.
+`15`, `30`) *or* whole numbers of hours (e.g. `120`, `240`) — values
+above `60` widen each column to span several hours instead of
+subdividing within an hour, useful to fit a whole day in view compactly:
+
+```r
+ResourcesDayView(
+  inputId = "rooms1",
+  date = Sys.Date(),
+  resources = data.frame(id = c("tokyo", "paris"), label = c("Tokyo", "Paris")),
+  events = data.frame(
+    id = 1, title = "Team standup",
+    start = "2026-07-27 09:00:00", end = "2026-07-27 10:00:00",
+    resourceId = "tokyo"
+  ),
+  intervalMinutes = 240 # 4-hour-wide columns spanning midnight to midnight
+)
+```
+
+Render-prop customization (`renderEvent`, `renderEventBody`,
+`renderResourceLabel`, custom per-event drag/resize predicates, ...) is
+JS-callback-based and not exposed — every event is draggable/resizable
+whenever the matching `with*` flag is set, and default rendering is used
+throughout (the same trade-off already made for `Combobox()`/
+`TableOfContents()`/`OverflowList()`; see `vignette("core-misc")`).

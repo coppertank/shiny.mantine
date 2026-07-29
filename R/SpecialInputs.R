@@ -115,7 +115,7 @@ MultiSelect <- function(inputId, label = NULL, value = list(), ...) {
     "MultiSelect",
     inputId = inputId,
     label = label,
-    value = value,
+    value = ensureArray(value),
     ...
   )
 }
@@ -131,7 +131,7 @@ updateMantineMultiSelect <- function(
 ) {
   session$sendCustomMessage(
     "shinyMantineUpdateInput",
-    list(inputId = session$ns(inputId), value = value)
+    list(inputId = session$ns(inputId), value = ensureArray(value))
   )
 }
 
@@ -150,7 +150,7 @@ TagsInput <- function(inputId, label = NULL, value = list(), ...) {
     "TagsInput",
     inputId = inputId,
     label = label,
-    value = value,
+    value = ensureArray(value),
     ...
   )
 }
@@ -166,7 +166,7 @@ updateMantineTagsInput <- function(
 ) {
   session$sendCustomMessage(
     "shinyMantineUpdateInput",
-    list(inputId = session$ns(inputId), value = value)
+    list(inputId = session$ns(inputId), value = ensureArray(value))
   )
 }
 

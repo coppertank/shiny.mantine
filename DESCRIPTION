@@ -8,9 +8,10 @@ Description: A comprehensive R interface to the 'Mantine' UI React
     component library (<https://mantine.dev>) for 'Shiny' applications.
     Provides R wrappers for the full 'Mantine' core component set
     (inputs, layout, navigation, overlays, feedback, data display) plus
-    all eight satellite packages ('dates', 'notifications', 'modals',
-    'spotlight', 'charts', 'code-highlight', 'nprogress', 'tiptap'), a
-    client-side page router, and an architecture that goes beyond simple
+    all eleven satellite packages ('dates', 'notifications', 'modals',
+    'spotlight', 'charts', 'code-highlight', 'nprogress', 'tiptap',
+    'dropzone', 'carousel', 'schedule'), a client-side page router, and an
+    architecture that goes beyond simple
     one-way rendering: a generic reactive-props update channel
     (comparable to the update*() family in 'shiny' itself, but for any
     component prop, not just input values) and a 'renderUI()'-equivalent
@@ -56,6 +57,7 @@ Collate:
     'Pages.R'
     'ReactiveProps.R'
     'RichTextEditor.R'
+    'Schedule.R'
     'Sliders.R'
     'SpecialInputs.R'
     'Spotlight.R'

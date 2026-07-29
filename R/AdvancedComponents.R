@@ -26,6 +26,19 @@ CardSection <- displayComponent("Card.Section")
 #' @export
 ActionIconGroup <- displayComponent("ActionIcon.Group")
 
+#' Mantine FloatingWindow.ResizeHandle (added in Mantine 9.5)
+#'
+#' A resize handle for a [FloatingWindow()] — nest it (typically with
+#' `style = list(position = "absolute", right = 0, bottom = 0, cursor =
+#' "nwse-resize")` and an icon child) inside `FloatingWindow()` alongside
+#' its content. `FloatingWindow()`'s own `dimensions` prop (`list(
+#' initialWidth=, minWidth=, maxWidth=, initialHeight=, minHeight=,
+#' maxHeight=)`) sets the resize constraints this handle respects.
+#' @param ... Props and children (e.g. `aria-label`, an icon). See
+#'   <https://mantine.dev/core/floating-window/>.
+#' @export
+FloatingWindowResizeHandle <- displayComponent("FloatingWindow.ResizeHandle")
+
 # Menu extensions: submenus, checkbox/radio items, search, context menu -----
 
 #' Mantine Menu submenu (`Menu.Sub`)
@@ -297,6 +310,74 @@ updateMantineTreeSelect <- function(
   )
 }
 
+# Cascader (added in Mantine 9.5) ---------------------------------------
+
+#' Mantine Cascader (Shiny stateful input, hierarchical cascading selection)
+#'
+#' Lets users drill down through nested options column by column (or, with
+#' `withColumns = FALSE`, as a flat searchable list of full paths) — e.g.
+#' picking a location through Continent > Country > City. Unlike
+#' [TreeSelect()] (a flat popover tree), each level opens its own column
+#' next to the previous one.
+#'
+#' @param inputId Id of the Shiny input; `input[[inputId]]` (a character
+#'   vector, the path from root to the selected node) is synced on every
+#'   selection.
+#' @param data Hierarchical options: a list of `list(value=, label=,
+#'   children=, disabled=)`, `children` nested the same way. Every `value`
+#'   must be unique across the whole tree.
+#' @param value Initial value: a character vector (the path from root to
+#'   the selected node), or `NULL` for nothing selected. Only leaf nodes
+#'   are selectable unless `changeOnSelect = TRUE`.
+#' @param ... Other props (`changeOnSelect`, `expandTrigger` =
+#'   `"click"`/`"hover"`, `searchable`, `withColumns`, `clearable`,
+#'   `maxDisplayedLevels`, ...). See <https://mantine.dev/core/cascader/>.
+#' @export
+#' @examples
+#' \dontrun{
+#' Cascader(
+#'   inputId = "location",
+#'   label = "Location",
+#'   data = list(
+#'     list(value = "asia", label = "Asia", children = list(
+#'       list(value = "jp", label = "Japan", children = list(
+#'         list(value = "tokyo", label = "Tokyo"),
+#'         list(value = "osaka", label = "Osaka")
+#'       ))
+#'     ))
+#'   )
+#' )
+#' }
+Cascader <- function(inputId, data, value = NULL, ...) {
+  mantineElement(
+    "Cascader",
+    inputId = inputId,
+    data = data,
+    # value is a path (string[] | null): NULL stays NULL (a documented,
+    # meaningful "nothing selected" state Cascader itself understands),
+    # but a non-NULL path is protected with ensureArray() against
+    # jsonlite's auto_unbox collapsing a single-level path (e.g. c("asia"))
+    # to a bare string instead of a 1-element array.
+    value = if (!is.null(value)) ensureArray(value),
+    ...
+  )
+}
+
+#' @rdname Cascader
+#' @param session Session object passed to the Shiny server function.
+#' @export
+updateMantineCascader <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  inputId,
+  value = NULL,
+  ...
+) {
+  session$sendCustomMessage(
+    "shinyMantineUpdateInput",
+    list(inputId = session$ns(inputId), value = if (!is.null(value)) ensureArray(value))
+  )
+}
+
 # Collapse -------------------------------------------------------------
 
 #' Mantine Collapse (animated show/hide container)
@@ -346,7 +427,7 @@ CheckboxGroup <- function(inputId, ..., value = list(), label = NULL) {
   mantineElement(
     "CheckboxGroup",
     inputId = inputId,
-    value = value,
+    value = ensureArray(value),
     label = label,
     ...
   )
@@ -363,7 +444,7 @@ updateMantineCheckboxGroup <- function(
 ) {
   session$sendCustomMessage(
     "shinyMantineUpdateInput",
-    list(inputId = session$ns(inputId), value = value)
+    list(inputId = session$ns(inputId), value = ensureArray(value))
   )
 }
 
@@ -391,7 +472,7 @@ SwitchGroup <- function(inputId, ..., value = list(), label = NULL) {
   mantineElement(
     "SwitchGroup",
     inputId = inputId,
-    value = value,
+    value = ensureArray(value),
     label = label,
     ...
   )
@@ -408,7 +489,7 @@ updateMantineSwitchGroup <- function(
 ) {
   session$sendCustomMessage(
     "shinyMantineUpdateInput",
-    list(inputId = session$ns(inputId), value = value)
+    list(inputId = session$ns(inputId), value = ensureArray(value))
   )
 }
 

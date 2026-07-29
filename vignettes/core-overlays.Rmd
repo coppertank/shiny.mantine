@@ -222,12 +222,36 @@ panel positioned anywhere in the viewport by the user; `initialPosition`
 sets where it starts (plain `list(top=, left=)`/`list(bottom=, right=)`
 data — the window's *live* position while being dragged isn't
 readable/settable from the server, since that needs a client-side ref).
+Its parent needs `position: relative` (or similar) for the floating
+window to be positioned against it.
 
 ```r
-FloatingWindow(
-  initialPosition = list(top = 20, right = 20),
-  style = list(border = "1px solid #ddd", background = "white", padding = "12px", width = 220),
-  Text("Drag me by clicking and holding anywhere on me.")
+Box(
+  style = list(position = "relative", height = "300px"),
+  FloatingWindow(
+    initialPosition = list(top = 20, right = 20),
+    style = list(border = "1px solid #ddd", background = "white", padding = "12px", width = 220),
+    Text("Drag me by clicking and holding anywhere on me.")
+  )
+)
+```
+
+Add `dimensions` to make it resizable (`list(initialWidth=, minWidth=,
+maxWidth=, initialHeight=, minHeight=, maxHeight=)`) together with a
+`FloatingWindowResizeHandle()` child, typically pinned to a corner via
+`style`:
+
+```r
+Box(
+  style = list(position = "relative", height = "300px"),
+  FloatingWindow(
+    dimensions = list(initialWidth = 220, minWidth = 150, maxWidth = 400, initialHeight = 140, minHeight = 100, maxHeight = 300),
+    style = list(border = "1px solid #ddd", background = "white", padding = "12px"),
+    Text("Drag / resize me."),
+    FloatingWindowResizeHandle(
+      style = list(position = "absolute", right = 0, bottom = 0, cursor = "nwse-resize")
+    )
+  )
 )
 ```
 

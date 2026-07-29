@@ -272,3 +272,58 @@ SankeyChart <- function(data, ...) {
 BarsList <- function(data, ...) {
   mantineElement("BarsList", data = chartData(data), ...)
 }
+
+#' Mantine SunburstChart (hierarchical concentric-rings chart)
+#'
+#' `data` is a nested list matching Mantine's shape directly (no automatic
+#' `data.frame` conversion, like [Treemap()]/[SankeyChart()]): a list of
+#' `list(name=, value=, color=, children=...)`. Leaf nodes need `value`;
+#' parent nodes nest further options under `children` instead. Every node
+#' needs `name`/`color`; children inherit their parent's color if omitted.
+#' @param data Nested list of chart nodes. See
+#'   <https://mantine.dev/charts/sunburst-chart/>.
+#' @param ... Other props (`size`, `withLabels`, `withTooltip`, `gap`,
+#'   `strokeColor`, ...).
+#' @export
+#' @examples
+#' \dontrun{
+#' SunburstChart(data = list(
+#'   list(name = "Frontend", color = "blue.6", children = list(
+#'     list(name = "React", value = 400),
+#'     list(name = "Vue", value = 200)
+#'   )),
+#'   list(name = "Backend", value = 500, color = "red.6")
+#' ))
+#' }
+SunburstChart <- function(data, ...) {
+  mantineElement("SunburstChart", data = data, ...)
+}
+
+#' Mantine BulletChart (compact KPI chart: value vs. target vs. ranges)
+#'
+#' @param value The actual value to display.
+#' @param ranges Qualitative performance ranges: a `data.frame` (or list of
+#'   rows) with `value` (the range's upper bound) and `color` columns, and
+#'   optionally `label` — ordered smallest to largest (Mantine renders
+#'   them back-to-front, largest first).
+#' @param ... Other props (`target`, `label`, `orientation`, `size`,
+#'   `barSize`, `barColor`, `targetColor`, `withTooltip`, `h` — required
+#'   for `orientation = "vertical"`, ...). See
+#'   <https://mantine.dev/charts/bullet-chart/>.
+#' @export
+#' @examples
+#' \dontrun{
+#' BulletChart(
+#'   value = 260000,
+#'   target = 275000,
+#'   label = "Revenue",
+#'   ranges = data.frame(
+#'     value = c(150000, 225000, 300000),
+#'     color = c("red.8", "yellow.8", "teal.8"),
+#'     label = c("Poor", "Average", "Good")
+#'   )
+#' )
+#' }
+BulletChart <- function(value, ranges, ...) {
+  mantineElement("BulletChart", value = value, ranges = chartData(ranges), ...)
+}

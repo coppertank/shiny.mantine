@@ -32,6 +32,41 @@ Dropzone <- function(inputId, ..., accept = NULL, maxSize = NULL) {
   )
 }
 
+#' Mantine Dropzone.FullScreen (capture files dropped anywhere in the browser window)
+#'
+#' Like [Dropzone()], but instead of a fixed drop area, listens for drops
+#' anywhere on the page while `active` is `TRUE` — typically toggled by a
+#' button (`updateMantineProps(session, mantineId, active = TRUE/FALSE)`).
+#' Reports the same `{count, files}` metadata to `input[[inputId]]` as
+#' [Dropzone()].
+#'
+#' @rdname Dropzone
+#' @param active Whether the full-screen dropzone is currently listening
+#'   for drops anywhere in the browser window. Toggle from the server with
+#'   [updateMantineProps()] (needs a `mantineId`).
+#' @export
+#' @examples
+#' \dontrun{
+#' DropzoneFullScreen(
+#'   inputId = "files", mantineId = "full_dz", active = FALSE,
+#'   Text("Drop files anywhere on the page")
+#' )
+#' # server:
+#' observeEvent(input$activate_btn, {
+#'   updateMantineProps(session, "full_dz", active = TRUE)
+#' })
+#' }
+DropzoneFullScreen <- function(inputId, ..., active = FALSE, accept = NULL, maxSize = NULL) {
+  mantineElement(
+    "Dropzone.FullScreen",
+    inputId = inputId,
+    active = active,
+    accept = accept,
+    maxSize = maxSize,
+    ...
+  )
+}
+
 #' @rdname Dropzone
 #' @export
 DropzoneAccept <- displayComponent("Dropzone.Accept")

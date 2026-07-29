@@ -2,12 +2,15 @@
 % Please edit documentation in R/Dropzone.R
 \name{Dropzone}
 \alias{Dropzone}
+\alias{DropzoneFullScreen}
 \alias{DropzoneAccept}
 \alias{DropzoneReject}
 \alias{DropzoneIdle}
 \title{Mantine Dropzone (drag & drop upload)}
 \usage{
 Dropzone(inputId, ..., accept = NULL, maxSize = NULL)
+
+DropzoneFullScreen(inputId, ..., active = FALSE, accept = NULL, maxSize = NULL)
 
 DropzoneAccept(...)
 
@@ -27,6 +30,10 @@ DropzoneIdle(...)
 \code{c("application/pdf")}); \code{NULL} to accept everything.}
 
 \item{maxSize}{Maximum size per file in bytes (\code{NULL} for no limit).}
+
+\item{active}{Whether the full-screen dropzone is currently listening
+for drops anywhere in the browser window. Toggle from the server with
+\code{\link[=updateMantineProps]{updateMantineProps()}} (needs a \code{mantineId}).}
 }
 \description{
 When files are dropped (or selected via click), \code{input[[inputId]]}
@@ -37,4 +44,22 @@ from a click on the Dropzone). Always use \code{input[[inputId]]$count} for
 the file count (not \code{length(input[[inputId]])}): a JSON array with a
 single object gets "flattened" by R differently than one with several
 objects, making \code{length()} on \verb{$files} alone unreliable.
+
+Like \code{\link[=Dropzone]{Dropzone()}}, but instead of a fixed drop area, listens for drops
+anywhere on the page while \code{active} is \code{TRUE} — typically toggled by a
+button (\code{updateMantineProps(session, mantineId, active = TRUE/FALSE)}).
+Reports the same \verb{\{count, files\}} metadata to \code{input[[inputId]]} as
+\code{\link[=Dropzone]{Dropzone()}}.
+}
+\examples{
+\dontrun{
+DropzoneFullScreen(
+  inputId = "files", mantineId = "full_dz", active = FALSE,
+  Text("Drop files anywhere on the page")
+)
+# server:
+observeEvent(input$activate_btn, {
+  updateMantineProps(session, "full_dz", active = TRUE)
+})
+}
 }

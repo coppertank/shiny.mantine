@@ -95,6 +95,40 @@ TreeSelect(
 )
 ```
 
+## Cascader
+
+<https://mantine.dev/core/cascader/> (added in Mantine 9.5) — like
+`TreeSelect()`, but instead of a single popover tree, each level opens
+its own column next to the previous one, for drilling down through
+deeply nested data (e.g. Continent > Country > City). The selected value
+is the full path from root to the chosen node — `input[[inputId]]` is a
+character vector.
+
+```r
+Cascader(
+  inputId = "location", label = "Location",
+  data = list(
+    list(value = "asia", label = "Asia", children = list(
+      list(value = "jp", label = "Japan", children = list(
+        list(value = "tokyo", label = "Tokyo"),
+        list(value = "osaka", label = "Osaka")
+      ))
+    )),
+    list(value = "europe", label = "Europe", children = list(
+      list(value = "it", label = "Italy")
+    ))
+  )
+)
+
+# server:
+observe(print(input$location))  # e.g. c("asia", "jp", "tokyo")
+```
+
+Set `changeOnSelect = TRUE` to allow selecting a non-leaf level (e.g.
+just "Asia"); by default only leaf nodes are selectable. Set
+`withColumns = FALSE` for a flat, searchable list of full paths instead
+of cascading columns (handier on narrow screens).
+
 ## Pill
 
 <https://mantine.dev/core/pill/> — a small rounded tag element, the

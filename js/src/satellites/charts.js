@@ -2,6 +2,7 @@ import {
   LineChart, BarChart, AreaChart, PieChart, DonutChart,
   RadarChart, CompositeChart, RadialBarChart, BubbleChart, FunnelChart,
   Sparkline, ScatterChart, Treemap, Heatmap, SankeyChart, BarsList,
+  SunburstChart, BulletChart,
 } from '@mantine/charts';
 import '@mantine/charts/styles.css';
 import { withReactiveProps } from '../shared';
@@ -23,4 +24,6 @@ export const components = {
   Heatmap: withReactiveProps(Heatmap),
   SankeyChart: withReactiveProps(SankeyChart),
   BarsList: withReactiveProps(BarsList),
+  SunburstChart: withReactiveProps(SunburstChart),
+  BulletChart: withReactiveProps(BulletChart),
 };

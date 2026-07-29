@@ -28,6 +28,17 @@ toTimeString <- function(x) {
   format(x, "%H:%M:%S")
 }
 
+#' @keywords internal
+toDateTimeString <- function(x) {
+  if (is.null(x)) {
+    return(NULL)
+  }
+  if (is.character(x)) {
+    return(x)
+  }
+  format(x, "%Y-%m-%d %H:%M:%S")
+}
+
 #' Mantine DateInput (Shiny stateful input, text field with calendar)
 #' @param inputId Id of the Shiny input; `input[[inputId]]` (a
 #'   `"YYYY-MM-DD"` string) is synced on selection.

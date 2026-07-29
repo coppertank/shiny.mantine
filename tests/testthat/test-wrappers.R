@@ -10,6 +10,45 @@ test_that("MultiSelect/TagsInput default to an empty array, not NULL", {
   expect_equal(ti$props$value, list(type = "array", value = list()))
 })
 
+test_that("ensureArray() always coerces to a genuine (unnamed) list", {
+  expect_equal(ensureArray(NULL), list())
+  expect_equal(ensureArray("a"), list("a"))
+  expect_equal(ensureArray(c("a", "b")), list("a", "b"))
+  expect_equal(ensureArray(list("a")), list("a"))
+})
+
+test_that("MultiSelect/TagsInput/CheckboxGroup/SwitchGroup keep a single-item value as an array", {
+  # Regression test: jsonlite::toJSON(..., auto_unbox = TRUE) - used both
+  # by renderMantineRoot() for the initial element tree and by Shiny's own
+  # default custom-message serializer for updateMantineXxx() - collapses a
+  # length-1 atomic vector to a bare JSON scalar instead of a 1-element
+  # array. Each of these components calls .map() on `value` unconditionally
+  # on the JS side, so `value = c("onlyone")` used to crash exactly like
+  # the NULL case above ("value.map is not a function").
+  expect_equal(MultiSelect("ms1", value = c("onlyone"))$props$value, list(type = "array", value = list(list(type = "raw", value = "onlyone"))))
+  expect_equal(TagsInput("ti1", value = c("onlyone"))$props$value, list(type = "array", value = list(list(type = "raw", value = "onlyone"))))
+  expect_equal(CheckboxGroup("cg1", value = c("onlyone"))$props$value, list(type = "array", value = list(list(type = "raw", value = "onlyone"))))
+  expect_equal(SwitchGroup("sg1", value = c("onlyone"))$props$value, list(type = "array", value = list(list(type = "raw", value = "onlyone"))))
+})
+
+test_that("updateMantineMultiSelect()/updateMantineTagsInput()/updateMantineCheckboxGroup()/updateMantineSwitchGroup() keep a single-item value as an array", {
+  session <- mock_session()
+  updateMantineMultiSelect(session, "ms1", value = c("onlyone"))
+  expect_equal(session$.messages$log[[1]]$message$value, list("onlyone"))
+
+  session <- mock_session()
+  updateMantineTagsInput(session, "ti1", value = c("onlyone"))
+  expect_equal(session$.messages$log[[1]]$message$value, list("onlyone"))
+
+  session <- mock_session()
+  updateMantineCheckboxGroup(session, "cg1", value = c("onlyone"))
+  expect_equal(session$.messages$log[[1]]$message$value, list("onlyone"))
+
+  session <- mock_session()
+  updateMantineSwitchGroup(session, "sg1", value = c("onlyone"))
+  expect_equal(session$.messages$log[[1]]$message$value, list("onlyone"))
+})
+
 test_that("toDateString() passes through strings and formats Date objects", {
   expect_null(toDateString(NULL))
   expect_equal(toDateString("2026-07-24"), "2026-07-24")

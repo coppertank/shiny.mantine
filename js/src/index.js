@@ -104,6 +104,8 @@ import {
   ComboboxPopover,
   OverflowList,
   TableOfContents,
+  Cascader,
+  FloatingWindow,
 } from '@mantine/core';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { generatedComponents } from './generated-components';
@@ -1243,6 +1245,13 @@ const components = {
   MantineProvider: ShinyMantineProvider,
   Card,
   'Card.Section': Card.Section,
+  // FloatingWindow.ResizeHandle (new in Mantine 9.5) is only reachable via
+  // property access on FloatingWindow, unlike most other compound
+  // sub-parts this package generates via
+  // js/scripts/generate-components.js (which assumes a separate flattened
+  // named export exists, e.g. ListItem for List.Item) - hand-registered
+  // here instead.
+  'FloatingWindow.ResizeHandle': withReactiveProps(FloatingWindow.ResizeHandle),
   Text,
   Title,
   Paper,
@@ -1468,19 +1477,38 @@ const components = {
   Heatmap: lazyLeaf('charts', () => import(/* webpackChunkName: "charts" */ './satellites/charts'), 'Heatmap'),
   SankeyChart: lazyLeaf('charts', () => import(/* webpackChunkName: "charts" */ './satellites/charts'), 'SankeyChart'),
   BarsList: lazyLeaf('charts', () => import(/* webpackChunkName: "charts" */ './satellites/charts'), 'BarsList'),
+  SunburstChart: lazyLeaf('charts', () => import(/* webpackChunkName: "charts" */ './satellites/charts'), 'SunburstChart'),
+  BulletChart: lazyLeaf('charts', () => import(/* webpackChunkName: "charts" */ './satellites/charts'), 'BulletChart'),
   CodeHighlight: lazyLeaf('codeHighlight', () => import(/* webpackChunkName: "codeHighlight" */ './satellites/codeHighlight'), 'CodeHighlight'),
   InlineCodeHighlight: lazyLeaf('codeHighlight', () => import(/* webpackChunkName: "codeHighlight" */ './satellites/codeHighlight'), 'InlineCodeHighlight'),
   CodeHighlightTabs: lazyLeaf('codeHighlight', () => import(/* webpackChunkName: "codeHighlight" */ './satellites/codeHighlight'), 'CodeHighlightTabs'),
   NavigationProgress: lazyLeaf('nprogress', () => import(/* webpackChunkName: "nprogress" */ './satellites/nprogress'), 'NavigationProgress'),
   RichTextEditor: lazyLeaf('tiptap', () => import(/* webpackChunkName: "tiptap" */ './satellites/tiptap'), 'RichTextEditor'),
+  DayView: lazyLeaf('schedule', () => import(/* webpackChunkName: "schedule" */ './satellites/schedule'), 'DayView'),
+  WeekView: lazyLeaf('schedule', () => import(/* webpackChunkName: "schedule" */ './satellites/schedule'), 'WeekView'),
+  MonthView: lazyLeaf('schedule', () => import(/* webpackChunkName: "schedule" */ './satellites/schedule'), 'MonthView'),
+  YearView: lazyLeaf('schedule', () => import(/* webpackChunkName: "schedule" */ './satellites/schedule'), 'YearView'),
+  AgendaView: lazyLeaf('schedule', () => import(/* webpackChunkName: "schedule" */ './satellites/schedule'), 'AgendaView'),
+  MobileMonthView: lazyLeaf('schedule', () => import(/* webpackChunkName: "schedule" */ './satellites/schedule'), 'MobileMonthView'),
+  ResourcesDayView: lazyLeaf('schedule', () => import(/* webpackChunkName: "schedule" */ './satellites/schedule'), 'ResourcesDayView'),
+  ResourcesWeekView: lazyLeaf('schedule', () => import(/* webpackChunkName: "schedule" */ './satellites/schedule'), 'ResourcesWeekView'),
+  ResourcesMonthView: lazyLeaf('schedule', () => import(/* webpackChunkName: "schedule" */ './satellites/schedule'), 'ResourcesMonthView'),
+  Schedule: lazyLeaf('schedule', () => import(/* webpackChunkName: "schedule" */ './satellites/schedule'), 'Schedule'),
   Stepper: withReactiveProps(withShinyStepClick(Stepper)),
   'Stepper.Step': Stepper.Step,
   'Stepper.Completed': Stepper.Completed,
   Tree: withReactiveProps(ShinyTree),
   TreeSelect: withReactiveProps(withShinyValueInput(TreeSelect)),
+  // Cascader's onChange(path, options) - withShinyValueInput's own
+  // onChange(newValue) only declares/forwards the first argument (path),
+  // exactly what should reach Shiny; the second (resolved option objects)
+  // is simply dropped, same simplification already applied throughout
+  // this package's other callback-based components.
+  Cascader: withReactiveProps(withShinyValueInput(Cascader)),
   Collapse: withReactiveProps(ShinyCollapse),
   FileButton: ShinyFileButton,
   Dropzone: lazyLeaf('dropzone', () => import(/* webpackChunkName: "dropzone" */ './satellites/dropzone'), 'Dropzone'),
+  'Dropzone.FullScreen': lazyLeaf('dropzone', () => import(/* webpackChunkName: "dropzone" */ './satellites/dropzone'), 'Dropzone.FullScreen'),
   'Dropzone.Accept': lazyLeaf('dropzone', () => import(/* webpackChunkName: "dropzone" */ './satellites/dropzone'), 'Dropzone.Accept'),
   'Dropzone.Reject': lazyLeaf('dropzone', () => import(/* webpackChunkName: "dropzone" */ './satellites/dropzone'), 'Dropzone.Reject'),
   'Dropzone.Idle': lazyLeaf('dropzone', () => import(/* webpackChunkName: "dropzone" */ './satellites/dropzone'), 'Dropzone.Idle'),

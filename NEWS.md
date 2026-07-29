@@ -2,6 +2,49 @@
 
 Initial public release.
 
+* Updated to Mantine 9.5.0. New components: `Combobox()` (plus its
+  compound sub-parts: `ComboboxTarget()`, `ComboboxDropdown()`,
+  `ComboboxOptions()`, `ComboboxOption()`, `ComboboxSearch()`, ...) — the
+  headless dropdown primitive `Select()`/`MultiSelect()`/`Autocomplete()`/
+  `TagsInput()` are built on top of, now wrapped by internally owning
+  Mantine's `useCombobox()` store so the R API stays fully declarative;
+  `ComboboxPopover()`/`ComboboxPopoverTarget()`; `OverflowList()`;
+  `TableOfContents()`; `Cascader()` (hierarchical cascading-column
+  selection, added in Mantine 9.5); `FloatingWindowResizeHandle()` (added
+  in 9.5); `MonthPicker()`/`YearPicker()` (always-visible inline
+  counterparts of `MonthPickerInput()`/`YearPickerInput()`); `TimeValue()`;
+  `BarsList()`; `SunburstChart()`/`BulletChart()` (added in 9.5); and
+  `DropzoneFullScreen()` (captures drops anywhere in the browser window,
+  not just a fixed area).
+* Added a full wrapper for the `@mantine/schedule` satellite package (the
+  package's 11th): `DayView()`, `WeekView()`, `MonthView()`, `YearView()`,
+  `AgendaView()`, `MobileMonthView()`, the resource-grouped
+  `ResourcesDayView()`/`ResourcesWeekView()`/`ResourcesMonthView()`
+  (including `intervalMinutes` support for multi-hour columns, e.g.
+  `intervalMinutes = 240`), and `Schedule()` (a unified view with its own
+  day/week/month/year switcher). Events/resources are `data.frame`s (or
+  lists of rows) with automatic `Date`/`POSIXct` conversion for
+  `start`/`end`; drag-and-drop and resize (`withEventsDragAndDrop`/
+  `withEventResize`) update the display immediately and report the change
+  to Shiny under a suffixed input id, the same pattern already used by
+  `SortableList()`/`SortableTable()`. See `vignette("satellite-packages")`.
+* Fixed `RichTextEditor()`'s `Highlight` toolbar button being a dead
+  no-op (its Tiptap extension was never registered); added `Subscript`/
+  `Superscript`/`TaskList` support and a new `controls` prop to
+  customize/trim the toolbar layout.
+* Fixed a latent bug where `MultiSelect()`/`TagsInput()`/`CheckboxGroup()`/
+  `SwitchGroup()` (and their `update*()` counterparts) would crash if
+  given a single-item `value` (e.g. `c("onlyone")`): `jsonlite`'s
+  `auto_unbox` collapses a length-1 vector to a bare JSON scalar instead
+  of a 1-element array, and each of these calls `.map()` on `value`
+  unconditionally on the JS side. Fixed via a new internal `ensureArray()`
+  helper, also used by `Cascader()`'s path `value`.
+* Every `mantine.dev` page was re-audited against this package's exports
+  for the 9.5.0 release; the only remaining gaps are `Calendar()` and
+  `FloatingIndicator()` (both need a live DOM ref or function-callback
+  prop that can't cross the R/JSON bridge) — see `vignette("core-misc")`'s
+  "Intentionally out of scope" section.
+
 * Each of the 10 Mantine satellite packages (dates, notifications, modals,
   spotlight, charts, code-highlight, nprogress, tiptap, dropzone,
   carousel) is now code-split into its own chunk
