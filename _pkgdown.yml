@@ -134,6 +134,7 @@ reference:
   - TabsTab
   - TabsPanel
   - Breadcrumbs
+  - TableOfContents
   - Pagination
   - PaginationRoot
   - PaginationItems
@@ -190,6 +191,9 @@ reference:
   - NumberInput
   - Autocomplete
   - Select
+  - Cascader
+  - ComboboxPopover
+  - Combobox
   - MultiSelect
   - NativeSelect
   - TagsInput
@@ -243,10 +247,13 @@ reference:
   - DateTimePicker
   - InlineDateTimePicker
   - MonthPickerInput
+  - MonthPicker
   - YearPickerInput
+  - YearPicker
   - TimeInput
   - TimePicker
   - TimeGrid
+  - TimeValue
   - MiniCalendar
 
 - title: "Overlays"
@@ -281,6 +288,7 @@ reference:
   - FocusTrapInitialFocus
   - RemoveScroll
   - FloatingWindow
+  - FloatingWindowResizeHandle
 
 - title: "Data display"
   contents:
@@ -327,6 +335,7 @@ reference:
   - PillGroup
   - RollingNumber
   - SemiCircleProgress
+  - OverflowList
 
 - title: "Feedback"
   contents:
@@ -359,6 +368,9 @@ reference:
   - ScatterChart
   - Sparkline
   - Treemap
+  - SunburstChart
+  - BulletChart
+  - BarsList
 
 - title: "Drag & drop, dropzone, carousel"
   contents:
@@ -415,6 +427,16 @@ reference:
 - title: "Rich text editor (`@mantine/tiptap`)"
   contents:
   - RichTextEditor
+
+- title: "Schedule (`@mantine/schedule`)"
+  desc: >
+    Calendar/scheduling views. See `vignette("satellite-packages")`.
+  contents:
+  - DayView
+  - ResourcesDayView
+  - AgendaView
+  - MobileMonthView
+  - Schedule
 
 - title: "Reactive architecture"
   desc: >
