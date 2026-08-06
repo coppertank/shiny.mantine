@@ -1,0 +1,225 @@
+# Core: Combobox
+
+``` r
+
+library(shiny)
+library(shiny.mantine)
+```
+
+An R rewrite of the [“Combobox”
+category](https://mantine.dev/core/select/) on mantine.dev/core — every
+dropdown-driven choice input, all built on top of Mantine’s internal
+`useCombobox()` state machine (open state, active option, keyboard
+navigation). That hook itself can’t be expressed through R’s plain
+serializable props directly — but unlike earlier versions of this
+package, it no longer has to be:
+[`Combobox()`](https://coppertank.github.io/shiny.mantine/reference/Combobox.md)
+(below) creates and owns the store on the JS side for you, so even the
+headless primitive stays available from R for building a fully custom
+dropdown-driven input, on top of the ready-made ones below.
+
+## Select
+
+<https://mantine.dev/core/select/> — a single-choice searchable
+dropdown. `data` is a plain character vector, or a list of
+`list(value=, label=)` for a different label than the stored value.
+
+``` r
+
+Select(
+  inputId = "country", label = "Country",
+  data = c("Italy", "France", "Germany", "Spain"),
+  searchable = TRUE, placeholder = "Pick a country"
+)
+```
+
+## MultiSelect
+
+<https://mantine.dev/core/multi-select/> — same idea, multiple
+selections; `input[[inputId]]` is a character vector.
+
+``` r
+
+MultiSelect(
+  inputId = "skills", label = "Skills",
+  data = c("R", "Python", "JavaScript", "SQL"),
+  value = list("R")
+)
+```
+
+## TagsInput
+
+<https://mantine.dev/core/tags-input/> — like
+[`MultiSelect()`](https://coppertank.github.io/shiny.mantine/reference/MultiSelect.md),
+but the user can also type and add values not present in `data`.
+
+``` r
+
+TagsInput(inputId = "tags", label = "Tags", data = c("bug", "feature", "docs"))
+```
+
+## Autocomplete
+
+<https://mantine.dev/core/autocomplete/> — a free-text field with
+suggestions; unlike
+[`Select()`](https://coppertank.github.io/shiny.mantine/reference/Select.md),
+the user isn’t restricted to `data`’s values.
+
+``` r
+
+Autocomplete(inputId = "city", label = "City", data = c("Rome", "Milan", "Naples", "Turin"))
+```
+
+## TreeSelect
+
+<https://mantine.dev/core/tree-select/> (a `shiny.mantine`-specific
+combination of
+[`Select()`](https://coppertank.github.io/shiny.mantine/reference/Select.md)’s
+dropdown with
+[`Tree()`](https://coppertank.github.io/shiny.mantine/reference/Tree.md)’s
+hierarchical `data` — not a standalone mantine.dev page, but built the
+same way as the others here) — a dropdown for picking one node out of
+nested data:
+
+``` r
+
+TreeSelect(
+  inputId = "folder", label = "Destination folder",
+  data = list(
+    list(value = "docs", label = "Documents", children = list(
+      list(value = "docs/reports", label = "Reports")
+    )),
+    list(value = "images", label = "Images")
+  )
+)
+```
+
+## Cascader
+
+<https://mantine.dev/core/cascader/> (added in Mantine 9.5) — like
+[`TreeSelect()`](https://coppertank.github.io/shiny.mantine/reference/TreeSelect.md),
+but instead of a single popover tree, each level opens its own column
+next to the previous one, for drilling down through deeply nested data
+(e.g. Continent \> Country \> City). The selected value is the full path
+from root to the chosen node — `input[[inputId]]` is a character vector.
+
+``` r
+
+Cascader(
+  inputId = "location", label = "Location",
+  data = list(
+    list(value = "asia", label = "Asia", children = list(
+      list(value = "jp", label = "Japan", children = list(
+        list(value = "tokyo", label = "Tokyo"),
+        list(value = "osaka", label = "Osaka")
+      ))
+    )),
+    list(value = "europe", label = "Europe", children = list(
+      list(value = "it", label = "Italy")
+    ))
+  )
+)
+
+# server:
+observe(print(input$location))  # e.g. c("asia", "jp", "tokyo")
+```
+
+Set `changeOnSelect = TRUE` to allow selecting a non-leaf level (e.g.
+just “Asia”); by default only leaf nodes are selectable. Set
+`withColumns = FALSE` for a flat, searchable list of full paths instead
+of cascading columns (handier on narrow screens).
+
+## Pill
+
+<https://mantine.dev/core/pill/> — a small rounded tag element, the
+visual building block
+[`MultiSelect()`](https://coppertank.github.io/shiny.mantine/reference/MultiSelect.md)/[`TagsInput()`](https://coppertank.github.io/shiny.mantine/reference/TagsInput.md)
+render for each selected value;
+[`PillGroup()`](https://coppertank.github.io/shiny.mantine/reference/Pill.md)
+wraps several together. Useful standalone for displaying (not
+necessarily editing) a list of tags:
+
+``` r
+
+PillGroup(Pill("R"), Pill("Shiny"), Pill("Mantine", withRemoveButton = TRUE))
+```
+
+## ComboboxPopover
+
+<https://mantine.dev/core/combobox-popover/> — like
+[`Select()`](https://coppertank.github.io/shiny.mantine/reference/Select.md),
+but renders no input of its own: you supply the clickable target
+(typically a
+[`Button()`](https://coppertank.github.io/shiny.mantine/reference/Button.md))
+via
+[`ComboboxPopoverTarget()`](https://coppertank.github.io/shiny.mantine/reference/ComboboxPopover.md).
+Useful when the trigger shouldn’t look like a text field.
+
+``` r
+
+ComboboxPopover(
+  inputId = "framework", data = c("React", "Angular", "Vue", "Svelte"),
+  ComboboxPopoverTarget(Button("Pick a framework", variant = "default"))
+)
+```
+
+## Combobox (headless primitive)
+
+<https://mantine.dev/core/combobox/> — reach for this only when
+[`Select()`](https://coppertank.github.io/shiny.mantine/reference/Select.md)/[`MultiSelect()`](https://coppertank.github.io/shiny.mantine/reference/MultiSelect.md)/[`Autocomplete()`](https://coppertank.github.io/shiny.mantine/reference/Autocomplete.md)/[`TagsInput()`](https://coppertank.github.io/shiny.mantine/reference/TagsInput.md)/
+[`ComboboxPopover()`](https://coppertank.github.io/shiny.mantine/reference/ComboboxPopover.md)
+don’t fit (e.g. options need fully custom icons/layout beyond what
+`renderOption`-style composition in those covers). The real Mantine
+`Combobox` is driven by a live `useCombobox()` store (a JS object with
+methods);
+[`Combobox()`](https://coppertank.github.io/shiny.mantine/reference/Combobox.md)
+creates and owns that store internally, so the R API stays declarative:
+
+- [`ComboboxTarget()`](https://coppertank.github.io/shiny.mantine/reference/Combobox.md)’s
+  single child (e.g. a
+  [`Button()`](https://coppertank.github.io/shiny.mantine/reference/Button.md))
+  toggles the dropdown on click automatically.
+- Selecting a
+  [`ComboboxOption()`](https://coppertank.github.io/shiny.mantine/reference/Combobox.md)
+  sends its `value` to `input[[inputId]]` (as an event, like
+  [`actionButton()`](https://rdrr.io/pkg/shiny/man/actionButton.html))
+  and closes the dropdown; highlighting the current selection
+  (`active = TRUE`) is your responsibility, same as Mantine’s own
+  controlled examples.
+- [`ComboboxSearch()`](https://coppertank.github.io/shiny.mantine/reference/Combobox.md)
+  is wired like any text input (`input[[inputId]]` on every keystroke) —
+  pair it with
+  [`renderMantine()`](https://coppertank.github.io/shiny.mantine/reference/mantineOutput.md)/[`mantineOutput()`](https://coppertank.github.io/shiny.mantine/reference/mantineOutput.md)
+  to re-render
+  [`ComboboxOptions()`](https://coppertank.github.io/shiny.mantine/reference/Combobox.md)
+  server-side as the user types, since an R-side `filter` function can’t
+  cross the bridge the way Mantine’s own `filter` prop does.
+
+``` r
+
+Combobox(
+  inputId = "fruit",
+  ComboboxTarget(Button("Pick a fruit", variant = "default")),
+  ComboboxDropdown(
+    ComboboxOptions(
+      ComboboxOption(value = "apple", "🍎 Apple"),
+      ComboboxOption(value = "banana", "🍌 Banana")
+    )
+  )
+)
+
+# server:
+observeEvent(input$fruit, {
+  message("Picked: ", input$fruit)
+})
+```
+
+## Where to go next
+
+- [`vignette("core-inputs")`](https://coppertank.github.io/shiny.mantine/articles/core-inputs.md)
+  — text/numeric/choice/boolean form inputs.
+- [`vignette("core-misc")`](https://coppertank.github.io/shiny.mantine/articles/core-misc.md)
+  — the full “Intentionally out of scope” list, covering the parts of
+  `Combobox`’s design (a raw `ref`/DOM-driven `FloatingIndicator`,
+  `Calendar`’s `getDayProps`) that stay out of reach even with this
+  pragmatic wrapper.

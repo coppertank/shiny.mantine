@@ -1,0 +1,22 @@
+pandoc: 3.8.3
+pkgdown: 2.2.1
+pkgdown_sha: ~
+articles:
+  architecture: architecture.html
+  core-buttons: core-buttons.html
+  core-combobox: core-combobox.html
+  core-data-display: core-data-display.html
+  core-feedback: core-feedback.html
+  core-inputs: core-inputs.html
+  core-layout: core-layout.html
+  core-misc: core-misc.html
+  core-navigation: core-navigation.html
+  core-overlays: core-overlays.html
+  core-typography: core-typography.html
+  extras: extras.html
+  getting-started: getting-started.html
+  satellite-packages: satellite-packages.html
+last_built: 2026-08-06T17:54Z
+urls:
+  reference: https://coppertank.github.io/shiny.mantine/reference
+  article: https://coppertank.github.io/shiny.mantine/articles

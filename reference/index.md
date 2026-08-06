@@ -1,0 +1,915 @@
+# Package index
+
+## Provider
+
+The one component every UI must wrap everything in — supplies theme and
+color-scheme context to every other component.
+
+- [`MantineProvider()`](https://coppertank.github.io/shiny.mantine/reference/MantineProvider.md)
+  : MantineProvider
+- [`MantineThemeProvider()`](https://coppertank.github.io/shiny.mantine/reference/MantineThemeProvider.md)
+  : Mantine MantineThemeProvider
+
+## Layout
+
+Structural/positioning components.
+
+- [`AppShell()`](https://coppertank.github.io/shiny.mantine/reference/AppShell.md)
+  [`AppShellHeader()`](https://coppertank.github.io/shiny.mantine/reference/AppShell.md)
+  [`AppShellNavbar()`](https://coppertank.github.io/shiny.mantine/reference/AppShell.md)
+  [`AppShellMain()`](https://coppertank.github.io/shiny.mantine/reference/AppShell.md)
+  [`AppShellAside()`](https://coppertank.github.io/shiny.mantine/reference/AppShell.md)
+  [`AppShellFooter()`](https://coppertank.github.io/shiny.mantine/reference/AppShell.md)
+  [`AppShellSection()`](https://coppertank.github.io/shiny.mantine/reference/AppShell.md)
+  : Mantine AppShell family
+- [`Box()`](https://coppertank.github.io/shiny.mantine/reference/Box.md)
+  : Mantine Box (generic styleable container)
+- [`Center()`](https://coppertank.github.io/shiny.mantine/reference/Center.md)
+  : Mantine Center (centers content horizontally and vertically)
+- [`Container()`](https://coppertank.github.io/shiny.mantine/reference/Container.md)
+  : Mantine Container
+- [`SimpleGrid()`](https://coppertank.github.io/shiny.mantine/reference/SimpleGrid.md)
+  : Mantine SimpleGrid (responsive grid with uniform columns)
+- [`Grid()`](https://coppertank.github.io/shiny.mantine/reference/Grid.md)
+  [`GridCol()`](https://coppertank.github.io/shiny.mantine/reference/Grid.md)
+  : Mantine Grid family (12-column grid)
+- [`Group()`](https://coppertank.github.io/shiny.mantine/reference/Group.md)
+  : Mantine Group (horizontal flex layout)
+- [`Stack()`](https://coppertank.github.io/shiny.mantine/reference/Stack.md)
+  : Mantine Stack (vertical flex layout)
+- [`Flex()`](https://coppertank.github.io/shiny.mantine/reference/Flex.md)
+  : Mantine Flex
+- [`Space()`](https://coppertank.github.io/shiny.mantine/reference/Space.md)
+  : Mantine Space
+- [`Paper()`](https://coppertank.github.io/shiny.mantine/reference/Paper.md)
+  : Mantine Paper (surface with background/shadow/border, without Card's
+  defaults)
+- [`Card()`](https://coppertank.github.io/shiny.mantine/reference/Card.md)
+  : Mantine Card
+- [`CardSection()`](https://coppertank.github.io/shiny.mantine/reference/CardSection.md)
+  : Mantine Card.Section
+- [`Divider()`](https://coppertank.github.io/shiny.mantine/reference/Divider.md)
+  : Mantine Divider (separator line)
+- [`ScrollArea()`](https://coppertank.github.io/shiny.mantine/reference/ScrollArea.md)
+  : Mantine ScrollArea
+- [`ScrollAreaAutosize()`](https://coppertank.github.io/shiny.mantine/reference/ScrollAreaAutosize.md)
+  [`NativeScrollArea()`](https://coppertank.github.io/shiny.mantine/reference/ScrollAreaAutosize.md)
+  : Mantine ScrollAreaAutosize / NativeScrollArea
+- [`Scroller()`](https://coppertank.github.io/shiny.mantine/reference/Scroller.md)
+  : Mantine Scroller
+- [`AspectRatio()`](https://coppertank.github.io/shiny.mantine/reference/AspectRatio.md)
+  : Mantine AspectRatio
+- [`Affix()`](https://coppertank.github.io/shiny.mantine/reference/Affix.md)
+  : Mantine Affix (fixed-position content, e.g. a "back to top" button)
+- [`Portal()`](https://coppertank.github.io/shiny.mantine/reference/Portal.md)
+  : Mantine Portal (render children into a different DOM node)
+- [`DirectionProvider()`](https://coppertank.github.io/shiny.mantine/reference/DirectionProvider.md)
+  : Mantine DirectionProvider (RTL/LTR text direction)
+
+## Typography
+
+- [`Text()`](https://coppertank.github.io/shiny.mantine/reference/Text.md)
+  : Mantine Text
+- [`Title()`](https://coppertank.github.io/shiny.mantine/reference/Title.md)
+  : Mantine Title (h1-h6 headings)
+- [`Anchor()`](https://coppertank.github.io/shiny.mantine/reference/Anchor.md)
+  : Mantine Anchor (styled link)
+- [`Code()`](https://coppertank.github.io/shiny.mantine/reference/Code.md)
+  : Mantine Code
+- [`Highlight()`](https://coppertank.github.io/shiny.mantine/reference/Highlight.md)
+  : Mantine Highlight
+- [`Mark()`](https://coppertank.github.io/shiny.mantine/reference/Mark.md)
+  : Mantine Mark
+- [`Blockquote()`](https://coppertank.github.io/shiny.mantine/reference/Blockquote.md)
+  : Mantine Blockquote
+- [`List()`](https://coppertank.github.io/shiny.mantine/reference/List.md)
+  [`ListItem()`](https://coppertank.github.io/shiny.mantine/reference/List.md)
+  : Mantine List
+- [`Kbd()`](https://coppertank.github.io/shiny.mantine/reference/Kbd.md)
+  : Mantine Kbd
+- [`Typography()`](https://coppertank.github.io/shiny.mantine/reference/Typography.md)
+  : Mantine Typography
+- [`VisuallyHidden()`](https://coppertank.github.io/shiny.mantine/reference/VisuallyHidden.md)
+  : Mantine VisuallyHidden
+
+## Buttons & actions
+
+- [`Button()`](https://coppertank.github.io/shiny.mantine/reference/Button.md)
+  : Mantine Button (stateless / action button)
+- [`ButtonGroup()`](https://coppertank.github.io/shiny.mantine/reference/ButtonGroup.md)
+  : Mantine Button.Group (visually groups several Button together)
+- [`ButtonGroupSection()`](https://coppertank.github.io/shiny.mantine/reference/ButtonGroupSection.md)
+  : Mantine ButtonGroupSection
+- [`ActionIcon()`](https://coppertank.github.io/shiny.mantine/reference/ActionIcon.md)
+  : Mantine ActionIcon (icon-only button)
+- [`ActionIconGroup()`](https://coppertank.github.io/shiny.mantine/reference/ActionIconGroup.md)
+  : Mantine ActionIcon.Group
+- [`ActionIconGroupSection()`](https://coppertank.github.io/shiny.mantine/reference/ActionIconGroupSection.md)
+  : Mantine ActionIconGroupSection
+- [`UnstyledButton()`](https://coppertank.github.io/shiny.mantine/reference/UnstyledButton.md)
+  : Mantine UnstyledButton (button with no default styling, for building
+  custom elements)
+- [`CloseButton()`](https://coppertank.github.io/shiny.mantine/reference/CloseButton.md)
+  : Mantine CloseButton
+- [`CopyButton()`](https://coppertank.github.io/shiny.mantine/reference/CopyButton.md)
+  : Copy to clipboard button
+- [`SplitButton()`](https://coppertank.github.io/shiny.mantine/reference/SplitButton.md)
+  : Split button
+- [`ButtonWithMenu()`](https://coppertank.github.io/shiny.mantine/reference/ButtonWithMenu.md)
+  : Button with menu
+- [`SocialButton()`](https://coppertank.github.io/shiny.mantine/reference/SocialButton.md)
+  : Social buttons
+- [`LoadingProgressButton()`](https://coppertank.github.io/shiny.mantine/reference/LoadingProgressButton.md)
+  : Button with loading progress
+- [`ColorSchemeToggle()`](https://coppertank.github.io/shiny.mantine/reference/ColorSchemeToggle.md)
+  : Color scheme toggle
+
+## Navigation
+
+- [`NavLink()`](https://coppertank.github.io/shiny.mantine/reference/NavLink.md)
+  : Mantine NavLink
+
+- [`navLinkItem()`](https://coppertank.github.io/shiny.mantine/reference/navLinkItem.md)
+  : A NavLink item wired to Shiny
+
+- [`navbarBurger()`](https://coppertank.github.io/shiny.mantine/reference/navbarBurger.md)
+  : Burger wired to a boolean toggle Shiny input
+
+- [`Burger()`](https://coppertank.github.io/shiny.mantine/reference/Burger.md)
+  : Mantine Burger (hamburger icon for a responsive navbar)
+
+- [`Tabs()`](https://coppertank.github.io/shiny.mantine/reference/Tabs.md)
+  [`TabsList()`](https://coppertank.github.io/shiny.mantine/reference/Tabs.md)
+  [`TabsTab()`](https://coppertank.github.io/shiny.mantine/reference/Tabs.md)
+  [`TabsPanel()`](https://coppertank.github.io/shiny.mantine/reference/Tabs.md)
+  : Mantine Tabs family
+
+- [`Breadcrumbs()`](https://coppertank.github.io/shiny.mantine/reference/Breadcrumbs.md)
+  : Mantine Breadcrumbs
+
+- [`TableOfContents()`](https://coppertank.github.io/shiny.mantine/reference/TableOfContents.md)
+  : Mantine TableOfContents (tracks scroll position over page headings)
+
+- [`Pagination()`](https://coppertank.github.io/shiny.mantine/reference/Pagination.md)
+  [`updateMantinePagination()`](https://coppertank.github.io/shiny.mantine/reference/Pagination.md)
+  : Mantine Pagination (Shiny stateful input)
+
+- [`PaginationRoot()`](https://coppertank.github.io/shiny.mantine/reference/PaginationRoot.md)
+  : Mantine Pagination.Root (fully custom pagination layout)
+
+- [`PaginationItems()`](https://coppertank.github.io/shiny.mantine/reference/PaginationItems.md)
+  : Mantine PaginationItems
+
+- [`PaginationFirst()`](https://coppertank.github.io/shiny.mantine/reference/PaginationFirst.md)
+  : Mantine PaginationFirst
+
+- [`PaginationLast()`](https://coppertank.github.io/shiny.mantine/reference/PaginationLast.md)
+  : Mantine PaginationLast
+
+- [`PaginationNext()`](https://coppertank.github.io/shiny.mantine/reference/PaginationNext.md)
+  : Mantine PaginationNext
+
+- [`PaginationPrevious()`](https://coppertank.github.io/shiny.mantine/reference/PaginationPrevious.md)
+  : Mantine PaginationPrevious
+
+- [`PaginationDots()`](https://coppertank.github.io/shiny.mantine/reference/PaginationDots.md)
+  : Mantine PaginationDots
+
+- [`PaginationControl()`](https://coppertank.github.io/shiny.mantine/reference/PaginationControl.md)
+  : Mantine PaginationControl
+
+- [`PaginationLabel()`](https://coppertank.github.io/shiny.mantine/reference/PaginationLabel.md)
+  : Mantine PaginationLabel
+
+- [`Stepper()`](https://coppertank.github.io/shiny.mantine/reference/Stepper.md)
+  [`StepperStep()`](https://coppertank.github.io/shiny.mantine/reference/Stepper.md)
+  [`StepperCompleted()`](https://coppertank.github.io/shiny.mantine/reference/Stepper.md)
+  : Mantine Stepper (multi-step wizard)
+
+- [`Accordion()`](https://coppertank.github.io/shiny.mantine/reference/Accordion.md)
+  [`updateMantineAccordion()`](https://coppertank.github.io/shiny.mantine/reference/Accordion.md)
+  [`AccordionItem()`](https://coppertank.github.io/shiny.mantine/reference/Accordion.md)
+  [`AccordionControl()`](https://coppertank.github.io/shiny.mantine/reference/Accordion.md)
+  [`AccordionPanel()`](https://coppertank.github.io/shiny.mantine/reference/Accordion.md)
+  : Mantine Accordion (Shiny stateful input)
+
+- [`Pages()`](https://coppertank.github.io/shiny.mantine/reference/Pages.md)
+  [`Page()`](https://coppertank.github.io/shiny.mantine/reference/Pages.md)
+  : Page navigation inside an AppShell (client-side router)
+
+- [`Menu()`](https://coppertank.github.io/shiny.mantine/reference/Menu.md)
+  [`MenuTarget()`](https://coppertank.github.io/shiny.mantine/reference/Menu.md)
+  [`MenuDropdown()`](https://coppertank.github.io/shiny.mantine/reference/Menu.md)
+  [`MenuLabel()`](https://coppertank.github.io/shiny.mantine/reference/Menu.md)
+  [`MenuDivider()`](https://coppertank.github.io/shiny.mantine/reference/Menu.md)
+  : Mantine Menu family (dropdown on click)
+
+- [`menuItem()`](https://coppertank.github.io/shiny.mantine/reference/menuItem.md)
+  : A Menu item wired to Shiny
+
+- [`MenuSub()`](https://coppertank.github.io/shiny.mantine/reference/MenuSub.md)
+  [`MenuSubTarget()`](https://coppertank.github.io/shiny.mantine/reference/MenuSub.md)
+  [`MenuSubDropdown()`](https://coppertank.github.io/shiny.mantine/reference/MenuSub.md)
+  [`menuSubItem()`](https://coppertank.github.io/shiny.mantine/reference/MenuSub.md)
+  :
+
+  Mantine Menu submenu (`Menu.Sub`)
+
+- [`MenuCheckboxItem()`](https://coppertank.github.io/shiny.mantine/reference/MenuCheckboxItem.md)
+  [`updateMantineMenuCheckboxItem()`](https://coppertank.github.io/shiny.mantine/reference/MenuCheckboxItem.md)
+  [`MenuCheckboxGroup()`](https://coppertank.github.io/shiny.mantine/reference/MenuCheckboxItem.md)
+  [`MenuRadioGroup()`](https://coppertank.github.io/shiny.mantine/reference/MenuCheckboxItem.md)
+  [`updateMantineMenuRadioGroup()`](https://coppertank.github.io/shiny.mantine/reference/MenuCheckboxItem.md)
+  [`MenuRadioItem()`](https://coppertank.github.io/shiny.mantine/reference/MenuCheckboxItem.md)
+  : Mantine Menu checkbox/radio items
+
+- [`MenuSearch()`](https://coppertank.github.io/shiny.mantine/reference/MenuSearch.md)
+  [`MenuContextMenu()`](https://coppertank.github.io/shiny.mantine/reference/MenuSearch.md)
+  : Mantine Menu.Search / Menu.ContextMenu
+
+- [`megaMenuItem()`](https://coppertank.github.io/shiny.mantine/reference/megaMenuItem.md)
+  : A mega menu item (icon + title + description)
+
+- [`Menubar()`](https://coppertank.github.io/shiny.mantine/reference/Menubar.md)
+  [`MenubarMenu()`](https://coppertank.github.io/shiny.mantine/reference/Menubar.md)
+  [`MenubarTarget()`](https://coppertank.github.io/shiny.mantine/reference/Menubar.md)
+  [`MenubarDropdown()`](https://coppertank.github.io/shiny.mantine/reference/Menubar.md)
+  : Mantine Menubar
+
+- [`Splitter()`](https://coppertank.github.io/shiny.mantine/reference/Splitter.md)
+  [`SplitterPanel()`](https://coppertank.github.io/shiny.mantine/reference/Splitter.md)
+  : Mantine Splitter (resizable side-by-side panes)
+
+## Inputs
+
+Stateful, form-like components: `input[[inputId]]` stays in sync
+automatically, and each has a matching `update*()` function to push a
+new value from the server (see \[updateMantineProps()\] for updating any
+other prop).
+
+- [`TextInput()`](https://coppertank.github.io/shiny.mantine/reference/TextInput.md)
+  [`updateMantineTextInput()`](https://coppertank.github.io/shiny.mantine/reference/TextInput.md)
+  : Mantine TextInput (Shiny stateful input)
+
+- [`Textarea()`](https://coppertank.github.io/shiny.mantine/reference/Textarea.md)
+  : Mantine Textarea (Shiny stateful input, multi-line)
+
+- [`PasswordInput()`](https://coppertank.github.io/shiny.mantine/reference/PasswordInput.md)
+  [`updateMantinePasswordInput()`](https://coppertank.github.io/shiny.mantine/reference/PasswordInput.md)
+  : Mantine PasswordInput (Shiny stateful input)
+
+- [`NumberInput()`](https://coppertank.github.io/shiny.mantine/reference/NumberInput.md)
+  [`updateMantineNumberInput()`](https://coppertank.github.io/shiny.mantine/reference/NumberInput.md)
+  : Mantine NumberInput (Shiny stateful input)
+
+- [`Autocomplete()`](https://coppertank.github.io/shiny.mantine/reference/Autocomplete.md)
+  [`updateMantineAutocomplete()`](https://coppertank.github.io/shiny.mantine/reference/Autocomplete.md)
+  : Mantine Autocomplete (Shiny stateful input)
+
+- [`Select()`](https://coppertank.github.io/shiny.mantine/reference/Select.md)
+  [`updateMantineSelect()`](https://coppertank.github.io/shiny.mantine/reference/Select.md)
+  : Mantine Select (Shiny stateful input)
+
+- [`Cascader()`](https://coppertank.github.io/shiny.mantine/reference/Cascader.md)
+  [`updateMantineCascader()`](https://coppertank.github.io/shiny.mantine/reference/Cascader.md)
+  : Mantine Cascader (Shiny stateful input, hierarchical cascading
+  selection)
+
+- [`ComboboxPopover()`](https://coppertank.github.io/shiny.mantine/reference/ComboboxPopover.md)
+  [`ComboboxPopoverTarget()`](https://coppertank.github.io/shiny.mantine/reference/ComboboxPopover.md)
+  [`updateMantineComboboxPopover()`](https://coppertank.github.io/shiny.mantine/reference/ComboboxPopover.md)
+  : Mantine ComboboxPopover (dropdown-select attached to any custom
+  target)
+
+- [`Combobox()`](https://coppertank.github.io/shiny.mantine/reference/Combobox.md)
+  [`ComboboxTarget()`](https://coppertank.github.io/shiny.mantine/reference/Combobox.md)
+  [`ComboboxEventsTarget()`](https://coppertank.github.io/shiny.mantine/reference/Combobox.md)
+  [`ComboboxDropdownTarget()`](https://coppertank.github.io/shiny.mantine/reference/Combobox.md)
+  [`ComboboxDropdown()`](https://coppertank.github.io/shiny.mantine/reference/Combobox.md)
+  [`ComboboxOptions()`](https://coppertank.github.io/shiny.mantine/reference/Combobox.md)
+  [`ComboboxOption()`](https://coppertank.github.io/shiny.mantine/reference/Combobox.md)
+  [`ComboboxSearch()`](https://coppertank.github.io/shiny.mantine/reference/Combobox.md)
+  [`updateMantineComboboxSearch()`](https://coppertank.github.io/shiny.mantine/reference/Combobox.md)
+  [`ComboboxEmpty()`](https://coppertank.github.io/shiny.mantine/reference/Combobox.md)
+  [`ComboboxFooter()`](https://coppertank.github.io/shiny.mantine/reference/Combobox.md)
+  [`ComboboxHeader()`](https://coppertank.github.io/shiny.mantine/reference/Combobox.md)
+  [`ComboboxGroup()`](https://coppertank.github.io/shiny.mantine/reference/Combobox.md)
+  [`ComboboxChevron()`](https://coppertank.github.io/shiny.mantine/reference/Combobox.md)
+  [`ComboboxClearButton()`](https://coppertank.github.io/shiny.mantine/reference/Combobox.md)
+  [`ComboboxHiddenInput()`](https://coppertank.github.io/shiny.mantine/reference/Combobox.md)
+  : Mantine Combobox family (headless dropdown primitive for custom
+  selects)
+
+- [`MultiSelect()`](https://coppertank.github.io/shiny.mantine/reference/MultiSelect.md)
+  [`updateMantineMultiSelect()`](https://coppertank.github.io/shiny.mantine/reference/MultiSelect.md)
+  : Mantine MultiSelect (Shiny stateful input, multiple selection)
+
+- [`NativeSelect()`](https://coppertank.github.io/shiny.mantine/reference/NativeSelect.md)
+  [`updateMantineNativeSelect()`](https://coppertank.github.io/shiny.mantine/reference/NativeSelect.md)
+  :
+
+  Mantine NativeSelect (Shiny stateful input, native `<select>`)
+
+- [`TagsInput()`](https://coppertank.github.io/shiny.mantine/reference/TagsInput.md)
+  [`updateMantineTagsInput()`](https://coppertank.github.io/shiny.mantine/reference/TagsInput.md)
+  : Mantine TagsInput (Shiny stateful input, free-form tags)
+
+- [`JsonInput()`](https://coppertank.github.io/shiny.mantine/reference/JsonInput.md)
+  [`updateMantineJsonInput()`](https://coppertank.github.io/shiny.mantine/reference/JsonInput.md)
+  : Mantine JsonInput (Shiny stateful input, with JSON validation)
+
+- [`MaskInput()`](https://coppertank.github.io/shiny.mantine/reference/MaskInput.md)
+  [`updateMantineMaskInput()`](https://coppertank.github.io/shiny.mantine/reference/MaskInput.md)
+  : Mantine MaskInput (masked text input, e.g. phone numbers)
+
+- [`PinInput()`](https://coppertank.github.io/shiny.mantine/reference/PinInput.md)
+  [`updateMantinePinInput()`](https://coppertank.github.io/shiny.mantine/reference/PinInput.md)
+  : Mantine PinInput (Shiny stateful input, e.g. an OTP code)
+
+- [`Checkbox()`](https://coppertank.github.io/shiny.mantine/reference/Checkbox.md)
+  [`updateMantineCheckbox()`](https://coppertank.github.io/shiny.mantine/reference/Checkbox.md)
+  : Mantine Checkbox (Shiny stateful boolean input)
+
+- [`CheckboxGroup()`](https://coppertank.github.io/shiny.mantine/reference/CheckboxGroup.md)
+  [`updateMantineCheckboxGroup()`](https://coppertank.github.io/shiny.mantine/reference/CheckboxGroup.md)
+  [`CheckboxGroupItem()`](https://coppertank.github.io/shiny.mantine/reference/CheckboxGroup.md)
+  : Mantine CheckboxGroup (multi-selection input, Shiny stateful)
+
+- [`CheckboxCard()`](https://coppertank.github.io/shiny.mantine/reference/CheckboxCard.md)
+  [`RadioCard()`](https://coppertank.github.io/shiny.mantine/reference/CheckboxCard.md)
+  : Mantine CheckboxCard / RadioCard (card-styled selectable items)
+
+- [`RadioIndicator()`](https://coppertank.github.io/shiny.mantine/reference/RadioIndicator.md)
+  [`CheckboxIndicator()`](https://coppertank.github.io/shiny.mantine/reference/RadioIndicator.md)
+  : Mantine RadioIndicator / CheckboxIndicator (standalone, decorative)
+
+- [`RadioGroup()`](https://coppertank.github.io/shiny.mantine/reference/RadioGroup.md)
+  [`updateMantineRadioGroup()`](https://coppertank.github.io/shiny.mantine/reference/RadioGroup.md)
+  [`Radio()`](https://coppertank.github.io/shiny.mantine/reference/RadioGroup.md)
+  : Mantine Radio / RadioGroup (Shiny stateful input)
+
+- [`Switch()`](https://coppertank.github.io/shiny.mantine/reference/Switch.md)
+  [`updateMantineSwitch()`](https://coppertank.github.io/shiny.mantine/reference/Switch.md)
+  : Mantine Switch (Shiny stateful boolean input)
+
+- [`SwitchGroup()`](https://coppertank.github.io/shiny.mantine/reference/SwitchGroup.md)
+  [`updateMantineSwitchGroup()`](https://coppertank.github.io/shiny.mantine/reference/SwitchGroup.md)
+  [`SwitchGroupItem()`](https://coppertank.github.io/shiny.mantine/reference/SwitchGroup.md)
+  : Mantine SwitchGroup (multi-selection input, Shiny stateful)
+
+- [`ChipGroup()`](https://coppertank.github.io/shiny.mantine/reference/ChipGroup.md)
+  [`updateMantineChipGroup()`](https://coppertank.github.io/shiny.mantine/reference/ChipGroup.md)
+  [`Chip()`](https://coppertank.github.io/shiny.mantine/reference/ChipGroup.md)
+  : Mantine Chip / ChipGroup (Shiny stateful input)
+
+- [`Rating()`](https://coppertank.github.io/shiny.mantine/reference/Rating.md)
+  [`updateMantineRating()`](https://coppertank.github.io/shiny.mantine/reference/Rating.md)
+  : Mantine Rating (Shiny stateful input)
+
+- [`ColorInput()`](https://coppertank.github.io/shiny.mantine/reference/ColorInput.md)
+  [`updateMantineColorInput()`](https://coppertank.github.io/shiny.mantine/reference/ColorInput.md)
+  : Mantine ColorInput (Shiny stateful input)
+
+- [`ColorPicker()`](https://coppertank.github.io/shiny.mantine/reference/ColorPicker.md)
+  [`updateMantineColorPicker()`](https://coppertank.github.io/shiny.mantine/reference/ColorPicker.md)
+  : Mantine ColorPicker (Shiny stateful input, inline picker)
+
+- [`HueSlider()`](https://coppertank.github.io/shiny.mantine/reference/HueSlider.md)
+  : Mantine HueSlider (Shiny stateful input, standalone hue channel)
+
+- [`AlphaSlider()`](https://coppertank.github.io/shiny.mantine/reference/AlphaSlider.md)
+  : Mantine AlphaSlider (Shiny stateful input, standalone alpha channel)
+
+- [`FileInput()`](https://coppertank.github.io/shiny.mantine/reference/FileInput.md)
+  : Mantine FileInput (file selection, metadata only)
+
+- [`FileButton()`](https://coppertank.github.io/shiny.mantine/reference/FileButton.md)
+  : Mantine FileButton (button that opens the native file picker)
+
+- [`Slider()`](https://coppertank.github.io/shiny.mantine/reference/Slider.md)
+  [`updateMantineSlider()`](https://coppertank.github.io/shiny.mantine/reference/Slider.md)
+  : Mantine Slider (Shiny stateful input)
+
+- [`RangeSlider()`](https://coppertank.github.io/shiny.mantine/reference/RangeSlider.md)
+  [`updateMantineRangeSlider()`](https://coppertank.github.io/shiny.mantine/reference/RangeSlider.md)
+  : Mantine RangeSlider (Shiny stateful input, range)
+
+- [`AngleSlider()`](https://coppertank.github.io/shiny.mantine/reference/AngleSlider.md)
+  : Mantine AngleSlider (Shiny stateful input, 0-360 degree dial)
+
+- [`SegmentedControl()`](https://coppertank.github.io/shiny.mantine/reference/SegmentedControl.md)
+  [`updateMantineSegmentedControl()`](https://coppertank.github.io/shiny.mantine/reference/SegmentedControl.md)
+  : Mantine SegmentedControl (Shiny stateful input)
+
+- [`Fieldset()`](https://coppertank.github.io/shiny.mantine/reference/Fieldset.md)
+  : Mantine Fieldset
+
+- [`Input()`](https://coppertank.github.io/shiny.mantine/reference/Input.md)
+  : Mantine Input
+
+- [`InputBase()`](https://coppertank.github.io/shiny.mantine/reference/InputBase.md)
+  : Mantine InputBase
+
+- [`InputWrapper()`](https://coppertank.github.io/shiny.mantine/reference/InputWrapper.md)
+  : Mantine InputWrapper
+
+- [`InputLabel()`](https://coppertank.github.io/shiny.mantine/reference/InputLabel.md)
+  : Mantine InputLabel
+
+- [`InputDescription()`](https://coppertank.github.io/shiny.mantine/reference/InputDescription.md)
+  : Mantine InputDescription
+
+- [`InputError()`](https://coppertank.github.io/shiny.mantine/reference/InputError.md)
+  : Mantine InputError
+
+- [`InputSuccess()`](https://coppertank.github.io/shiny.mantine/reference/InputSuccess.md)
+  : Mantine InputSuccess
+
+- [`InputPlaceholder()`](https://coppertank.github.io/shiny.mantine/reference/InputPlaceholder.md)
+  : Mantine InputPlaceholder
+
+- [`InputClearButton()`](https://coppertank.github.io/shiny.mantine/reference/InputClearButton.md)
+  : Mantine InputClearButton
+
+- [`PillsInput()`](https://coppertank.github.io/shiny.mantine/reference/PillsInput.md)
+  [`PillsInputField()`](https://coppertank.github.io/shiny.mantine/reference/PillsInput.md)
+  : Mantine PillsInput
+
+## Dates & time (`@mantine/dates`)
+
+- [`DatesProvider()`](https://coppertank.github.io/shiny.mantine/reference/DatesProvider.md)
+  : Mantine DatesProvider (locale/date format for its children)
+- [`DateInput()`](https://coppertank.github.io/shiny.mantine/reference/DateInput.md)
+  [`updateMantineDateInput()`](https://coppertank.github.io/shiny.mantine/reference/DateInput.md)
+  : Mantine DateInput (Shiny stateful input, text field with calendar)
+- [`DatePicker()`](https://coppertank.github.io/shiny.mantine/reference/DatePicker.md)
+  [`updateMantineDatePicker()`](https://coppertank.github.io/shiny.mantine/reference/DatePicker.md)
+  : Mantine DatePicker (always-visible inline calendar)
+- [`DatePickerInput()`](https://coppertank.github.io/shiny.mantine/reference/DatePickerInput.md)
+  [`updateMantineDatePickerInput()`](https://coppertank.github.io/shiny.mantine/reference/DatePickerInput.md)
+  : Mantine DatePickerInput (Shiny stateful input, dropdown calendar)
+- [`DateTimePicker()`](https://coppertank.github.io/shiny.mantine/reference/DateTimePicker.md)
+  [`updateMantineDateTimePicker()`](https://coppertank.github.io/shiny.mantine/reference/DateTimePicker.md)
+  : Mantine DateTimePicker (Shiny stateful input, date + time)
+- [`InlineDateTimePicker()`](https://coppertank.github.io/shiny.mantine/reference/InlineDateTimePicker.md)
+  [`updateMantineInlineDateTimePicker()`](https://coppertank.github.io/shiny.mantine/reference/InlineDateTimePicker.md)
+  : Mantine InlineDateTimePicker (date + time picker, always visible)
+- [`MonthPickerInput()`](https://coppertank.github.io/shiny.mantine/reference/MonthPickerInput.md)
+  [`updateMantineMonthPickerInput()`](https://coppertank.github.io/shiny.mantine/reference/MonthPickerInput.md)
+  : Mantine MonthPickerInput (Shiny stateful input, month/year
+  selection)
+- [`MonthPicker()`](https://coppertank.github.io/shiny.mantine/reference/MonthPicker.md)
+  [`updateMantineMonthPicker()`](https://coppertank.github.io/shiny.mantine/reference/MonthPicker.md)
+  : Mantine MonthPicker (always-visible inline month calendar)
+- [`YearPickerInput()`](https://coppertank.github.io/shiny.mantine/reference/YearPickerInput.md)
+  [`updateMantineYearPickerInput()`](https://coppertank.github.io/shiny.mantine/reference/YearPickerInput.md)
+  : Mantine YearPickerInput (Shiny stateful input, year selection)
+- [`YearPicker()`](https://coppertank.github.io/shiny.mantine/reference/YearPicker.md)
+  [`updateMantineYearPicker()`](https://coppertank.github.io/shiny.mantine/reference/YearPicker.md)
+  : Mantine YearPicker (always-visible inline year calendar)
+- [`TimeInput()`](https://coppertank.github.io/shiny.mantine/reference/TimeInput.md)
+  : Mantine TimeInput (Shiny stateful input, native time field)
+- [`TimePicker()`](https://coppertank.github.io/shiny.mantine/reference/TimePicker.md)
+  [`updateMantineTimePicker()`](https://coppertank.github.io/shiny.mantine/reference/TimePicker.md)
+  : Mantine TimePicker (Shiny stateful input, dropdown/scroll time
+  picker)
+- [`TimeGrid()`](https://coppertank.github.io/shiny.mantine/reference/TimeGrid.md)
+  [`updateMantineTimeGrid()`](https://coppertank.github.io/shiny.mantine/reference/TimeGrid.md)
+  : Mantine TimeGrid (Shiny stateful input, grid of selectable time
+  slots)
+- [`TimeValue()`](https://coppertank.github.io/shiny.mantine/reference/TimeValue.md)
+  : Mantine TimeValue (formats a time string/Date for display)
+- [`MiniCalendar()`](https://coppertank.github.io/shiny.mantine/reference/MiniCalendar.md)
+  [`updateMantineMiniCalendar()`](https://coppertank.github.io/shiny.mantine/reference/MiniCalendar.md)
+  : Mantine MiniCalendar (compact single-week calendar strip)
+
+## Overlays
+
+- [`Modal()`](https://coppertank.github.io/shiny.mantine/reference/Modal.md)
+  : Mantine Modal
+- [`ModalStack()`](https://coppertank.github.io/shiny.mantine/reference/ModalStack.md)
+  : Mantine Modal.Stack (coordinated stack of Modal()s)
+- [`ModalRoot()`](https://coppertank.github.io/shiny.mantine/reference/ModalRoot.md)
+  : Mantine Modal.Root (fully custom modal layout)
+- [`ModalOverlay()`](https://coppertank.github.io/shiny.mantine/reference/ModalOverlay.md)
+  : Mantine ModalOverlay
+- [`ModalContent()`](https://coppertank.github.io/shiny.mantine/reference/ModalContent.md)
+  : Mantine ModalContent
+- [`ModalHeader()`](https://coppertank.github.io/shiny.mantine/reference/ModalHeader.md)
+  : Mantine ModalHeader
+- [`ModalTitle()`](https://coppertank.github.io/shiny.mantine/reference/ModalTitle.md)
+  : Mantine ModalTitle
+- [`ModalCloseButton()`](https://coppertank.github.io/shiny.mantine/reference/ModalCloseButton.md)
+  : Mantine ModalCloseButton
+- [`ModalBody()`](https://coppertank.github.io/shiny.mantine/reference/ModalBody.md)
+  : Mantine ModalBody
+- [`Drawer()`](https://coppertank.github.io/shiny.mantine/reference/Drawer.md)
+  : Mantine Drawer (like Modal, but slides in from a screen edge)
+- [`DrawerStack()`](https://coppertank.github.io/shiny.mantine/reference/DrawerStack.md)
+  : Mantine Drawer.Stack (coordinated stack of Drawer()s)
+- [`DrawerRoot()`](https://coppertank.github.io/shiny.mantine/reference/DrawerRoot.md)
+  : Mantine Drawer.Root (fully custom drawer layout)
+- [`DrawerOverlay()`](https://coppertank.github.io/shiny.mantine/reference/DrawerOverlay.md)
+  : Mantine DrawerOverlay
+- [`DrawerContent()`](https://coppertank.github.io/shiny.mantine/reference/DrawerContent.md)
+  : Mantine DrawerContent
+- [`DrawerHeader()`](https://coppertank.github.io/shiny.mantine/reference/DrawerHeader.md)
+  : Mantine DrawerHeader
+- [`DrawerTitle()`](https://coppertank.github.io/shiny.mantine/reference/DrawerTitle.md)
+  : Mantine DrawerTitle
+- [`DrawerCloseButton()`](https://coppertank.github.io/shiny.mantine/reference/DrawerCloseButton.md)
+  : Mantine DrawerCloseButton
+- [`DrawerBody()`](https://coppertank.github.io/shiny.mantine/reference/DrawerBody.md)
+  : Mantine DrawerBody
+- [`Dialog()`](https://coppertank.github.io/shiny.mantine/reference/Dialog.md)
+  : Mantine Dialog (small non-modal overlay, screen corner)
+- [`Popover()`](https://coppertank.github.io/shiny.mantine/reference/Popover.md)
+  [`PopoverTarget()`](https://coppertank.github.io/shiny.mantine/reference/Popover.md)
+  [`PopoverDropdown()`](https://coppertank.github.io/shiny.mantine/reference/Popover.md)
+  : Mantine Popover (controlled) and primitives
+- [`LoadingOverlay()`](https://coppertank.github.io/shiny.mantine/reference/LoadingOverlay.md)
+  : Mantine LoadingOverlay
+- [`Collapse()`](https://coppertank.github.io/shiny.mantine/reference/Collapse.md)
+  : Mantine Collapse (animated show/hide container)
+- [`Transition()`](https://coppertank.github.io/shiny.mantine/reference/Transition.md)
+  : Mantine Transition (mount/unmount animation)
+- [`Overlay()`](https://coppertank.github.io/shiny.mantine/reference/Overlay.md)
+  : Mantine Overlay
+- [`FocusTrap()`](https://coppertank.github.io/shiny.mantine/reference/FocusTrap.md)
+  : Mantine FocusTrap
+- [`FocusTrapInitialFocus()`](https://coppertank.github.io/shiny.mantine/reference/FocusTrapInitialFocus.md)
+  : Mantine FocusTrapInitialFocus
+- [`RemoveScroll()`](https://coppertank.github.io/shiny.mantine/reference/RemoveScroll.md)
+  : Mantine RemoveScroll
+- [`FloatingWindow()`](https://coppertank.github.io/shiny.mantine/reference/FloatingWindow.md)
+  [`FloatingWindowResizeHandle()`](https://coppertank.github.io/shiny.mantine/reference/FloatingWindow.md)
+  : Mantine FloatingWindow family (draggable, optionally resizable
+  floating panel)
+
+## Data display
+
+- [`Table()`](https://coppertank.github.io/shiny.mantine/reference/Table.md)
+  [`TableThead()`](https://coppertank.github.io/shiny.mantine/reference/Table.md)
+  [`TableTbody()`](https://coppertank.github.io/shiny.mantine/reference/Table.md)
+  [`TableTfoot()`](https://coppertank.github.io/shiny.mantine/reference/Table.md)
+  [`TableTr()`](https://coppertank.github.io/shiny.mantine/reference/Table.md)
+  [`TableTh()`](https://coppertank.github.io/shiny.mantine/reference/Table.md)
+  [`TableTd()`](https://coppertank.github.io/shiny.mantine/reference/Table.md)
+  [`TableCaption()`](https://coppertank.github.io/shiny.mantine/reference/Table.md)
+  [`TableScrollContainer()`](https://coppertank.github.io/shiny.mantine/reference/Table.md)
+  : Mantine Table family
+
+- [`DataTable()`](https://coppertank.github.io/shiny.mantine/reference/DataTable.md)
+  : Table with search, sort, and/or selection (client-side)
+
+- [`Avatar()`](https://coppertank.github.io/shiny.mantine/reference/Avatar.md)
+  : Mantine Avatar
+
+- [`AvatarGroup()`](https://coppertank.github.io/shiny.mantine/reference/AvatarGroup.md)
+  : Mantine AvatarGroup
+
+- [`Badge()`](https://coppertank.github.io/shiny.mantine/reference/Badge.md)
+  : Mantine Badge (pill-shaped label)
+
+- [`ThemeIcon()`](https://coppertank.github.io/shiny.mantine/reference/ThemeIcon.md)
+  : Mantine ThemeIcon (colored container for icons)
+
+- [`Indicator()`](https://coppertank.github.io/shiny.mantine/reference/Indicator.md)
+  : Mantine Indicator
+
+- [`Image()`](https://coppertank.github.io/shiny.mantine/reference/Image.md)
+  : Mantine Image
+
+- [`BackgroundImage()`](https://coppertank.github.io/shiny.mantine/reference/BackgroundImage.md)
+  : Mantine BackgroundImage
+
+- [`RingProgress()`](https://coppertank.github.io/shiny.mantine/reference/RingProgress.md)
+  : Mantine RingProgress
+
+- [`Progress()`](https://coppertank.github.io/shiny.mantine/reference/Progress.md)
+  : Mantine Progress (progress bar)
+
+- [`ProgressRoot()`](https://coppertank.github.io/shiny.mantine/reference/ProgressRoot.md)
+  [`ProgressSection()`](https://coppertank.github.io/shiny.mantine/reference/ProgressRoot.md)
+  [`ProgressLabel()`](https://coppertank.github.io/shiny.mantine/reference/ProgressRoot.md)
+  :
+
+  Mantine multi-segment Progress (`Progress.Root`/`.Section`/`.Label`)
+
+- [`Timeline()`](https://coppertank.github.io/shiny.mantine/reference/Timeline.md)
+  [`TimelineItem()`](https://coppertank.github.io/shiny.mantine/reference/Timeline.md)
+  : Mantine Timeline
+
+- [`DataList()`](https://coppertank.github.io/shiny.mantine/reference/DataList.md)
+  [`DataListItem()`](https://coppertank.github.io/shiny.mantine/reference/DataList.md)
+  [`DataListItemLabel()`](https://coppertank.github.io/shiny.mantine/reference/DataList.md)
+  [`DataListItemValue()`](https://coppertank.github.io/shiny.mantine/reference/DataList.md)
+  : Mantine DataList
+
+- [`EmptyState()`](https://coppertank.github.io/shiny.mantine/reference/EmptyState.md)
+  [`EmptyStateActions()`](https://coppertank.github.io/shiny.mantine/reference/EmptyState.md)
+  [`EmptyStateDescription()`](https://coppertank.github.io/shiny.mantine/reference/EmptyState.md)
+  [`EmptyStateIndicator()`](https://coppertank.github.io/shiny.mantine/reference/EmptyState.md)
+  [`EmptyStateTitle()`](https://coppertank.github.io/shiny.mantine/reference/EmptyState.md)
+  : Mantine EmptyState
+
+- [`Skeleton()`](https://coppertank.github.io/shiny.mantine/reference/Skeleton.md)
+  : Mantine Skeleton
+
+- [`Loader()`](https://coppertank.github.io/shiny.mantine/reference/Loader.md)
+  : Mantine Loader
+
+- [`ColorSwatch()`](https://coppertank.github.io/shiny.mantine/reference/ColorSwatch.md)
+  : Mantine ColorSwatch
+
+- [`NumberFormatter()`](https://coppertank.github.io/shiny.mantine/reference/NumberFormatter.md)
+  : Mantine NumberFormatter
+
+- [`Tree()`](https://coppertank.github.io/shiny.mantine/reference/Tree.md)
+  : Mantine Tree (hierarchical data display)
+
+- [`TreeSelect()`](https://coppertank.github.io/shiny.mantine/reference/TreeSelect.md)
+  [`updateMantineTreeSelect()`](https://coppertank.github.io/shiny.mantine/reference/TreeSelect.md)
+  : Mantine TreeSelect (select input with hierarchical data)
+
+- [`Pill()`](https://coppertank.github.io/shiny.mantine/reference/Pill.md)
+  [`PillGroup()`](https://coppertank.github.io/shiny.mantine/reference/Pill.md)
+  : Mantine Pill
+
+- [`RollingNumber()`](https://coppertank.github.io/shiny.mantine/reference/RollingNumber.md)
+  : Mantine RollingNumber
+
+- [`SemiCircleProgress()`](https://coppertank.github.io/shiny.mantine/reference/SemiCircleProgress.md)
+  : Mantine SemiCircleProgress
+
+- [`OverflowList()`](https://coppertank.github.io/shiny.mantine/reference/OverflowList.md)
+  : Mantine OverflowList (collapses overflowing items into a "+N" badge)
+
+## Feedback
+
+- [`Alert()`](https://coppertank.github.io/shiny.mantine/reference/Alert.md)
+  : Mantine Alert
+- [`Notification()`](https://coppertank.github.io/shiny.mantine/reference/Notification.md)
+  : Mantine Notification (static notification box)
+- [`Tooltip()`](https://coppertank.github.io/shiny.mantine/reference/Tooltip.md)
+  : Mantine Tooltip
+- [`TooltipFloating()`](https://coppertank.github.io/shiny.mantine/reference/TooltipFloating.md)
+  : Mantine TooltipFloating
+- [`TooltipGroup()`](https://coppertank.github.io/shiny.mantine/reference/TooltipGroup.md)
+  : Mantine TooltipGroup
+- [`HoverCard()`](https://coppertank.github.io/shiny.mantine/reference/HoverCard.md)
+  [`HoverCardTarget()`](https://coppertank.github.io/shiny.mantine/reference/HoverCard.md)
+  [`HoverCardDropdown()`](https://coppertank.github.io/shiny.mantine/reference/HoverCard.md)
+  [`HoverCardGroup()`](https://coppertank.github.io/shiny.mantine/reference/HoverCard.md)
+  : Mantine HoverCard family (dropdown on hover)
+- [`Spoiler()`](https://coppertank.github.io/shiny.mantine/reference/Spoiler.md)
+  : Mantine Spoiler
+- [`Marquee()`](https://coppertank.github.io/shiny.mantine/reference/Marquee.md)
+  : Mantine Marquee
+
+## Charts (`@mantine/charts`)
+
+- [`LineChart()`](https://coppertank.github.io/shiny.mantine/reference/LineChart.md)
+  [`BarChart()`](https://coppertank.github.io/shiny.mantine/reference/LineChart.md)
+  [`AreaChart()`](https://coppertank.github.io/shiny.mantine/reference/LineChart.md)
+  : Mantine LineChart / BarChart / AreaChart (multi-series charts)
+- [`RadialBarChart()`](https://coppertank.github.io/shiny.mantine/reference/RadialBarChart.md)
+  [`BubbleChart()`](https://coppertank.github.io/shiny.mantine/reference/RadialBarChart.md)
+  : Mantine RadialBarChart / BubbleChart
+- [`RadarChart()`](https://coppertank.github.io/shiny.mantine/reference/RadarChart.md)
+  [`CompositeChart()`](https://coppertank.github.io/shiny.mantine/reference/RadarChart.md)
+  : Mantine RadarChart / CompositeChart (multi-series charts)
+- [`PieChart()`](https://coppertank.github.io/shiny.mantine/reference/PieChart.md)
+  [`DonutChart()`](https://coppertank.github.io/shiny.mantine/reference/PieChart.md)
+  : Mantine PieChart / DonutChart (pie/donut charts)
+- [`FunnelChart()`](https://coppertank.github.io/shiny.mantine/reference/FunnelChart.md)
+  : Mantine FunnelChart (funnel/conversion chart)
+- [`Heatmap()`](https://coppertank.github.io/shiny.mantine/reference/Heatmap.md)
+  : Mantine Heatmap (calendar-style heatmap)
+- [`SankeyChart()`](https://coppertank.github.io/shiny.mantine/reference/SankeyChart.md)
+  : Mantine SankeyChart (flow diagram)
+- [`ScatterChart()`](https://coppertank.github.io/shiny.mantine/reference/ScatterChart.md)
+  : Mantine ScatterChart (x/y scatter plot)
+- [`Sparkline()`](https://coppertank.github.io/shiny.mantine/reference/Sparkline.md)
+  : Mantine Sparkline (small inline chart)
+- [`Treemap()`](https://coppertank.github.io/shiny.mantine/reference/Treemap.md)
+  : Mantine Treemap (hierarchical rectangles chart)
+- [`SunburstChart()`](https://coppertank.github.io/shiny.mantine/reference/SunburstChart.md)
+  : Mantine SunburstChart (hierarchical concentric-rings chart)
+- [`BulletChart()`](https://coppertank.github.io/shiny.mantine/reference/BulletChart.md)
+  : Mantine BulletChart (compact KPI chart: value vs. target vs. ranges)
+- [`BarsList()`](https://coppertank.github.io/shiny.mantine/reference/BarsList.md)
+  : Mantine BarsList (list of horizontal bars with names and values)
+
+## Drag & drop, dropzone, carousel
+
+- [`SortableList()`](https://coppertank.github.io/shiny.mantine/reference/SortableList.md)
+  : Drag-and-drop reorderable list
+- [`SortableTable()`](https://coppertank.github.io/shiny.mantine/reference/SortableTable.md)
+  : Drag-and-drop reorderable table
+- [`Dropzone()`](https://coppertank.github.io/shiny.mantine/reference/Dropzone.md)
+  [`DropzoneFullScreen()`](https://coppertank.github.io/shiny.mantine/reference/Dropzone.md)
+  [`DropzoneAccept()`](https://coppertank.github.io/shiny.mantine/reference/Dropzone.md)
+  [`DropzoneReject()`](https://coppertank.github.io/shiny.mantine/reference/Dropzone.md)
+  [`DropzoneIdle()`](https://coppertank.github.io/shiny.mantine/reference/Dropzone.md)
+  : Mantine Dropzone (drag & drop upload)
+- [`Carousel()`](https://coppertank.github.io/shiny.mantine/reference/Carousel.md)
+  [`CarouselSlide()`](https://coppertank.github.io/shiny.mantine/reference/Carousel.md)
+  : Mantine Carousel
+
+## Notifications (`@mantine/notifications`)
+
+- [`Notifications()`](https://coppertank.github.io/shiny.mantine/reference/Notifications.md)
+  : Mantine-styled notifications
+- [`showMantineNotification()`](https://coppertank.github.io/shiny.mantine/reference/showMantineNotification.md)
+  [`hideMantineNotification()`](https://coppertank.github.io/shiny.mantine/reference/showMantineNotification.md)
+  : Show/hide a Mantine notification
+
+## Modals (`@mantine/modals`)
+
+- [`ModalsProvider()`](https://coppertank.github.io/shiny.mantine/reference/ModalsProvider.md)
+  :
+
+  Imperative modals (`@mantine/modals`)
+
+- [`openMantineModal()`](https://coppertank.github.io/shiny.mantine/reference/openMantineModal.md)
+  :
+
+  Open a generic modal (`@mantine/modals`)
+
+- [`openMantineConfirmModal()`](https://coppertank.github.io/shiny.mantine/reference/openMantineConfirmModal.md)
+  :
+
+  Open a confirmation modal (`@mantine/modals`)
+
+- [`closeMantineModal()`](https://coppertank.github.io/shiny.mantine/reference/closeMantineModal.md)
+  :
+
+  Close an imperatively-opened modal (`@mantine/modals`)
+
+- [`closeAllMantineModals()`](https://coppertank.github.io/shiny.mantine/reference/closeAllMantineModals.md)
+  :
+
+  Close all imperatively-opened modals (`@mantine/modals`)
+
+## Spotlight (`@mantine/spotlight`)
+
+- [`Spotlight()`](https://coppertank.github.io/shiny.mantine/reference/Spotlight.md)
+  : Mantine Spotlight (command palette, Cmd/Ctrl+K by default)
+- [`SpotlightRoot()`](https://coppertank.github.io/shiny.mantine/reference/SpotlightRoot.md)
+  [`SpotlightSearch()`](https://coppertank.github.io/shiny.mantine/reference/SpotlightRoot.md)
+  [`SpotlightActionsList()`](https://coppertank.github.io/shiny.mantine/reference/SpotlightRoot.md)
+  [`SpotlightActionsGroup()`](https://coppertank.github.io/shiny.mantine/reference/SpotlightRoot.md)
+  [`SpotlightAction()`](https://coppertank.github.io/shiny.mantine/reference/SpotlightRoot.md)
+  [`SpotlightEmpty()`](https://coppertank.github.io/shiny.mantine/reference/SpotlightRoot.md)
+  [`SpotlightFooter()`](https://coppertank.github.io/shiny.mantine/reference/SpotlightRoot.md)
+  : Mantine Spotlight.Root (fully custom Spotlight layout)
+
+## Code highlight (`@mantine/code-highlight`)
+
+- [`CodeHighlight()`](https://coppertank.github.io/shiny.mantine/reference/CodeHighlight.md)
+  [`InlineCodeHighlight()`](https://coppertank.github.io/shiny.mantine/reference/CodeHighlight.md)
+  : Mantine CodeHighlight (code block)
+- [`CodeHighlightTabs()`](https://coppertank.github.io/shiny.mantine/reference/CodeHighlightTabs.md)
+  : Mantine CodeHighlightTabs (tabbed multi-file code block)
+
+## Navigation progress (`@mantine/nprogress`)
+
+- [`NavigationProgress()`](https://coppertank.github.io/shiny.mantine/reference/NavigationProgress.md)
+  [`startMantineProgress()`](https://coppertank.github.io/shiny.mantine/reference/NavigationProgress.md)
+  [`setMantineProgress()`](https://coppertank.github.io/shiny.mantine/reference/NavigationProgress.md)
+  [`incrementMantineProgress()`](https://coppertank.github.io/shiny.mantine/reference/NavigationProgress.md)
+  [`decrementMantineProgress()`](https://coppertank.github.io/shiny.mantine/reference/NavigationProgress.md)
+  [`completeMantineProgress()`](https://coppertank.github.io/shiny.mantine/reference/NavigationProgress.md)
+  [`resetMantineProgress()`](https://coppertank.github.io/shiny.mantine/reference/NavigationProgress.md)
+  : Mantine NavigationProgress (progress bar at the top of the page)
+
+## Rich text editor (`@mantine/tiptap`)
+
+- [`RichTextEditor()`](https://coppertank.github.io/shiny.mantine/reference/RichTextEditor.md)
+  [`updateMantineRichTextEditor()`](https://coppertank.github.io/shiny.mantine/reference/RichTextEditor.md)
+  : Mantine RichTextEditor (rich text editor, based on Tiptap)
+
+## Schedule (`@mantine/schedule`)
+
+Calendar/scheduling views. See
+[`vignette("satellite-packages")`](https://coppertank.github.io/shiny.mantine/articles/satellite-packages.md).
+
+- [`DayView()`](https://coppertank.github.io/shiny.mantine/reference/ScheduleViews.md)
+  [`WeekView()`](https://coppertank.github.io/shiny.mantine/reference/ScheduleViews.md)
+  [`MonthView()`](https://coppertank.github.io/shiny.mantine/reference/ScheduleViews.md)
+  [`YearView()`](https://coppertank.github.io/shiny.mantine/reference/ScheduleViews.md)
+  :
+
+  Mantine schedule views (`@mantine/schedule`): Day/Week/Month/Year
+
+- [`ResourcesDayView()`](https://coppertank.github.io/shiny.mantine/reference/ResourcesScheduleViews.md)
+  [`ResourcesWeekView()`](https://coppertank.github.io/shiny.mantine/reference/ResourcesScheduleViews.md)
+  [`ResourcesMonthView()`](https://coppertank.github.io/shiny.mantine/reference/ResourcesScheduleViews.md)
+  :
+
+  Mantine resource schedule views (`@mantine/schedule`): resources as
+  rows/columns
+
+- [`AgendaView()`](https://coppertank.github.io/shiny.mantine/reference/AgendaView.md)
+  :
+
+  Mantine AgendaView (`@mantine/schedule`): events as a vertical list
+
+- [`MobileMonthView()`](https://coppertank.github.io/shiny.mantine/reference/MobileMonthView.md)
+  :
+
+  Mantine MobileMonthView (`@mantine/schedule`): touch-optimized month
+  view
+
+- [`Schedule()`](https://coppertank.github.io/shiny.mantine/reference/Schedule.md)
+  :
+
+  Mantine Schedule (`@mantine/schedule`): unified view with built-in
+  switching
+
+## Reactive architecture
+
+The two mechanisms that go beyond simple one-way rendering: a generic
+prop-update channel and a
+[`renderUI()`](https://rdrr.io/pkg/shiny/man/renderUI.html)-equivalent
+reactive output. See
+[`vignette("architecture")`](https://coppertank.github.io/shiny.mantine/articles/architecture.md).
+
+- [`updateMantineProps()`](https://coppertank.github.io/shiny.mantine/reference/updateMantineProps.md)
+  : Update arbitrary props of a mounted component (generic channel)
+- [`mantineOutput()`](https://coppertank.github.io/shiny.mantine/reference/mantineOutput.md)
+  [`renderMantine()`](https://coppertank.github.io/shiny.mantine/reference/mantineOutput.md)
+  : Reactive Mantine output
+- [`mantineDependency()`](https://coppertank.github.io/shiny.mantine/reference/mantineDependency.md)
+  : Mantine JS/CSS dependency
+
+## Icons
+
+Re-exported `@tabler/icons-react` icons used by the example apps and
+available for your own UIs.
+
+- [`IconSun()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconMoon()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconCopy()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconCheck()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconBrandGoogle()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconBrandFacebook()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconBrandGithub()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconBrandDiscord()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconHome2()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconLayoutDashboard()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconSettings()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconUsers()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconPlus()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconBrandTwitter()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconBrandInstagram()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconBrandYoutube()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconBrandLinkedin()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconArrowUpRight()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconArrowDownRight()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconTrendingUp()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconTrendingDown()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconPhone()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconMail()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconGripVertical()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconUpload()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconX()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconMapPin()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconHeart()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconStar()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconDots()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconEdit()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconTrash()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconLogout()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconChevronRight()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconSearch()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconChevronDown()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconCode()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconBook()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconChartBar()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconFingerprint()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconChartLine()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconChartPie()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconFileText()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconBell()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconExternalLink()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconDownload()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconCurrencyDollar()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconPercentage()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  [`IconCategory()`](https://coppertank.github.io/shiny.mantine/reference/icons.md)
+  : Tabler icons
+
+## Mantine’s own small icons
+
+Standalone versions of small icons/pieces Mantine renders internally
+(not from `@tabler/icons-react` - see “Icons” above).
+
+- [`CheckIcon()`](https://coppertank.github.io/shiny.mantine/reference/CheckIcon.md)
+  : Mantine CheckIcon
+- [`CloseIcon()`](https://coppertank.github.io/shiny.mantine/reference/CloseIcon.md)
+  : Mantine CloseIcon
+- [`AccordionChevron()`](https://coppertank.github.io/shiny.mantine/reference/AccordionChevron.md)
+  : Mantine AccordionChevron
+- [`RadioIcon()`](https://coppertank.github.io/shiny.mantine/reference/RadioIcon.md)
+  : Mantine RadioIcon
