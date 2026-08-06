@@ -255,6 +255,24 @@ Box(
 )
 ```
 
+Set `inputId` to react to resizing server-side (added in Mantine 9.5.1):
+`input[[inputId]]` holds the current `list(width=, height=)` after every
+drag-resize, and `input[[paste0(inputId, "_resize_start")]]`/
+`input[[paste0(inputId, "_resize_end")]]` fire as events when a drag-resize
+begins/ends (not fired for keyboard resizing via the handle). The window's
+*position* is still not reported (see above).
+
+```r
+FloatingWindow(
+  inputId = "win_size",
+  dimensions = list(initialWidth = 220, minWidth = 150, maxWidth = 400, initialHeight = 140, minHeight = 100, maxHeight = 300),
+  Text("Resize me."),
+  FloatingWindowResizeHandle(style = list(position = "absolute", right = 0, bottom = 0))
+)
+# server:
+observe(print(input$win_size))  # list(width = ..., height = ...)
+```
+
 ## FocusTrap / RemoveScroll
 
 Not their own mantine.dev/core pages, but the two mechanisms

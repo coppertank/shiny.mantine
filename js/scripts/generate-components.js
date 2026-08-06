@@ -168,7 +168,11 @@ const MANIFEST = [
     compound: [{ export: 'PillsInputField', jsName: 'Field' }],
   },
   { name: 'Scroller', slug: 'scroller', doc: 'Horizontally scrollable container with prev/next arrow controls (e.g. for a row of chips/thumbnails)' },
-  { name: 'FloatingWindow', slug: 'floating-window', doc: 'A draggable floating panel positioned anywhere in the viewport (drag to move; position is not updatable from the server once mounted)' },
+  // FloatingWindow itself is hand-written (R/AdvancedComponents.R,
+  // js/src/index.js) as of Mantine 9.5.1 to wire its new
+  // onSizeChange/onResizeStart/onResizeEnd callbacks to Shiny -
+  // FloatingWindowResizeHandle (a pure structural sub-part with no
+  // callbacks of its own) stays hand-registered too, right next to it.
   { name: 'InputClearButton', slug: 'input', doc: 'The "x" clear button Select()/DatePickerInput()/etc. render when clearable, exposed for custom inputs built on Input()' },
   { name: 'InputSuccess', slug: 'input', doc: 'Standalone input success text, styled like the internal success state of stateful inputs' },
   { name: 'PaginationControl', slug: 'pagination', doc: 'Generic clickable pagination-styled button, for building entirely custom page controls inside PaginationRoot()' },

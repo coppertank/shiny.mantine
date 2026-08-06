@@ -2,6 +2,20 @@
 
 Initial public release.
 
+* Updated to Mantine 9.5.1. `FloatingWindow()` gained an optional
+  `inputId`: when set, resizing it (via `FloatingWindowResizeHandle()`)
+  reports the new size to `input[[inputId]]` (`list(width=, height=)`) and
+  fires `input[[paste0(inputId, "_resize_start")]]`/`"_resize_end"` events
+  — previously the component had no way to react to resizing server-side.
+  Every other 9.5.1 change (`ColorInput(fullWidth=)`,
+  `PasswordInput(visibilityToggleFocusable=)`, `Cascader(safeAreaPolygon=)`,
+  `ScatterChart`'s second Y axis via `withRightYAxis`/`rightYAxisProps`/
+  per-series `yAxisId`, `YearView(withWeekendDays=)`,
+  `ResourcesMonthView`'s new `withEventResize` support) already worked with
+  no code changes, since these components forward arbitrary props/data
+  through unmodified. `YearView`'s new `renderDay` prop is a JS render
+  function and is not exposed, consistent with every other `render*` prop
+  in the package.
 * Updated to Mantine 9.5.0. New components: `Combobox()` (plus its
   compound sub-parts: `ComboboxTarget()`, `ComboboxDropdown()`,
   `ComboboxOptions()`, `ComboboxOption()`, `ComboboxSearch()`, ...) — the

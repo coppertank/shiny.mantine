@@ -1,0 +1,445 @@
+# shiny.mantine — reference for LLMs
+
+R wrappers for the [Mantine UI](https://mantine.dev) React component library
+(v9.5), for use inside [Shiny](https://shiny.posit.co/) apps. Covers the full
+`@mantine/core` component set plus all 11 satellite packages (`dates`,
+`notifications`, `modals`, `spotlight`, `charts`, `code-highlight`,
+`nprogress`, `tiptap`, `dropzone`, `carousel`, `schedule`). Repo:
+<https://github.com/coppertank/shiny.mantine>. Docs site:
+<https://coppertank.github.io/shiny.mantine/>.
+
+This file is a dense reference for an LLM assisting with `shiny.mantine`
+code: the mental model, every interaction pattern, serialization rules, the
+full component catalog, and what is deliberately *not* supported (so you
+don't invent APIs that don't exist). For full prop tables of an individual
+component, read its Rd help (`?ComponentName` or `man/ComponentName.Rd` in
+the source tree) — this file intentionally does not repeat every prop of
+every component, since nearly all of them pass through unmodified (see
+"Prop passthrough" below).
+
+## Install
+
+```r
+# from source, after cloning the repo:
+cd js && npm install && npm run build   # builds inst/www/*.js once
+cd ..
+devtools::document()
+devtools::install()
+```
+
+## Minimal app
+
+```r
+library(shiny)
+library(shiny.mantine)
+
+ui <- fluidPage(
+  MantineProvider(
+    TextInput(inputId = "name", label = "Your name"),
+    Button("Greet", inputId = "greet_btn", variant = "filled")
+  ),
+  textOutput("greeting")
+)
+
+server <- function(input, output, session) {
+  output$greeting <- renderText({
+    req(input$greet_btn)
+    paste("Hello,", input$name)
+  })
+}
+
+shinyApp(ui, server)
+```
+
+## Architecture essentials (must know)
+
+- **Every component is a plain R function** that returns a `mantine_element`
+  object (an internal S3 class) — a `{type, name, props}` tree, not an
+  `htmltools` tag. `MantineProvider()` serializes that whole tree to one
+  JSON blob and mounts it with a single `ReactDOM.createRoot()` call inside
+  a bundled, independent copy of **React 19** (separate from `shiny.react`'s
+  shared React 18, since Mantine v9 requires React ≥ 19 and the two can't
+  share a tree — see `vignette("architecture")`).
+- **`MantineProvider()` is mandatory and must wrap everything.** Every
+  `shiny.mantine` component used outside one renders with no theme/CSS
+  variables and looks broken. Nest ordinary `htmltools` tags inside it
+  freely (they render as static HTML via `dangerouslySetInnerHTML`).
+- **Do NOT nest native Shiny bindings inside `MantineProvider()`** —
+  `shiny::textOutput()`, `uiOutput()`, `plotOutput()`, `tableOutput()`, or
+  any other non-`shiny.mantine` Shiny binding. Their content is inserted via
+  `dangerouslySetInnerHTML`, which Shiny never rescans for bindings, so they
+  silently never update. Put them as siblings, outside `MantineProvider()`,
+  in the same `fluidPage()`.
+- **Multiple `MantineProvider()`s** are allowed (e.g. a second one with a
+  different `theme` for part of the page) but don't sync color scheme live
+  with each other (each persists to `localStorage` independently).
+- **JS bundle** (`inst/www/mantine.js`, always loaded, ~1.1 MiB): React 19 +
+  every `@mantine/core` component + Tabler icons. Each of the 11 satellite
+  packages ships as its own chunk (`dates.mantine.js`,
+  `charts.mantine.js`, `schedule.mantine.js`, ...), fetched on demand only
+  the first time a component from that family actually mounts.
+- **Component naming mirrors Mantine's own naming 1:1**, with compound
+  sub-components flattened by concatenation: `Card.Section` → `CardSection`,
+  `Modal.Root` → `ModalRoot`, `AppShell.Navbar` → `AppShellNavbar`,
+  `Tabs.Tab` → `TabsTab`, `Combobox.Target` → `ComboboxTarget`, etc. When in
+  doubt about a name, strip the dot and PascalCase-join.
+
+## Prop passthrough (why prop fidelity is structural, not enumerated)
+
+Nearly every component is `function(...) mantineElement("ComponentName",
+...)` (or has 1-3 named leading args for its "primary" value, e.g.
+`inputId`, `value`, `data`, plus `...`). **Any named argument you pass
+becomes a prop with the exact same name Mantine's React API uses** —
+camelCase, unchanged (`leftSection`, `withBorder`, `radius`, `variant`,
+`onOptionSubmit`... except props that are literally JS callback functions,
+see "What is NOT supported" below). Unnamed arguments become children. This
+means: if a prop exists in Mantine's docs and isn't a function/ref, it
+already works in this package even if not shown in a specific example —
+you don't need a new R function or a package update to use it.
+
+```r
+# any prop from mantine.dev works, unmodified, via ...:
+Button("Save", inputId = "save_btn", variant = "gradient",
+       gradient = list(from = "blue", to = "cyan"), radius = "xl", size = "lg")
+```
+
+## Serialization rules
+
+- **R `list()` → JSON object/array.** Named list → JS object
+  (`list(top = 10, left = 20)` → `{top: 10, left: 20}`). Unnamed list → JS
+  array. `NULL` → lets the prop fall back to Mantine's own default
+  (**don't** pass `NA`).
+- **Data-frames are accepted directly** by every "collection" prop (chart
+  `data`, `series`, schedule `events`/`resources`, table `columns`, ...): one
+  row per item, one column per field — converted to a list of rows
+  automatically. A plain list of `list(...)` rows works identically.
+- **`style` accepts a CSS string OR a named list** (`style = "color: red;"`
+  or `style = list(color = "red")`) — both are normalized to the object form
+  React requires.
+- **Dates** travel as `"YYYY-MM-DD"` strings (Mantine v9's own
+  `DateStringValue` type). Every date-taking prop accepts that string OR an
+  R `Date`/`POSIXct` (auto-converted). **Times** are `"HH:mm:ss"`,
+  **datetimes** (schedule events) are `"YYYY-MM-DD HH:mm:ss"` — same
+  auto-conversion from R `Date`/`POSIXct`/character.
+- **Array-typed props with a single element are safe** — `value = c("only")`
+  works correctly everywhere in this package (an internal `ensureArray()`
+  helper guards the handful of props Mantine expects as an array even when
+  it has exactly one item — `MultiSelect()`/`TagsInput()`/`CheckboxGroup()`/
+  `SwitchGroup()`'s `value`, `Cascader()`'s `value` path, `RichTextEditor()`'s
+  `controls`). You do not need to work around this.
+- **Icons**: pass a rendered icon component directly as a prop value, e.g.
+  `leftSection = IconSearch(size = 16)`.
+
+## The four interaction patterns
+
+### 1. Stateful input — `inputId` + matching `update*()`
+
+Every form-like component takes `inputId`; `input[[inputId]]` stays in sync
+automatically on every change. A matching `updateMantineXxx(session,
+inputId, value = ...)` pushes a new value from the server (naming avoids
+colliding with `shiny::updateTextInput()` & co. when both packages are
+loaded).
+
+```r
+TextInput(inputId = "name", label = "Name", value = "")
+Select(inputId = "country", label = "Country", data = c("Italy", "France"))
+Slider(inputId = "vol", value = 50, min = 0, max = 100)
+# server:
+observeEvent(input$reset_btn, updateMantineTextInput(session, "name", value = ""))
+```
+
+### 2. Click/action component — `inputId` as an event counter
+
+`Button()`, `ActionIcon()`, menu items, nav links: every click *increments*
+`input[[inputId]]` (exactly like `shiny::actionButton()`) — pair with
+`observeEvent(input$btn_id, ...)`. No `update*()` exists for these (there's
+nothing meaningful to "set").
+
+### 3. `updateMantineProps()` — generic prop patch, not just `value`
+
+Give any component `mantineId = "some_id"`, then patch *any* of its props
+(not just a value) from the server:
+
+```r
+Modal(mantineId = "my_modal", inputId = "modal_closed", opened = FALSE, Text("Hi"))
+# server:
+observeEvent(input$open_btn, updateMantineProps(session, "my_modal", opened = TRUE))
+```
+
+Supported by: every overlay (`Modal`, `Drawer`, `Dialog`, `Popover`, `Affix`,
+`LoadingOverlay`), feedback elements (`Alert`, `Badge`, `Indicator`,
+`Notification`), `Transition`, `Collapse`, `Combobox`, schedule views (patch
+`date`/`events`/`resources`), and every stateful input (as a complement to
+its own `update*()`, for non-`value` props like `disabled`/`color`/`label`).
+
+### 4. `mantineOutput()` / `renderMantine()` — reactive sub-tree
+
+The `uiOutput()`/`renderUI()` equivalent — server-recomputes an entire
+Mantine sub-tree. Each call mounts its own independent React root; wrap in
+`MantineProvider()` inside the render expression if you need theme context
+there too. Local uncontrolled state inside gets lost on every re-render,
+same caveat as `renderUI()`.
+
+```r
+# ui:
+mantineOutput("dynamic_card")
+# server:
+output$dynamic_card <- renderMantine({
+  MantineProvider(Card(withBorder = TRUE, Text(paste("Updated at", Sys.time()))))
+})
+```
+
+### Bonus: `Pages()` / `Page()` — client-side router
+
+`Pages(active = "home", ...)` + `Page(value = "home", ...)` switch visible
+content instantly on the client (no server round-trip), driven by
+`navLinkItem()`/`Tabs`-with-`inputId` clicks nested anywhere inside. Typical
+shape: `Pages(AppShell(AppShellNavbar(navLinkItem(...)), AppShellMain(Page(...), Page(...))))`.
+
+## `MantineProvider()` reference
+
+```r
+MantineProvider(
+  ...,                              # children (components + plain htmltools tags)
+  defaultColorScheme = "light",     # "light" | "dark" | "auto"
+  theme = NULL,                     # list(): Mantine theme object override
+  containerId = NULL,               # fixed mount-point id (auto-generated if omitted)
+  fixShinyFontScale = TRUE          # auto-corrects Mantine's rem-based sizing
+                                     # under fluidPage()'s 10px-root Bootstrap 3 CSS
+                                     # (Mantine assumes a 16px root); set FALSE to
+                                     # disable, or supply theme$scale yourself
+)
+```
+Any other named argument (e.g. `forceColorScheme`, `getRootElement`,
+`classNamesPrefix`, non-function-valued props) also passes through via `...`.
+
+`MantineThemeProvider(theme = list(...))` updates the theme object exposed
+to custom code via Mantine's `useMantineTheme()` — it does **not** restyle
+already-styled components (`Button()` etc. read colors from CSS variables
+set once by the outermost `MantineProvider()`).
+
+`DirectionProvider(dir = "rtl")` sets reading direction for its subtree.
+
+## Component catalog
+
+One function per Mantine component/sub-component, PascalCase, grouped by
+category. Compound families share one Rd topic (`?First` shows all
+siblings). Every stateful input has an `inputId`; overlays/feedback/inputs
+optionally take `mantineId` for `updateMantineProps()`.
+
+**Provider**: `MantineProvider`, `MantineThemeProvider`
+
+**Layout**: `AppShell` + `AppShellHeader`/`Navbar`/`Main`/`Aside`/`Footer`/`Section`,
+`Box`, `Center`, `Container`, `SimpleGrid`, `Grid`+`GridCol`, `Group`, `Stack`,
+`Flex`, `Space`, `Paper`, `Card`+`CardSection`, `Divider`, `ScrollArea`,
+`ScrollAreaAutosize`, `NativeScrollArea`, `Scroller`, `AspectRatio`, `Affix`,
+`Portal`, `DirectionProvider`
+
+**Typography**: `Text`, `Title`, `Anchor`, `Code`, `Highlight`, `Mark`,
+`Blockquote`, `List`+`ListItem`, `Kbd`, `Typography`, `VisuallyHidden`
+
+**Buttons & actions**: `Button`+`ButtonGroup`+`ButtonGroupSection`,
+`ActionIcon`+`ActionIconGroup`+`ActionIconGroupSection`, `UnstyledButton`,
+`CloseButton`, `CopyButton`, `SplitButton`, `ButtonWithMenu`, `SocialButton`,
+`LoadingProgressButton`, `ColorSchemeToggle` (last five are
+`shiny.mantine`-authored recipes composed from primitives, not 1:1 Mantine
+components — see `vignette("core-buttons")`)
+
+**Navigation**: `NavLink` (+ `navLinkItem()` helper), `navbarBurger()`
+helper, `Burger`, `Tabs`+`TabsList`+`TabsTab`+`TabsPanel`, `Breadcrumbs`,
+`TableOfContents`, `Pagination`/`PaginationRoot`+`Items`/`First`/`Last`/
+`Next`/`Previous`/`Dots`/`Control`/`Label`, `Stepper`+`StepperStep`+
+`StepperCompleted`, `Accordion`+`AccordionItem`+`Control`+`Panel`, `Pages`,
+`Page`, `Menu`+`Target`/`Dropdown`/`Label`/`Divider`/(`menuItem()` helper)/
+`Sub`+`SubTarget`+`SubDropdown`/(`menuSubItem()` helper)/`CheckboxGroup`/
+`CheckboxItem`/`RadioGroup`/`RadioItem`/`Search`/`ContextMenu`,
+`megaMenuItem()` helper, `Menubar`+`MenubarMenu`+`Target`+`Dropdown`,
+`Splitter`+`SplitterPanel`
+
+**Inputs** (`inputId` stateful): `TextInput`, `Textarea`, `PasswordInput`,
+`NumberInput`, `Autocomplete`, `Select`, `Cascader` (hierarchical
+cascading-column selection — value is a path, a character vector),
+`ComboboxPopover`+`ComboboxPopoverTarget` (Select-like but with a custom
+target instead of an input), `Combobox`+`Target`/`EventsTarget`/
+`DropdownTarget`/`Dropdown`/`Options`/`Option`/`Search`/`Empty`/`Footer`/
+`Header`/`Group`/`Chevron`/`ClearButton`/`HiddenInput` (headless primitive
+— see "Combobox" section below), `MultiSelect`, `NativeSelect`, `TagsInput`,
+`JsonInput`, `MaskInput`, `PinInput`, `Checkbox`, `CheckboxGroup`+
+`CheckboxGroupItem`, `CheckboxCard`, `CheckboxIndicator`, `Radio`,
+`RadioGroup`, `RadioCard`, `RadioIndicator`, `Switch`, `SwitchGroup`+
+`SwitchGroupItem`, `Chip`, `ChipGroup`, `Rating`, `ColorInput`, `ColorPicker`,
+`HueSlider`, `AlphaSlider`, `FileInput`, `FileButton`, `Slider`,
+`RangeSlider`, `AngleSlider`, `SegmentedControl`, `Fieldset`, `Input`+
+`InputBase`+`InputWrapper`+`InputLabel`+`InputDescription`+`InputError`+
+`InputSuccess`+`InputPlaceholder`+`InputClearButton` (styled-box primitives,
+no value management of their own), `PillsInput`+`PillsInputField`
+
+**Dates & time** (`@mantine/dates`, lazy chunk): `DatesProvider`,
+`DateInput`, `DatePicker`, `DatePickerInput`, `DateTimePicker`,
+`InlineDateTimePicker`, `MonthPickerInput`, `MonthPicker` (always-visible
+inline), `YearPickerInput`, `YearPicker` (always-visible inline),
+`TimeInput`, `TimePicker`, `TimeGrid`, `TimeValue` (display-only formatter,
+not an input), `MiniCalendar`. *Not wrapped*: `Calendar` (needs a
+`getDayProps` JS callback).
+
+**Overlays**: `Modal`+`ModalStack`+`ModalRoot`+`Overlay`/`Content`/`Header`/
+`Title`/`CloseButton`/`Body`, `Drawer` (same compound shape as `Modal`),
+`Dialog`, `Popover`+`PopoverTarget`+`PopoverDropdown`, `LoadingOverlay`,
+`Collapse`, `Transition`, `Overlay`, `FocusTrap`+`FocusTrapInitialFocus`,
+`RemoveScroll`, `FloatingWindow`+`FloatingWindowResizeHandle` (`FloatingWindow(inputId=)`
+reports resize-via-handle interactions: `input[[inputId]]` = `list(width=,
+height=)` after each resize, `input[[paste0(inputId,"_resize_start")]]`/
+`"_resize_end"` fire as events — added in Mantine 9.5.1; the window's drag
+*position* is still not reported, same live-ref limitation as before). *Not
+wrapped*: `FloatingIndicator`/`FloatingArrow` (need a live DOM element
+`ref`).
+
+**Data display**: `Table`+`Thead`/`Tbody`/`Tfoot`/`Tr`/`Th`/`Td`/`Caption`/
+`ScrollContainer`, `DataTable` (client-side search/sort/select, `shiny.mantine`-
+authored, not a Mantine component), `Avatar`+`AvatarGroup`, `Badge`,
+`ThemeIcon`, `Indicator`, `Image`, `BackgroundImage`, `RingProgress`,
+`Progress`/`ProgressRoot`+`Section`+`Label`, `Timeline`+`TimelineItem`
+(supports `opposite`/`alternate` props), `DataList`+`Item`+`ItemLabel`+
+`ItemValue`, `EmptyState`+`Actions`/`Description`/`Indicator`/`Title`,
+`Skeleton`, `Loader`, `ColorSwatch`, `NumberFormatter`, `Tree`, `TreeSelect`
+(Select-dropdown over `Tree`-shaped data, `shiny.mantine`-authored
+combination), `Pill`+`PillGroup`, `RollingNumber`, `SemiCircleProgress`,
+`OverflowList` (children collapse into a "+N" `Badge`; real Mantine's
+`renderItem`/`renderOverflow` functions are not exposed — pass pre-built
+elements as children instead, `overflowLabel = "+{n} more"` sets the count
+label template)
+
+**Feedback**: `Alert`, `Notification`, `Tooltip`, `TooltipFloating`,
+`TooltipGroup`, `HoverCard`+`Target`+`Dropdown`+`Group`, `Spoiler`,
+`Marquee`
+
+**Charts** (`@mantine/charts`, lazy chunk, 18 types): `AreaChart`,
+`BarChart`, `BubbleChart`, `CompositeChart`, `DonutChart`, `FunnelChart`,
+`Heatmap` (supports `monthLabelsPosition = "top"/"bottom"`), `LineChart`,
+`PieChart`, `RadarChart`, `RadialBarChart`, `SankeyChart`, `ScatterChart`,
+`Sparkline`, `Treemap`, `SunburstChart`, `BulletChart`, `BarsList`.
+`LineChart`/`BarChart`/`AreaChart`/`CompositeChart` support `withBrush =
+TRUE` for a range-selector brush; most chart types support
+`accessibilityLayer` (keyboard nav, default `TRUE`).
+
+**Drag & drop, dropzone, carousel**: `SortableList`, `SortableTable`
+(`shiny.mantine`-authored drag-reorder widgets, report new order to Shiny),
+`Dropzone`+`DropzoneAccept`/`Idle`/`Reject`, `Dropzone.FullScreen` via
+`DropzoneFullScreen()` (captures drops anywhere in the browser window,
+toggle with `active`/`updateMantineProps()`), `Carousel`+`CarouselSlide`
+
+**Notifications** (`@mantine/notifications`, lazy chunk): mount
+`Notifications()` once, then imperatively `showMantineNotification(session,
+title=, message=, color=, ...)` / `hideMantineNotification(session, id)`.
+
+**Modals manager** (`@mantine/modals`, lazy chunk): wrap content in
+`ModalsProvider()`, then `openMantineModal(session, ...)` /
+`openMantineConfirmModal(session, ..., onConfirmInputId=)` /
+`closeMantineModal(session, id)` / `closeAllMantineModals(session)`.
+
+**Spotlight** (`@mantine/spotlight`, lazy chunk, Ctrl+K search palette):
+`Spotlight`/`SpotlightRoot`+`Search`+`ActionsList`+`ActionsGroup`+`Action`+
+`Empty`+`Footer`.
+
+**Code highlight** (`@mantine/code-highlight`, lazy chunk): `CodeHighlight`,
+`InlineCodeHighlight`, `CodeHighlightTabs` — **plain-text only, no real
+syntax coloring** (deliberately avoids bundling `highlight.js`/`shiki`).
+
+**Navigation progress** (`@mantine/nprogress`, lazy chunk): mount
+`NavigationProgress()` once, then `startMantineProgress(session)` /
+`setMantineProgress(value, session)` / `incrementMantineProgress(session)` /
+`decrementMantineProgress(session)` / `completeMantineProgress(session)` /
+`resetMantineProgress(session)`.
+
+**Rich text editor** (`@mantine/tiptap`, lazy chunk): `RichTextEditor(
+inputId, content=, placeholder=, controls=)`. `input[[inputId]]` gets the
+HTML on every edit. Supports bold/italic/underline/strikethrough/highlight/
+inline code/headings (H1-H6)/blockquote/lists incl. task lists/links/
+alignment/sub&superscript/undo-redo. `controls` (a list of character
+vectors, one per toolbar button cluster) trims/reorders the toolbar — see
+`?RichTextEditor` for the full list of control names. **Not supported**:
+tables, images, text color (`ColorPicker`/`Color`/`UnsetColor` controls),
+collaborative editing.
+
+**Schedule** (`@mantine/schedule`, lazy chunk, calendar/scheduling views):
+`DayView`/`WeekView`/`MonthView`/`YearView` (single-timeline calendars),
+`ResourcesDayView`/`ResourcesWeekView`/`ResourcesMonthView` (events grouped
+into rows by a `resources` data.frame — `id`/`label` columns; each event's
+`resourceId` matches one), `AgendaView` (list over a fixed
+`rangeStart`/`rangeEnd`, no navigation), `MobileMonthView` (touch-optimized,
+`input[[inputId]]` = selected day, `input[[paste0(inputId,"_month")]]` =
+displayed month), `Schedule` (all views behind one switcher, `view` =
+`"day"`/`"week"`/`"month"`/`"year"`). `events`/`resources` are
+data.frames/lists of rows; `events`' `start`/`end` accept
+`"YYYY-MM-DD HH:mm:ss"` or `Date`/`POSIXct`. `input[[inputId]]` = displayed
+`date`; extra interactions land under `input[[paste0(inputId,
+"_event_click")]]` / `"_slot_click"` / `"_slot_select"` (needs
+`withDragSlotSelect = TRUE`) / `"_event_drop"` / `"_event_resize"` (needs
+`withEventsDragAndDrop`/`withEventResize = TRUE` — the display updates
+immediately client-side too, like `SortableList()`). `intervalMinutes` on
+the `Resources*View`s (default `60`) accepts values dividing evenly into an
+hour *or* whole numbers of hours above 60 (e.g. `240`) for wide multi-hour
+columns. Update any of these from the server via `updateMantineProps()`
+(needs `mantineId`) — there are no dedicated `update*()` functions for this
+family. **Not supported**: `canDragEvent`/`canResizeEvent` predicates,
+`renderEvent`/`renderEventBody`/`renderResourceLabel`/`renderHeader`
+render-prop customization (all JS-function-valued).
+
+**Reactive architecture**: `updateMantineProps`, `mantineOutput`,
+`renderMantine`, `mantineDependency` (see interaction patterns above).
+
+**Icons**: every function starting with `Icon` (e.g. `IconSearch`,
+`IconHome2`) is a re-exported `@tabler/icons-react` icon, `IconName(size=,
+color=, stroke=)`. Plus a handful of Mantine's own small internal icons
+(`CheckIcon`, `CloseIcon`, `AccordionChevron`, `RadioIcon`).
+
+## What is NOT supported (don't invent these)
+
+JS-function-valued or DOM-`ref`-valued props can't cross the R→JSON bridge
+and are never exposed, regardless of component. Known unwrapped
+components/props (all deliberate, not oversights):
+
+- **`Calendar()`** (`@mantine/dates`) — needs `getDayProps` callback. Use
+  `DatePicker()`/`MonthPicker()`/`YearPicker()`/`MiniCalendar()` instead.
+- **`FloatingIndicator()`/`FloatingArrow()`** (`@mantine/core`) — need a
+  live DOM element `ref`. `SegmentedControl()`/`Tabs()` already animate
+  their own indicator without it.
+- **Raw `useCombobox()` hook state** — `Combobox()` (this package) already
+  owns the store internally so the family above is usable declaratively;
+  you cannot pass a custom store.
+- **`renderOption`/`renderNode`/`renderItem`/`renderEvent`/`renderHeader`/
+  similar `render*` props**, anywhere in the package — default rendering is
+  always used.
+- **`canDragEvent`/`canResizeEvent`/`filter`/`getCurrentTime`/`getTimeSlotProps`**
+  and other one-off callback props — silently unsupported (pass-through
+  would just fail to serialize/execute).
+- **`RichTextEditor()`'s `ColorPicker`/`Color`/`UnsetColor`/`SourceCode`
+  controls, tables, images, collaboration.**
+- **`CodeHighlight()`'s real syntax coloring** (`highlight.js`/`shiki`
+  adapters) — plain monospace text only.
+- SSR/Next.js-only helpers (`ColorSchemeScript`, `HeadlessMantineProvider`,
+  `InlineStyles`) — not applicable to Shiny's client-side-only mount.
+- `@mantine/hooks` (not components), `@mantine/form` (conflicts with
+  Shiny's own reactive model), `@mantine/x` (community/paid extensions),
+  `@mantine/schedule`'s recurring-events (`rrule`) editing UI — out of
+  scope, not wrapped.
+
+If a prop you need isn't listed as unsupported above and isn't a function,
+it already works via passthrough — try it before assuming it's missing.
+
+## Where to learn more
+
+- `vignette("getting-started")`, `vignette("architecture")` — setup and the
+  serialization engine.
+- `vignette("core-layout")` through `vignette("core-misc")` — one vignette
+  per component category above, each with runnable examples.
+- `vignette("satellite-packages")` — one worked example per satellite
+  package, including `@mantine/schedule`.
+- `vignette("extras")` — group inputs, drag-and-drop, button recipes.
+- `inst/examples/*.R` — full runnable demo apps, incl.
+  `mantine-9-5-app.R` (Timeline `opposite`/`alternate`, `Cascader`, chart
+  `withBrush`, `Heatmap` `monthLabelsPosition`, Schedule multi-hour
+  `intervalMinutes`, date picker `withNativeLevelSelect`) and
+  `financial-dashboard-app.R` (a full multi-page app).
+- `?ComponentName` for any function — full prop docs with a link to the
+  matching `mantine.dev` page.

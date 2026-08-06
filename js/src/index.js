@@ -1215,6 +1215,30 @@ function ShinyTableOfContents({ scrollSpySelector, scrollSpyOptions, ...props })
   });
 }
 
+// FloatingWindow: reports resize interactions to Shiny when inputId is set
+// (onSizeChange/onResizeStart/onResizeEnd, added in Mantine 9.5.1) - the
+// window's live drag *position* still isn't reported (needs a client-side
+// ref, see the note in R/AdvancedComponents.R), only its resized size.
+function ShinyFloatingWindow({
+  inputId, onSizeChange, onResizeStart, onResizeEnd, ...props
+}) {
+  return React.createElement(FloatingWindow, {
+    ...props,
+    onSizeChange: (size) => {
+      if (inputId) setShinyValue(inputId, size);
+      if (onSizeChange) onSizeChange(size);
+    },
+    onResizeStart: () => {
+      if (inputId) setShinyValue(`${inputId}_resize_start`, true, { priority: 'event' });
+      if (onResizeStart) onResizeStart();
+    },
+    onResizeEnd: () => {
+      if (inputId) setShinyValue(`${inputId}_resize_end`, true, { priority: 'event' });
+      if (onResizeEnd) onResizeEnd();
+    },
+  });
+}
+
 // Shiny's bundled Bootstrap 3 CSS (attached by fluidPage()/bootstrapPage(),
 // but *not* by a plain tagList() UI) sets `html { font-size: 10px; }`,
 // while Mantine's entire rem-based size scale is calibrated for a 16px
@@ -1245,12 +1269,15 @@ const components = {
   MantineProvider: ShinyMantineProvider,
   Card,
   'Card.Section': Card.Section,
-  // FloatingWindow.ResizeHandle (new in Mantine 9.5) is only reachable via
-  // property access on FloatingWindow, unlike most other compound
-  // sub-parts this package generates via
-  // js/scripts/generate-components.js (which assumes a separate flattened
+  // FloatingWindow itself is hand-wired (see ShinyFloatingWindow above) to
+  // report resize events (added in Mantine 9.5.1), no longer a plain
+  // js/scripts/generate-components.js passthrough. Its
+  // FloatingWindow.ResizeHandle sub-part (new in 9.5) is only reachable
+  // via property access on FloatingWindow, unlike most other compound
+  // sub-parts this package generates (which assume a separate flattened
   // named export exists, e.g. ListItem for List.Item) - hand-registered
-  // here instead.
+  // here too.
+  FloatingWindow: withReactiveProps(ShinyFloatingWindow),
   'FloatingWindow.ResizeHandle': withReactiveProps(FloatingWindow.ResizeHandle),
   Text,
   Title,

@@ -669,15 +669,6 @@ PillsInputField <- displayComponent("PillsInput.Field")
 #' @export
 Scroller <- displayComponent("Scroller")
 
-#' Mantine FloatingWindow
-#'
-#' A draggable floating panel positioned anywhere in the viewport (drag to move; position is not updatable from the server once mounted). Supports `mantineId` for reactive updates via
-#' [updateMantineProps()].
-#' @rdname FloatingWindow
-#' @param ... Props and children. See <https://mantine.dev/core/floating-window/>.
-#' @export
-FloatingWindow <- displayComponent("FloatingWindow")
-
 #' Mantine InputClearButton
 #'
 #' The "x" clear button Select()/DatePickerInput()/etc. render when clearable, exposed for custom inputs built on Input(). Supports `mantineId` for reactive updates via
