@@ -46,8 +46,8 @@ Every component wrapper is a thin call to one of two internal helpers in
 Card
 #> function (...) 
 #> mantineElement(name, ...)
-#> <bytecode: 0x55768e779170>
-#> <environment: 0x55768e77a0f8>
+#> <bytecode: 0x55ec887cc118>
+#> <environment: 0x55ec887cd0a0>
 ```
 
 ``` r
@@ -59,7 +59,7 @@ Button
 #> {
 #>     mantineElement("Button", label, inputId = inputId, ...)
 #> }
-#> <bytecode: 0x55768eabec08>
+#> <bytecode: 0x55ec88b11b40>
 #> <environment: namespace:shiny.mantine>
 ```
 
@@ -146,7 +146,7 @@ updateMantineProps
 #>     session$sendCustomMessage("shinyMantineUpdateProps", list(id = session$ns(mantineId), 
 #>         props = list(...)))
 #> }
-#> <bytecode: 0x55769053f788>
+#> <bytecode: 0x55ec8a592940>
 #> <environment: namespace:shiny.mantine>
 ```
 
