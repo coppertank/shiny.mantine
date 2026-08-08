@@ -104,6 +104,7 @@ ui <- fluidPage(
         SegmentedControl(
           inputId = "input_gradient_seg",
           fullWidth = TRUE,
+          size = "xs",
           data = c("All", "AI/ML", "C++", "Rust", "TypeScript"),
           color = "blue"
         )
